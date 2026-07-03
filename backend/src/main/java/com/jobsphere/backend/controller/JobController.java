@@ -27,6 +27,13 @@ public class JobController {
         return jobService.getAllJobs();
     }
 
+    @GetMapping("/employer/{employerId}")
+    public List<Job> getJobsByEmployer(
+            @PathVariable Long employerId
+    ) {
+        return jobService.getJobsByEmployer(employerId);
+    }
+
     @GetMapping("/{id}")
     public Job getJobById(
             @PathVariable Long id

@@ -25,6 +25,7 @@ public class JobService {
                 .jobType(request.getJobType())
                 .description(request.getDescription())
                 .createdAt(LocalDateTime.now())
+                .employerId(request.getEmployerId())
                 .build();
 
         return jobRepository.save(job);
@@ -32,6 +33,10 @@ public class JobService {
 
     public List<Job> getAllJobs() {
         return jobRepository.findAll();
+    }
+
+    public List<Job> getJobsByEmployer(Long employerId) {
+        return jobRepository.findByEmployerId(employerId);
     }
 
     public Job getJobById(Long id) {

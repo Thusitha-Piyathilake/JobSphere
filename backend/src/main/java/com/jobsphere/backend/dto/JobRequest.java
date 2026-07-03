@@ -11,4 +11,6 @@ public class JobRequest {
     private Double salary;
     private String jobType;
     private String description;
+
+    private Long employerId;
 }
