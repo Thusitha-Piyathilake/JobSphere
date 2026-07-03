@@ -55,4 +55,38 @@ public class JobController {
     ) {
         return jobService.deleteJob(id);
     }
+
+    // ================= SEARCH ENDPOINTS =================
+
+    @GetMapping("/search/title/{title}")
+    public List<Job> searchByTitle(
+            @PathVariable String title
+    ) {
+        return jobService.searchByTitle(title);
+    }
+
+    @GetMapping("/search/location/{location}")
+    public List<Job> searchByLocation(
+            @PathVariable String location
+    ) {
+        return jobService.searchByLocation(location);
+    }
+
+    @GetMapping("/search/type/{jobType}")
+    public List<Job> searchByJobType(
+            @PathVariable String jobType
+    ) {
+        return jobService.searchByJobType(jobType);
+    }
+
+    @GetMapping("/search/{title}/{location}")
+    public List<Job> searchByTitleAndLocation(
+            @PathVariable String title,
+            @PathVariable String location
+    ) {
+        return jobService.searchByTitleAndLocation(
+                title,
+                location
+        );
+    }
 }

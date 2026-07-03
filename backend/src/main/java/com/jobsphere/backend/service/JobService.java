@@ -67,4 +67,29 @@ public class JobService {
 
         return "Job deleted successfully";
     }
+
+    // ================= SEARCH FEATURES =================
+
+    public List<Job> searchByTitle(String title) {
+        return jobRepository.findByTitleContainingIgnoreCase(title);
+    }
+
+    public List<Job> searchByLocation(String location) {
+        return jobRepository.findByLocationContainingIgnoreCase(location);
+    }
+
+    public List<Job> searchByJobType(String jobType) {
+        return jobRepository.findByJobTypeContainingIgnoreCase(jobType);
+    }
+
+    public List<Job> searchByTitleAndLocation(
+            String title,
+            String location
+    ) {
+        return jobRepository
+                .findByTitleContainingIgnoreCaseAndLocationContainingIgnoreCase(
+                        title,
+                        location
+                );
+    }
 }

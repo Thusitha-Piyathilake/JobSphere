@@ -8,4 +8,15 @@ import java.util.List;
 public interface JobRepository extends JpaRepository<Job, Long> {
 
     List<Job> findByEmployerId(Long employerId);
+
+    List<Job> findByTitleContainingIgnoreCase(String title);
+
+    List<Job> findByLocationContainingIgnoreCase(String location);
+
+    List<Job> findByJobTypeContainingIgnoreCase(String jobType);
+
+    List<Job> findByTitleContainingIgnoreCaseAndLocationContainingIgnoreCase(
+            String title,
+            String location
+    );
 }
