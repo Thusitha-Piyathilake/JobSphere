@@ -1,0 +1,65 @@
+package com.jobsphere.backend.service;
+
+import com.jobsphere.backend.dto.JobRequest;
+import com.jobsphere.backend.entity.Job;
+import com.jobsphere.backend.repository.JobRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+public class JobService {
+
+    private final JobRepository jobRepository;
+
+    public Job createJob(JobRequest request) {
+
+        Job job = Job.builder()
+                .title(request.getTitle())
+                .company(request.getCompany())
+                .location(request.getLocation())
+                .salary(request.getSalary())
+                .jobType(request.getJobType())
+                .description(request.getDescription())
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        return jobRepository.save(job);
+    }
+
+    public List<Job> getAllJobs() {
+        return jobRepository.findAll();
+    }
+
+    public Job getJobById(Long id) {
+        return jobRepository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("Job not found"));
+    }
+
+    public Job updateJob(Long id, JobRequest request) {
+
+        Job job = getJobById(id);
+
+        job.setTitle(request.getTitle());
+        job.setCompany(request.getCompany());
+        job.setLocation(request.getLocation());
+        job.setSalary(request.getSalary());
+        job.setJobType(request.getJobType());
+        job.setDescription(request.getDescription());
+
+        return jobRepository.save(job);
+    }
+
+    public String deleteJob(Long id) {
+
+        Job job = getJobById(id);
+
+        jobRepository.delete(job);
+
+        return "Job deleted successfully";
+    }
+}
