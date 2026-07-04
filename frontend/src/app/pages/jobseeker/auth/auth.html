@@ -1,0 +1,134 @@
+<div class="auth-container">
+
+    <div class="auth-card">
+
+        <div class="tabs">
+            <button
+                class="tab-btn"
+                [class.active]="isLogin"
+                (click)="switchToLogin()">
+                Login
+            </button>
+
+            <button
+                class="tab-btn"
+                [class.active]="!isLogin"
+                (click)="switchToRegister()">
+                Register
+            </button>
+        </div>
+
+        <!-- LOGIN -->
+        <div *ngIf="isLogin">
+
+            <h2>Job Seeker Login</h2>
+
+            <input
+                type="email"
+                placeholder="Email"
+                [(ngModel)]="loginEmail"
+                class="form-control mb-3">
+
+            <input
+                type="password"
+                placeholder="Password"
+                [(ngModel)]="loginPassword"
+                class="form-control mb-3">
+
+            <button class="main-btn" (click)="login()">
+                Login
+            </button>
+
+        </div>
+
+        <!-- REGISTER -->
+        <div *ngIf="!isLogin">
+
+            <h2>Job Seeker Register</h2>
+
+            <div class="row">
+                <div class="col">
+                    <input
+                        type="text"
+                        placeholder="First Name"
+                        [(ngModel)]="firstName"
+                        class="form-control mb-3">
+                </div>
+
+                <div class="col">
+                    <input
+                        type="text"
+                        placeholder="Last Name"
+                        [(ngModel)]="lastName"
+                        class="form-control mb-3">
+                </div>
+            </div>
+
+            <input
+                type="email"
+                placeholder="Email"
+                [(ngModel)]="registerEmail"
+                class="form-control mb-3">
+
+            <input
+                type="password"
+                placeholder="Password"
+                [(ngModel)]="registerPassword"
+                class="form-control mb-3">
+
+            <input
+                type="password"
+                placeholder="Confirm Password"
+                [(ngModel)]="confirmPassword"
+                class="form-control mb-3">
+
+            <select
+                class="form-control mb-3"
+                [(ngModel)]="gender">
+
+                <option value="">Select Gender</option>
+                <option>Male</option>
+                <option>Female</option>
+            </select>
+
+            <input
+                type="text"
+                placeholder="Home Town"
+                [(ngModel)]="homeTown"
+                class="form-control mb-3">
+
+            <div class="mb-3">
+                <input type="file" class="form-control">
+            </div>
+
+            <div class="form-check mb-2">
+                <input
+                    type="checkbox"
+                    class="form-check-input"
+                    [(ngModel)]="acceptTerms">
+
+                <label class="form-check-label">
+                    I agree to Terms and Conditions
+                </label>
+            </div>
+
+            <div class="form-check mb-3">
+                <input
+                    type="checkbox"
+                    class="form-check-input"
+                    [(ngModel)]="receiveEmails">
+
+                <label class="form-check-label">
+                    Receive job alerts by email
+                </label>
+            </div>
+
+            <button class="main-btn" (click)="register()">
+                Register
+            </button>
+
+        </div>
+
+    </div>
+
+</div>

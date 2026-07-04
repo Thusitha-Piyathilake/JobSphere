@@ -15,15 +15,21 @@ import { Applicants } from './pages/employer/applicants/applicants';
 import { Dashboard as JobSeekerDashboard } from './pages/jobseeker/dashboard/dashboard';
 import { Applications } from './pages/jobseeker/applications/applications';
 import { Profile } from './pages/jobseeker/profile/profile';
-
+import { Auth } from './pages/jobseeker/auth/auth';
 export const routes: Routes = [
   { path: '', component: Home },
 
   { path: 'login', component: Login },
   { path: 'register', component: Register },
 
+  {
+    path: 'jobseeker/auth', component: Auth },
+
   { path: 'jobs', component: Jobs },
   { path: 'jobs/:id', component: JobDetails },
+
+  { path: 'login/employer', component: Login },
+{ path: 'login/jobseeker', component: Login },
 
   { path: 'employer/dashboard', component: EmployerDashboard },
   { path: 'employer/create-job', component: CreateJob },

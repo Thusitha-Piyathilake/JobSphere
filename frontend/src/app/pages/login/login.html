@@ -1,1 +1,35 @@
-<p>login works!</p>
+<div class="login-page">
+
+    <div class="login-card">
+
+        <h2>Welcome Back</h2>
+
+        <p class="subtitle">
+            Sign in to continue your journey with JobSphere
+        </p>
+
+        <div class="mb-3">
+            <input
+                type="email"
+                class="form-control custom-input"
+                placeholder="Email Address"
+                [(ngModel)]="email">
+        </div>
+
+        <div class="mb-4">
+            <input
+                type="password"
+                class="form-control custom-input"
+                placeholder="Password"
+                [(ngModel)]="password">
+        </div>
+
+        <button
+            class="login-btn"
+            (click)="login()">
+            Login
+        </button>
+
+    </div>
+
+</div>

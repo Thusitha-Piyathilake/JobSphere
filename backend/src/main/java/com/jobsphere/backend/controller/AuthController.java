@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:4200")
 public class AuthController {
 
     private final AuthService authService;
@@ -39,6 +40,13 @@ public class AuthController {
     public LoginResponse login(
             @RequestBody LoginRequest request
     ) {
+
+        System.out.println("=================================");
+        System.out.println("LOGIN REQUEST RECEIVED");
+        System.out.println("EMAIL: " + request.getEmail());
+        System.out.println("PASSWORD: " + request.getPassword());
+        System.out.println("=================================");
+
         return authService.login(request);
     }
 }

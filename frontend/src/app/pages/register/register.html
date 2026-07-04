@@ -1,1 +1,116 @@
-<p>register works!</p>
+<div class="register-page">
+
+    <div class="register-card">
+
+        <h2>Create Account</h2>
+
+        <p class="subtitle">
+            Join JobSphere and discover your next opportunity
+        </p>
+
+        <div class="row">
+
+            <div class="col-md-6 mb-3">
+                <input
+                    type="text"
+                    class="form-control custom-input"
+                    placeholder="First Name"
+                    [(ngModel)]="registerData.firstName">
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <input
+                    type="text"
+                    class="form-control custom-input"
+                    placeholder="Last Name"
+                    [(ngModel)]="registerData.lastName">
+            </div>
+
+        </div>
+
+        <div class="mb-3">
+            <input
+                type="email"
+                class="form-control custom-input"
+                placeholder="Email Address"
+                [(ngModel)]="registerData.email">
+        </div>
+
+        <div class="mb-3">
+            <input
+                type="password"
+                class="form-control custom-input"
+                placeholder="Password"
+                [(ngModel)]="registerData.password">
+        </div>
+
+        <div class="mb-3">
+            <input
+                type="password"
+                class="form-control custom-input"
+                placeholder="Confirm Password"
+                [(ngModel)]="confirmPassword">
+        </div>
+
+        <div class="mb-3">
+            <select
+                class="form-control custom-input"
+                [(ngModel)]="registerData.gender">
+
+                <option value="">Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <input
+                type="text"
+                class="form-control custom-input"
+                placeholder="Home Town"
+                [(ngModel)]="registerData.homeTown">
+        </div>
+
+        <div class="mb-3">
+            <input
+                type="text"
+                class="form-control custom-input"
+                placeholder="CV URL (optional)"
+                [(ngModel)]="registerData.cvUrl">
+        </div>
+
+        <div class="form-check mb-2">
+            <input
+                class="form-check-input"
+                type="checkbox"
+                [(ngModel)]="registerData.receiveJobAlerts">
+
+            <label class="form-check-label">
+                Receive Job Alerts
+            </label>
+        </div>
+
+        <div class="form-check mb-4">
+            <input
+                class="form-check-input"
+                type="checkbox"
+                [(ngModel)]="registerData.termsAccepted">
+
+            <label class="form-check-label">
+                I agree to the Terms and Conditions
+            </label>
+        </div>
+
+        <button
+            class="register-btn"
+            (click)="register()">
+
+            Create Account
+
+        </button>
+
+    </div>
+
+</div>

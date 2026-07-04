@@ -29,6 +29,25 @@ public class AuthService {
         User user = User.builder()
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
+
+                .firstName(request.getFirstName())
+                .lastName(request.getLastName())
+                .gender(request.getGender())
+                .homeTown(request.getHomeTown())
+                .cvUrl(request.getCvUrl())
+
+                .receiveJobAlerts(
+                        request.getReceiveJobAlerts() != null
+                                ? request.getReceiveJobAlerts()
+                                : false
+                )
+
+                .termsAccepted(
+                        request.getTermsAccepted() != null
+                                ? request.getTermsAccepted()
+                                : false
+                )
+
                 .role(Role.JOB_SEEKER)
                 .provider(AuthProvider.LOCAL)
                 .enabled(true)
@@ -48,6 +67,10 @@ public class AuthService {
         User user = User.builder()
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
+
+                .firstName(request.getFirstName())
+                .lastName(request.getLastName())
+
                 .role(Role.EMPLOYER)
                 .provider(AuthProvider.LOCAL)
                 .enabled(true)
@@ -67,6 +90,10 @@ public class AuthService {
         User user = User.builder()
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
+
+                .firstName(request.getFirstName())
+                .lastName(request.getLastName())
+
                 .role(Role.ADMIN)
                 .provider(AuthProvider.LOCAL)
                 .enabled(true)
