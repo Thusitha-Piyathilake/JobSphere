@@ -1,15 +1,31 @@
-<app-navbar></app-navbar>
+<div class="container mt-5">
 
-<div class="hero-section text-center">
-    <h1 class="hero-title">
-        Find Your Dream Job
-    </h1>
+  <div class="row">
 
-    <p class="hero-subtitle">
-        Connect with top employers and discover opportunities that match your skills.
-    </p>
+    <div
+      class="col-lg-3 col-md-6 mb-4"
+      *ngFor="let job of jobs">
 
-    <button class="hero-btn">
-        Browse Jobs
-    </button>
+      <div class="job-card">
+
+        <h5>{{ job.title }}</h5>
+
+        <h6>{{ job.company }}</h6>
+
+        <p>📍 {{ job.location }}</p>
+
+        <p>💼 {{ job.jobType }}</p>
+
+        <p>Rs {{ job.salary | number }}</p>
+
+        <button class="apply-btn">
+          View Job
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
 </div>

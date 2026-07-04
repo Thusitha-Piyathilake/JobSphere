@@ -19,17 +19,23 @@
           "options": {
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
+
             "assets": [
               {
                 "glob": "**/*",
-                "input": "public"
+                "input": "public",
+                "output": "/"
               }
             ],
+
             "styles": [
-  "node_modules/bootstrap/dist/css/bootstrap.min.css",
-  "src/styles.css"
-]
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "src/styles.css"
+            ],
+
+            "scripts": []
           },
+
           "configurations": {
             "production": {
               "budgets": [
@@ -46,26 +52,33 @@
               ],
               "outputHashing": "all"
             },
+
             "development": {
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true
             }
           },
-          "defaultConfiguration": "production"
+
+          "defaultConfiguration": "development"
         },
+
         "serve": {
           "builder": "@angular/build:dev-server",
+
           "configurations": {
             "production": {
               "buildTarget": "frontend:build:production"
             },
+
             "development": {
               "buildTarget": "frontend:build:development"
             }
           },
+
           "defaultConfiguration": "development"
         },
+
         "test": {
           "builder": "@angular/build:unit-test"
         }

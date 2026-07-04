@@ -1,14 +1,42 @@
-import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
-import { Navbar } from '../../shared/navbar/navbar';
+import {
+  Component,
+  inject,
+  OnInit,
+  ChangeDetectorRef
+} from '@angular/core';
+
+import { CommonModule } from '@angular/common';
+
+import { JobService } from '../../services/job.service';
+import { Job } from '../../models/job.model';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [Navbar, RouterLink],
+  imports: [CommonModule],
   templateUrl: './home.html',
-  styleUrl: './home.css'
+  styleUrls: ['./home.css']
 })
-export class Home {
+export class Home implements OnInit {
 
+  private jobService = inject(JobService);
+  private cdr = inject(ChangeDetectorRef);
+
+  jobs: Job[] = [];
+
+  ngOnInit(): void {
+    this.loadJobs();
+  }
+
+  loadJobs(): void {
+    this.jobService.getAllJobs().subscribe({
+      next: (data: Job[]) => {
+        this.jobs = [...data];
+        this.cdr.detectChanges();
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
+  }
 }
