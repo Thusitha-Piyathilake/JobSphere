@@ -18,7 +18,9 @@
 
         <p>Rs {{ job.salary | number }}</p>
 
-        <button class="apply-btn">
+        <button
+          class="apply-btn"
+          (click)="viewJob(job.id)">
           View Job
         </button>
 

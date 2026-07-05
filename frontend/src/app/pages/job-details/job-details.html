@@ -1,1 +1,114 @@
-<p>job-details works!</p>
+<div class="job-details-container" *ngIf="job">
+
+  <!-- Hero Card -->
+  <div class="hero-card">
+
+    <div class="hero-left">
+      <div class="company-logo">
+        {{ job.company.charAt(0) }}
+      </div>
+
+      <div>
+        <h1>{{ job.title }}</h1>
+        <h3>{{ job.company }}</h3>
+
+        <div class="job-meta">
+          <span>📍 {{ job.location }}</span>
+          <span>💼 {{ job.jobType }}</span>
+          <span>💰 Rs {{ job.salary | number }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-buttons">
+
+      <button
+        class="save-btn"
+        (click)="saveJob()">
+        ❤️ Save Job
+      </button>
+
+      <button
+        class="apply-btn"
+        (click)="applyJob()">
+        Apply Now
+      </button>
+
+    </div>
+
+  </div>
+
+  <!-- Main Content -->
+  <div class="content-grid">
+
+    <!-- Left Column -->
+    <div class="main-content">
+
+      <div class="section-card">
+
+        <h2>About this job</h2>
+
+        <p>
+          {{ job.description }}
+        </p>
+
+      </div>
+
+      <div class="section-card">
+
+        <h2>Required Skills</h2>
+
+        <div class="skills">
+
+          <span class="skill">Java</span>
+          <span class="skill">Spring Boot</span>
+          <span class="skill">REST API</span>
+          <span class="skill">MySQL</span>
+          <span class="skill">Git</span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Right Column -->
+    <div class="sidebar">
+
+      <div class="section-card">
+
+        <h2>Job Information</h2>
+
+        <div class="info-item">
+          <strong>📍 Location</strong>
+          <p>{{ job.location }}</p>
+        </div>
+
+        <div class="info-item">
+          <strong>💼 Job Type</strong>
+          <p>{{ job.jobType }}</p>
+        </div>
+
+        <div class="info-item">
+          <strong>💰 Salary</strong>
+          <p>Rs {{ job.salary | number }}</p>
+        </div>
+
+      </div>
+
+      <div class="section-card">
+
+        <h2>Location</h2>
+
+        <app-job-map
+          [jobLatitude]="job.latitude"
+          [jobLongitude]="job.longitude">
+        </app-job-map>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

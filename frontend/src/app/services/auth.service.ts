@@ -111,4 +111,8 @@ export class AuthService {
   isLoggedIn(): boolean {
     return this.getToken() !== null;
   }
+
+  isJobSeeker(): boolean {
+    return this.getRole() === 'JOB_SEEKER';
+  }
 }

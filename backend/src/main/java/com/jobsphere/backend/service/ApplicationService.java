@@ -21,7 +21,11 @@ public class ApplicationService {
         Application application = Application.builder()
                 .jobId(request.getJobId())
                 .jobSeekerId(request.getJobSeekerId())
+                .applicantName(request.getApplicantName())
+                .applicantEmail(request.getApplicantEmail())
+                .coverLetter(request.getCoverLetter())
                 .cvUrl(request.getCvUrl())
+                .emailCopy(request.getEmailCopy())
                 .status(ApplicationStatus.PENDING)
                 .appliedAt(LocalDateTime.now())
                 .build();

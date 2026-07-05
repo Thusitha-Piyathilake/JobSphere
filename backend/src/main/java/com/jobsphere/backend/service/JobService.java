@@ -21,6 +21,11 @@ public class JobService {
                 .title(request.getTitle())
                 .company(request.getCompany())
                 .location(request.getLocation())
+
+                // OpenStreetMap coordinates
+                .latitude(request.getLatitude())
+                .longitude(request.getLongitude())
+
                 .salary(request.getSalary())
                 .jobType(request.getJobType())
                 .description(request.getDescription())
@@ -52,6 +57,11 @@ public class JobService {
         job.setTitle(request.getTitle());
         job.setCompany(request.getCompany());
         job.setLocation(request.getLocation());
+
+        // OpenStreetMap coordinates
+        job.setLatitude(request.getLatitude());
+        job.setLongitude(request.getLongitude());
+
         job.setSalary(request.getSalary());
         job.setJobType(request.getJobType());
         job.setDescription(request.getDescription());

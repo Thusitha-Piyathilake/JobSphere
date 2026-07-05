@@ -1,0 +1,89 @@
+<div class="container mt-5">
+
+  <div class="card shadow-lg p-5">
+
+    <h1 class="mb-5">
+      Apply for Job
+    </h1>
+
+    <div class="mb-4">
+
+      <label class="form-label">
+        Your Name
+      </label>
+
+      <input
+        type="text"
+        class="form-control"
+        [(ngModel)]="applicantName">
+
+    </div>
+
+    <div class="mb-4">
+
+      <label class="form-label">
+        Your Email
+      </label>
+
+      <input
+        type="email"
+        class="form-control"
+        [(ngModel)]="applicantEmail">
+
+    </div>
+
+    <div class="mb-4">
+
+      <label class="form-label">
+        Message or Cover Letter
+      </label>
+
+      <textarea
+        rows="8"
+        class="form-control"
+        [(ngModel)]="coverLetter">
+
+      </textarea>
+
+    </div>
+
+    <div class="mb-4">
+
+      <label class="form-label">
+        Upload Resume / CV
+      </label>
+
+      <input
+        type="file"
+        class="form-control"
+        accept=".pdf,.doc,.docx"
+        (change)="onFileSelected($event)">
+
+    </div>
+
+    <div class="form-check mb-5">
+
+      <input
+        class="form-check-input"
+        type="checkbox"
+        [(ngModel)]="emailCopy">
+
+      <label class="form-check-label">
+
+        Email me a copy of my application
+
+      </label>
+
+    </div>
+
+    <button
+      class="btn btn-primary btn-lg"
+      (click)="submitApplication()">
+
+      Send Application
+
+    </button>
+
+  </div>
+
+</div>

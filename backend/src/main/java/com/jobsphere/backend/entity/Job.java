@@ -24,6 +24,11 @@ public class Job {
 
     private String location;
 
+    // OpenStreetMap coordinates
+    private Double latitude;
+
+    private Double longitude;
+
     private Double salary;
 
     private String jobType;

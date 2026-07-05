@@ -22,7 +22,16 @@ public class Application {
 
     private Long jobSeekerId;
 
+    private String applicantName;
+
+    private String applicantEmail;
+
+    @Column(length = 5000)
+    private String coverLetter;
+
     private String cvUrl;
+
+    private Boolean emailCopy;
 
     @Enumerated(EnumType.STRING)
     private ApplicationStatus status;

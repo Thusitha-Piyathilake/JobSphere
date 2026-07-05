@@ -11,6 +11,8 @@ public class JobRequest {
     private Double salary;
     private String jobType;
     private String description;
+    private Double latitude;
+    private Double longitude;
 
     private Long employerId;
 }

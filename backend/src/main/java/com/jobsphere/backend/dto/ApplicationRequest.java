@@ -9,5 +9,13 @@ public class ApplicationRequest {
 
     private Long jobSeekerId;
 
+    private String applicantName;
+
+    private String applicantEmail;
+
+    private String coverLetter;
+
     private String cvUrl;
+
+    private Boolean emailCopy;
 }

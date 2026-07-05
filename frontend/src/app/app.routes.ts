@@ -6,6 +6,7 @@ import { Register } from './pages/register/register';
 
 import { Jobs } from './pages/jobs/jobs';
 import { JobDetails } from './pages/job-details/job-details';
+import { ApplyJobComponent } from './pages/jobseeker/apply-job/apply-job';
 
 import { ProfileComponent } from './pages/jobseeker/profile/profile';
 import { Applications } from './pages/jobseeker/applications/applications';
@@ -27,6 +28,10 @@ export const routes: Routes = [
   { path: 'jobseeker/auth', component: Auth },
 
   { path: 'jobs', component: Jobs },
+
+  // IMPORTANT: keep apply route before jobs/:id
+  { path: 'jobs/:id/apply', component: ApplyJobComponent },
+
   { path: 'jobs/:id', component: JobDetails },
 
   { path: 'login/employer', component: Login },
