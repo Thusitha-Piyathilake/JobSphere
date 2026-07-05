@@ -121,7 +121,8 @@ public class AuthService {
 
         return new LoginResponse(
                 token,
-                user.getRole().name()
+                user.getRole().name(),
+                user.getId()
         );
     }
 }

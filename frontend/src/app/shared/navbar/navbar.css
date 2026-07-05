@@ -48,6 +48,10 @@
     transform: translateY(-2px);
 }
 
+.nav-item.active-link .nav-link {
+    color: #F97316 !important;
+}
+
 .seeker-btn {
     background-color: #F97316;
     color: white !important;

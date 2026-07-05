@@ -1,1 +1,83 @@
-<p>saved-jobs works!</p>
+<div class="saved-container">
+
+  <div class="header-card">
+
+    <h1>❤️ Saved Jobs</h1>
+
+    <p>
+      Keep track of opportunities you're interested in.
+    </p>
+
+    <div class="count-badge">
+      {{ savedJobs.length }} Saved Jobs
+    </div>
+
+  </div>
+
+  <div
+    class="empty-state"
+    *ngIf="savedJobs.length === 0">
+
+    <div class="empty-icon">
+      💼
+    </div>
+
+    <h2>No Saved Jobs Yet</h2>
+
+    <p>
+      Save jobs to quickly access them later.
+    </p>
+
+  </div>
+
+  <div
+    class="jobs-grid"
+    *ngIf="savedJobs.length > 0">
+
+    <div
+      class="job-card"
+      *ngFor="let job of savedJobs">
+
+      <div class="company-logo">
+        {{ job.company.charAt(0) }}
+      </div>
+
+      <h2>{{ job.title }}</h2>
+
+      <h4>{{ job.company }}</h4>
+
+      <div class="job-info">
+
+        <span>📍 {{ job.location }}</span>
+
+        <span>💼 {{ job.jobType }}</span>
+
+        <span>💰 Rs {{ job.salary | number }}</span>
+
+      </div>
+
+      <div class="actions">
+
+        <button
+          class="view-btn"
+          (click)="viewJob(job.id)">
+
+          View Job
+
+        </button>
+
+        <button
+          class="remove-btn"
+          (click)="removeSavedJob(job.id)">
+
+          Remove
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

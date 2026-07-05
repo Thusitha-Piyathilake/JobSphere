@@ -1,33 +1,74 @@
-<div class="container mt-5">
+<!-- src/app/pages/home/home.html -->
 
-  <div class="row">
+<div class="dashboard-container">
 
-    <div
-      class="col-lg-3 col-md-6 mb-4"
-      *ngFor="let job of jobs">
+  <!-- Search Section -->
+  <div class="search-section">
+    <div class="search-container">
+      <input
+        type="text"
+        class="search-input"
+        placeholder="I'm looking for... (Job title, Position, Company)"
+        [(ngModel)]="searchKeyword"
+      >
+      <select
+        class="search-select"
+        [(ngModel)]="selectedJobType"
+      >
+        <option value="">Job Category</option>
+        <option *ngFor="let type of uniqueJobTypes" [value]="type">{{ type }}</option>
+      </select>
+      <select
+        class="search-select"
+        [(ngModel)]="selectedLocation"
+      >
+        <option value="">Location</option>
+        <option *ngFor="let location of uniqueLocations" [value]="location">{{ location }}</option>
+      </select>
+      <button class="search-btn" (click)="searchJobs()">SEARCH 🔍</button>
+    </div>
+  </div>
 
-      <div class="job-card">
+  <!-- Categories + Jobs Layout -->
+  <div class="content-layout">
 
-        <h5>{{ job.title }}</h5>
+    <!-- Left Column -->
+    <div class="categories-panel">
+      <h3>Job Categories</h3>
+      <div
+        class="category-item"
+        *ngFor="let category of uniqueCategories"
+        (click)="filterByCategory(category)"
+      >
+        {{ category }}
+      </div>
+      <div class="category-item all-jobs" (click)="showAllJobs()">Show All Jobs</div>
+    </div>
 
-        <h6>{{ job.company }}</h6>
-
-        <p>📍 {{ job.location }}</p>
-
-        <p>💼 {{ job.jobType }}</p>
-
-        <p>Rs {{ job.salary | number }}</p>
-
-        <button
-          class="apply-btn"
-          (click)="viewJob(job.id)">
-          View Job
-        </button>
-
+    <!-- Right Column -->
+    <div class="jobs-content">
+      <div class="section-header">
+        <span>{{ filteredJobs.length }} jobs available</span>
       </div>
 
+      <div class="jobs-grid">
+        <div class="job-card" *ngFor="let job of filteredJobs">
+          <h3>{{ job.title }}</h3>
+          <p class="company">{{ job.company }}</p>
+          <div class="job-details">
+            <p>📍 {{ job.location }}</p>
+            <p>💼 {{ job.jobType }}</p>
+            <p *ngIf="job.category">🏷️ {{ job.category }}</p>
+            <p>💰 Rs {{ job.salary }}</p>
+          </div>
+          <button class="apply-btn" (click)="viewJob(job.id)">Apply Now</button>
+        </div>
+      </div>
+
+      <div class="empty-state" *ngIf="filteredJobs.length === 0">
+        No jobs found matching your filters.
+      </div>
     </div>
 
   </div>
-
 </div>

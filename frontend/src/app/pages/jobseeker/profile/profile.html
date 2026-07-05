@@ -1,1 +1,161 @@
-<p>profile works!</p>
+<div class="profile-container">
+
+  <!-- HERO HEADER -->
+  <div class="profile-hero">
+
+    <div class="hero-left">
+      <div class="profile-avatar">
+        {{ fullName.charAt(0) }}
+      </div>
+
+      <div>
+        <h1>{{ fullName }}</h1>
+        <p>{{ user.email }}</p>
+      </div>
+    </div>
+
+    <button
+      *ngIf="!editing"
+      class="edit-btn"
+      (click)="enableEditing()">
+
+      ✏️ Edit Profile
+    </button>
+
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Loading profile...</p>
+  </div>
+
+  <!-- Error -->
+  <div *ngIf="errorMessage && !loading" class="alert alert-error">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Success -->
+  <div *ngIf="successMessage && !loading" class="alert alert-success">
+    {{ successMessage }}
+  </div>
+
+  <!-- Profile Card -->
+  <div *ngIf="!loading" class="profile-card">
+
+    <div class="profile-grid">
+
+      <!-- First Name -->
+      <div class="info-card">
+        <span class="label">👤 First Name</span>
+
+        <input
+          *ngIf="editing"
+          type="text"
+          [(ngModel)]="user.firstName"
+          placeholder="Enter first name">
+
+        <p *ngIf="!editing">
+          {{ user.firstName || 'Not provided' }}
+        </p>
+      </div>
+
+      <!-- Last Name -->
+      <div class="info-card">
+        <span class="label">👤 Last Name</span>
+
+        <input
+          *ngIf="editing"
+          type="text"
+          [(ngModel)]="user.lastName"
+          placeholder="Enter last name">
+
+        <p *ngIf="!editing">
+          {{ user.lastName || 'Not provided' }}
+        </p>
+      </div>
+
+      <!-- Email -->
+      <div class="info-card">
+        <span class="label">📧 Email Address</span>
+        <p>{{ user.email }}</p>
+      </div>
+
+      <!-- Phone -->
+      <div class="info-card">
+        <span class="label">📱 Phone Number</span>
+
+        <input
+          *ngIf="editing"
+          type="tel"
+          [(ngModel)]="user.phone"
+          placeholder="Enter phone number">
+
+        <p *ngIf="!editing">
+          {{ user.phone || 'Not provided' }}
+        </p>
+      </div>
+
+      <!-- Skills -->
+      <div class="info-card skills-card">
+        <span class="label">🚀 Skills</span>
+
+        <input
+          *ngIf="editing"
+          type="text"
+          [value]="skillsDisplay"
+          (input)="skillsDisplay = $any($event.target).value"
+          placeholder="Angular, Java, Spring Boot">
+
+        <div *ngIf="!editing" class="skills-tags">
+
+          <ng-container *ngIf="user.skills?.length">
+            <span
+              class="skill-tag"
+              *ngFor="let skill of user.skills">
+
+              {{ skill }}
+
+            </span>
+          </ng-container>
+
+          <span
+            *ngIf="!user.skills?.length"
+            class="no-skills">
+
+            No skills added
+
+          </span>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Buttons -->
+    <div
+      class="profile-actions"
+      *ngIf="editing">
+
+      <button
+        class="save-btn"
+        (click)="saveProfile()"
+        [disabled]="loading">
+
+        💾 Save Changes
+
+      </button>
+
+      <button
+        class="cancel-btn"
+        (click)="cancelEdit()">
+
+        Cancel
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>

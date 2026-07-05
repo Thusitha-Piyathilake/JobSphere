@@ -10,6 +10,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { JobService } from '../../services/job.service';
 import { AuthService } from '../../services/auth.service';
+import { SavedJobService } from '../../services/saved-job.service';
+
 import { Job } from '../../models/job.model';
 
 import { JobMapComponent } from '../../shared/job-map/job-map';
@@ -31,6 +33,8 @@ export class JobDetails implements OnInit {
 
   private jobService = inject(JobService);
   private authService = inject(AuthService);
+  private savedJobService = inject(SavedJobService);
+
   private cdr = inject(ChangeDetectorRef);
 
   job?: Job;
@@ -44,6 +48,7 @@ export class JobDetails implements OnInit {
     console.log('Route Job ID:', id);
 
     this.jobService.getJobById(id).subscribe({
+
       next: (data) => {
 
         console.log('API Response:', data);
@@ -67,11 +72,16 @@ export class JobDetails implements OnInit {
       !this.authService.isLoggedIn() ||
       this.authService.getRole() !== 'JOB_SEEKER'
     ) {
-      this.router.navigate(['/jobseeker/auth']);
+      this.router.navigate([
+        '/jobseeker/auth'
+      ]);
+
       return;
     }
 
-    if (!this.job) return;
+    if (!this.job) {
+      return;
+    }
 
     this.router.navigate([
       '/jobs',
@@ -86,26 +96,65 @@ export class JobDetails implements OnInit {
       !this.authService.isLoggedIn() ||
       this.authService.getRole() !== 'JOB_SEEKER'
     ) {
-      this.router.navigate(['/jobseeker/auth']);
+      this.router.navigate([
+        '/jobseeker/auth'
+      ]);
+
       return;
     }
 
-    alert('Save Job feature coming soon');
+    if (!this.job) {
+      return;
+    }
+
+    const jobSeekerId =
+      Number(
+        localStorage.getItem(
+          'userId'
+        )
+      ) || 1;
+
+    this.savedJobService.saveJob(
+      jobSeekerId,
+      this.job.id
+    ).subscribe({
+
+      next: (message) => {
+
+        alert(message);
+      },
+
+      error: (error) => {
+
+        console.error(error);
+
+        alert(
+          'Failed to save job'
+        );
+      }
+    });
   }
 
   openMap(): void {
 
-    if (!this.job) return;
+    if (!this.job) {
+      return;
+    }
 
     navigator.geolocation.getCurrentPosition(
 
       (position) => {
 
-        const userLat = position.coords.latitude;
-        const userLng = position.coords.longitude;
+        const userLat =
+          position.coords.latitude;
+
+        const userLng =
+          position.coords.longitude;
 
         const destination =
-          encodeURIComponent(this.job!.location);
+          encodeURIComponent(
+            this.job!.location
+          );
 
         const url =
           `https://www.google.com/maps/dir/?api=1` +
@@ -113,18 +162,26 @@ export class JobDetails implements OnInit {
           `&destination=${destination}` +
           `&travelmode=driving`;
 
-        window.open(url, '_blank');
+        window.open(
+          url,
+          '_blank'
+        );
       },
 
       () => {
 
         const destination =
-          encodeURIComponent(this.job!.location);
+          encodeURIComponent(
+            this.job!.location
+          );
 
         const url =
           `https://www.google.com/maps/search/?api=1&query=${destination}`;
 
-        window.open(url, '_blank');
+        window.open(
+          url,
+          '_blank'
+        );
       }
     );
   }

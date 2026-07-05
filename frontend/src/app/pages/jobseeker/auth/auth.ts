@@ -69,7 +69,8 @@ export class Auth {
 
         this.authService.saveAuth(
           response.token,
-          response.role
+          response.role,
+          response.userId
         );
 
         console.log('Login successful');
@@ -135,10 +136,8 @@ export class Auth {
 
         alert('Registration successful');
 
-        // Pre-fill login email
         this.loginEmail = this.registerEmail;
 
-        // Clear registration form
         this.firstName = '';
         this.lastName = '';
         this.registerEmail = '';
@@ -150,7 +149,6 @@ export class Auth {
         this.receiveEmails = true;
         this.acceptTerms = false;
 
-        // Switch to login tab
         this.isLogin = true;
       },
 
@@ -160,5 +158,4 @@ export class Auth {
       }
     });
   }
-
 }

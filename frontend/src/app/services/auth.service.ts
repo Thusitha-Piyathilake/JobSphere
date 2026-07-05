@@ -26,6 +26,7 @@ export interface RegisterRequest {
 export interface LoginResponse {
   token: string;
   role: string;
+  userId: number;
 }
 
 @Injectable({
@@ -89,15 +90,22 @@ export class AuthService {
   // ================= LOCAL STORAGE =================
   saveAuth(
     token: string,
-    role: string
+    role: string,
+    userId: number
   ): void {
+
     localStorage.setItem('token', token);
     localStorage.setItem('role', role);
+    localStorage.setItem(
+      'userId',
+      userId.toString()
+    );
   }
 
   logout(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('role');
+    localStorage.removeItem('userId');
   }
 
   getToken(): string | null {
@@ -106,6 +114,15 @@ export class AuthService {
 
   getRole(): string | null {
     return localStorage.getItem('role');
+  }
+
+  getUserId(): number | null {
+
+    const userId = localStorage.getItem('userId');
+
+    return userId
+      ? Number(userId)
+      : null;
   }
 
   isLoggedIn(): boolean {

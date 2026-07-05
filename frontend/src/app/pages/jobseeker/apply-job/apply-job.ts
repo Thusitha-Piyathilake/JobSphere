@@ -80,7 +80,9 @@ export class ApplyJobComponent {
               this.route.snapshot.paramMap.get('id')
             ),
 
-            jobSeekerId: 1,
+            jobSeekerId: Number(
+              localStorage.getItem('userId')
+            ),
 
             applicantName:
               this.applicantName,

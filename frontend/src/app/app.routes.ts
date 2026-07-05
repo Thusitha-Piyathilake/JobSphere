@@ -1,3 +1,4 @@
+// src/app/app.routes.ts
 import { Routes } from '@angular/router';
 
 import { Home } from './pages/home/home';
@@ -18,6 +19,9 @@ import { EmployerDashboard } from './pages/employer/dashboard/dashboard';
 import { CreateJob } from './pages/employer/create-job/create-job';
 import { MyJobs } from './pages/employer/my-jobs/my-jobs';
 import { Applicants } from './pages/employer/applicants/applicants';
+
+// 👇 Import the resolver
+import { SavedJobsResolver } from './resolvers/saved-jobs.resolver';
 
 export const routes: Routes = [
   { path: '', component: Home },
@@ -46,7 +50,11 @@ export const routes: Routes = [
   // Job seeker routes
   { path: 'jobseeker/dashboard', component: JobSeekerDashboardComponent },
   { path: 'jobseeker/applications', component: Applications },
-  { path: 'jobseeker/saved-jobs', component: SavedJobs },
+  {
+    path: 'jobseeker/saved-jobs',
+    component: SavedJobs,
+    resolve: { savedJobs: SavedJobsResolver }   // 👈 Add resolver
+  },
   { path: 'jobseeker/profile', component: ProfileComponent },
 
   { path: '**', redirectTo: '' }

@@ -1,0 +1,170 @@
+.saved-container {
+  max-width: 1400px;
+  margin: auto;
+  padding: 40px;
+  background: #f8fafc;
+  min-height: 100vh;
+}
+
+.header-card {
+  background: linear-gradient(
+    135deg,
+    #ff7a00,
+    #ff9f43
+  );
+  color: white;
+  border-radius: 25px;
+  padding: 50px;
+  margin-bottom: 40px;
+  box-shadow: 0 10px 35px rgba(0,0,0,.1);
+}
+
+.header-card h1 {
+  font-size: 48px;
+  font-weight: 800;
+}
+
+.header-card p {
+  margin-top: 10px;
+  font-size: 18px;
+  opacity: .9;
+}
+
+.count-badge {
+  margin-top: 25px;
+  display: inline-block;
+  padding: 12px 25px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.2);
+  font-weight: 700;
+}
+
+.jobs-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(
+      auto-fill,
+      minmax(320px,1fr)
+    );
+
+  gap: 30px;
+}
+
+.job-card {
+  background: white;
+  border-radius: 25px;
+  padding: 30px;
+  box-shadow: 0 8px 30px rgba(0,0,0,.08);
+  transition: .3s;
+}
+
+.job-card:hover {
+  transform: translateY(-6px);
+}
+
+.company-logo {
+  width: 70px;
+  height: 70px;
+  border-radius: 18px;
+  background: linear-gradient(
+    135deg,
+    #ff7a00,
+    #ff9f43
+  );
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  color: white;
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.job-card h2 {
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.job-card h4 {
+  color: #64748b;
+  margin-bottom: 20px;
+}
+
+.job-info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 25px;
+}
+
+.actions {
+  display: flex;
+  gap: 15px;
+}
+
+.view-btn,
+.remove-btn {
+  flex: 1;
+  border: none;
+  border-radius: 14px;
+  padding: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: .3s;
+}
+
+.view-btn {
+  background: #ff7a00;
+  color: white;
+}
+
+.view-btn:hover {
+  background: #e66b00;
+}
+
+.remove-btn {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.remove-btn:hover {
+  background: #fecaca;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 100px 20px;
+}
+
+.empty-icon {
+  font-size: 80px;
+  margin-bottom: 20px;
+}
+
+.empty-state h2 {
+  font-size: 36px;
+  font-weight: 700;
+}
+
+.empty-state p {
+  color: #64748b;
+  margin-top: 15px;
+}
+
+@media(max-width:768px){
+
+  .saved-container {
+    padding: 20px;
+  }
+
+  .header-card h1 {
+    font-size: 36px;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+}

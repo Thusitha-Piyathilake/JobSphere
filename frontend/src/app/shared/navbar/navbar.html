@@ -2,8 +2,9 @@
   <div class="container">
 
     <!-- Logo -->
-    <a class="navbar-brand fw-bold"
-       [routerLink]="isJobSeekerLoggedIn ? '/jobseeker/dashboard' : '/'">
+    <a
+      class="navbar-brand fw-bold"
+      [routerLink]="isJobSeekerLoggedIn ? '/jobseeker/dashboard' : '/'">
 
       <span class="brand-job">Job</span>
       <span class="brand-sphere">Sphere</span>
@@ -25,10 +26,13 @@
       <ul class="navbar-nav ms-auto align-items-center">
 
         <!-- Home -->
-        <li class="nav-item">
+        <li
+          class="nav-item"
+          routerLinkActive="active-link"
+          [routerLinkActiveOptions]="{ exact: true }">
 
           <a
-            class="nav-link active-link"
+            class="nav-link"
             [routerLink]="isJobSeekerLoggedIn ? '/jobseeker/dashboard' : '/'">
 
             Home
@@ -40,7 +44,10 @@
         <!-- Logged In Job Seeker Menu -->
         <ng-container *ngIf="isJobSeekerLoggedIn; else guestMenu">
 
-          <li class="nav-item">
+          <li
+            class="nav-item"
+            routerLinkActive="active-link">
+
             <a
               class="nav-link"
               routerLink="/jobseeker/applications">
@@ -48,9 +55,13 @@
               Applications
 
             </a>
+
           </li>
 
-          <li class="nav-item">
+          <li
+            class="nav-item"
+            routerLinkActive="active-link">
+
             <a
               class="nav-link"
               routerLink="/jobseeker/saved-jobs">
@@ -58,9 +69,13 @@
               Saved Jobs
 
             </a>
+
           </li>
 
-          <li class="nav-item">
+          <li
+            class="nav-item"
+            routerLinkActive="active-link">
+
             <a
               class="nav-link"
               routerLink="/jobseeker/profile">
@@ -68,6 +83,7 @@
               Profile
 
             </a>
+
           </li>
 
           <li class="nav-item ms-3">
