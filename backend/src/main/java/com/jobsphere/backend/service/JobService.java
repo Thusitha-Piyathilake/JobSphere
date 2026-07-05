@@ -21,6 +21,7 @@ public class JobService {
                 .title(request.getTitle())
                 .company(request.getCompany())
                 .location(request.getLocation())
+                .category(request.getCategory())
 
                 // OpenStreetMap coordinates
                 .latitude(request.getLatitude())

@@ -12,4 +12,5 @@ export interface Job {
   description: string;
   createdAt: string;
   employerId: number;
+  category: string;
 }

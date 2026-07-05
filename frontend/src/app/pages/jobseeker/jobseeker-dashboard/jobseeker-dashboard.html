@@ -4,59 +4,158 @@
     <h1>Welcome Back 👋</h1>
     <p>Find your next opportunity today.</p>
 
-    <p><strong>Debug:</strong> {{ jobs.length }} jobs loaded</p>
+    <p>
+      <strong>Debug:</strong>
+      {{ filteredJobs.length }} jobs loaded
+    </p>
   </div>
 
-  <div class="stats-grid">
+  <!-- Search Section -->
+  <div class="search-section">
 
-    <div class="stat-card">
-      <h2>{{ applicationsCount }}</h2>
-      <p>Applications</p>
-    </div>
+    <div class="search-container">
 
-    <div class="stat-card">
-      <h2>{{ savedJobsCount }}</h2>
-      <p>Saved Jobs</p>
-    </div>
+      <input
+        type="text"
+        class="search-input"
+        placeholder="I'm looking for... (Job title, Position, Company)"
+        [(ngModel)]="searchKeyword"
+      >
 
-    <div class="stat-card">
-      <h2>{{ interviewsCount }}</h2>
-      <p>Interviews</p>
+      <select
+        class="search-select"
+        [(ngModel)]="selectedJobType">
+
+        <option value="">
+          Job Category
+        </option>
+
+        <option
+          *ngFor="let type of uniqueJobTypes"
+          [value]="type">
+
+          {{ type }}
+
+        </option>
+
+      </select>
+
+      <select
+        class="search-select"
+        [(ngModel)]="selectedLocation">
+
+        <option value="">
+          Location
+        </option>
+
+        <option
+          *ngFor="let location of uniqueLocations"
+          [value]="location">
+
+          {{ location }}
+
+        </option>
+
+      </select>
+
+      <button
+        class="search-btn"
+        (click)="searchJobs()">
+
+        SEARCH 🔍
+
+      </button>
+
     </div>
 
   </div>
 
-  <div class="jobs-section">
+  <!-- Categories + Jobs Layout -->
+  <div class="content-layout">
 
-    <div class="section-header">
-      <h2>Recommended Jobs</h2>
-      <span>{{ jobs.length }} jobs available</span>
-    </div>
+    <!-- Left Column -->
+    <div class="categories-panel">
 
-    <div class="jobs-grid">
+      <h3>Job Categories</h3>
 
-      <div class="job-card" *ngFor="let job of jobs">
+      <div
+        class="category-item"
+        *ngFor="let category of uniqueCategories"
+        (click)="filterByCategory(category)">
 
-        <h3>{{ job.title }}</h3>
+        {{ category }}
 
-        <p class="company">{{ job.company }}</p>
+      </div>
 
-        <div class="job-details">
-          <p>📍 {{ job.location }}</p>
-          <p>💼 {{ job.jobType }}</p>
-          <p>💰 Rs {{ job.salary }}</p>
-        </div>
+      <div
+        class="category-item all-jobs"
+        (click)="showAllJobs()">
 
-        <button class="apply-btn">
-          Apply Now
-        </button>
+        Show All Jobs
 
       </div>
 
     </div>
 
-    <div class="empty-state" *ngIf="jobs.length === 0">
-      No jobs available at the moment.
+    <!-- Right Column -->
+    <div class="jobs-content">
+
+      <div class="section-header">
+
+        
+
+        <span>
+          {{ filteredJobs.length }} jobs available
+        </span>
+
+      </div>
+
+      <div class="jobs-grid">
+
+        <div
+          class="job-card"
+          *ngFor="let job of filteredJobs">
+
+          <h3>{{ job.title }}</h3>
+
+          <p class="company">
+            {{ job.company }}
+          </p>
+
+          <div class="job-details">
+
+            <p>📍 {{ job.location }}</p>
+
+            <p>💼 {{ job.jobType }}</p>
+
+            <p *ngIf="job.category">
+              🏷️ {{ job.category }}
+            </p>
+
+            <p>💰 Rs {{ job.salary }}</p>
+
+          </div>
+
+          <button
+            class="apply-btn"
+            (click)="applyJob(job.id)">
+
+            Apply Now
+
+          </button>
+
+        </div>
+
+      </div>
+
+      <div
+        class="empty-state"
+        *ngIf="filteredJobs.length === 0">
+
+        No jobs found matching your filters.
+
+      </div>
+
     </div>
 
   </div>

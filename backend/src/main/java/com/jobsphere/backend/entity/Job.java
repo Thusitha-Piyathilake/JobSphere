@@ -29,6 +29,8 @@ public class Job {
 
     private Double longitude;
 
+    private String category;
+
     private Double salary;
 
     private String jobType;

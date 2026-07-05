@@ -13,6 +13,7 @@ public class JobRequest {
     private String description;
     private Double latitude;
     private Double longitude;
+    private String category;
 
     private Long employerId;
 }
