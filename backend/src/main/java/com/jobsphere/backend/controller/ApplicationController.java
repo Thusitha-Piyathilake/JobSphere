@@ -36,6 +36,17 @@ public class ApplicationController {
         return applicationService.getApplicationsForJobSeeker(jobSeekerId);
     }
 
+    // NEW ENDPOINT
+    @GetMapping("/employer/{employerId}")
+    public List<Application> getApplicationsForEmployer(
+            @PathVariable Long employerId
+    ) {
+        return applicationService
+                .getApplicationsForEmployer(
+                        employerId
+                );
+    }
+
     @PutMapping("/{id}/accept")
     public Application acceptApplication(
             @PathVariable Long id

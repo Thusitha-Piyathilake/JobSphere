@@ -1,0 +1,166 @@
+.my-jobs-container {
+    max-width: 1400px;
+    margin: auto;
+    padding: 40px;
+}
+
+.header-card {
+    background: linear-gradient(
+        135deg,
+        #F97316,
+        #FB923C
+    );
+    color: white;
+    border-radius: 28px;
+    padding: 35px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+    box-shadow: 0 15px 35px rgba(249,115,22,.25);
+}
+
+.header-card h1 {
+    margin: 0;
+    font-size: 42px;
+    font-weight: 800;
+}
+
+.header-card p {
+    margin-top: 8px;
+    opacity: .9;
+}
+
+.job-count {
+    background: rgba(255,255,255,.2);
+    padding: 15px 28px;
+    border-radius: 18px;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.jobs-grid {
+    display: grid;
+    grid-template-columns:
+        repeat(auto-fill,minmax(350px,1fr));
+    gap: 30px;
+}
+
+.job-card {
+    background: white;
+    border-radius: 24px;
+    padding: 30px;
+    box-shadow:
+        0 10px 30px rgba(0,0,0,.06);
+    transition: .3s;
+    border: 2px solid transparent;
+}
+
+.job-card:hover {
+    transform: translateY(-8px);
+    border-color: #F97316;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.card-header h2 {
+    color: #1F2937;
+    font-size: 24px;
+    margin: 0;
+}
+
+.job-type {
+    background: #FFF7ED;
+    color: #F97316;
+    padding: 8px 16px;
+    border-radius: 12px;
+    font-weight: 700;
+}
+
+.job-card h3 {
+    color: #6B7280;
+    margin-bottom: 20px;
+}
+
+.info-row {
+    margin-bottom: 12px;
+    color: #4B5563;
+}
+
+.description {
+    margin-top: 20px;
+    color: #6B7280;
+    line-height: 1.6;
+    min-height: 80px;
+}
+
+.actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.edit-btn,
+.delete-btn {
+    flex: 1;
+    border: none;
+    padding: 14px;
+    border-radius: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.edit-btn {
+    background: #FFF7ED;
+    color: #F97316;
+}
+
+.edit-btn:hover {
+    background: #FED7AA;
+}
+
+.delete-btn {
+    background: #EF4444;
+    color: white;
+}
+
+.delete-btn:hover {
+    background: #DC2626;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 100px 20px;
+}
+
+.empty-icon {
+    font-size: 70px;
+}
+
+.empty-state h2 {
+    margin-top: 20px;
+    color: #1F2937;
+}
+
+.empty-state p {
+    color: #6B7280;
+}
+
+@media (max-width: 768px) {
+
+    .my-jobs-container {
+        padding: 20px;
+    }
+
+    .header-card {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+    }
+}

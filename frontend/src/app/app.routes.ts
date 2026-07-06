@@ -65,6 +65,8 @@ export const routes: Routes = [
   { path: 'employer/create-job', component: CreateJob },
   { path: 'employer/my-jobs', component: MyJobs },
   { path: 'employer/applicants', component: Applicants },
+  { path: 'employer/edit-job/:id', component: CreateJob },
+
 
   // Job seeker routes
   { path: 'jobseeker/dashboard', component: JobSeekerDashboardComponent },

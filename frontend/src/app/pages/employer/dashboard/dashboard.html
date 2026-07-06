@@ -1,1 +1,110 @@
-<p>dashboard works!</p>
+<div class="dashboard-container">
+
+  <!-- Welcome -->
+  <div class="welcome-card">
+
+    <h1>Welcome Back 👋</h1>
+
+    <p>
+      Manage your jobs and applicants efficiently with JobSphere.
+    </p>
+
+  </div>
+
+  <!-- Statistics -->
+  <div class="stats-grid">
+
+    <div
+      class="stat-card"
+      *ngFor="let stat of stats">
+
+      <div class="stat-icon">
+        {{ stat.icon }}
+      </div>
+
+      <h2>{{ stat.value }}</h2>
+
+      <p>{{ stat.title }}</p>
+
+    </div>
+
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="actions-section">
+
+    <h2>Quick Actions</h2>
+
+    <div class="actions-grid">
+
+      <a
+        routerLink="/employer/create-job"
+        class="action-btn">
+
+        ➕ Create Job
+
+      </a>
+
+      <a
+        routerLink="/employer/my-jobs"
+        class="action-btn">
+
+        📋 My Jobs
+
+      </a>
+
+      <a
+        routerLink="/employer/applicants"
+        class="action-btn">
+
+        👥 Applicants
+
+      </a>
+
+    </div>
+
+  </div>
+
+  <!-- Recent Jobs -->
+  <div class="recent-jobs">
+
+    <h2>Recent Job Posts</h2>
+
+    <table>
+
+      <thead>
+        <tr>
+          <th>Job Title</th>
+          <th>Applicants</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        <tr *ngFor="let job of recentJobs">
+
+          <td>{{ job.title }}</td>
+
+          <td>{{ job.applicants }}</td>
+
+          <td>
+            <span
+              class="status"
+              [class.active]="job.status === 'Active'"
+              [class.closed]="job.status === 'Closed'">
+
+              {{ job.status }}
+
+            </span>
+          </td>
+
+        </tr>
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+</div>

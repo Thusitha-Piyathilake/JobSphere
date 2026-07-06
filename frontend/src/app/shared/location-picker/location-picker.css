@@ -1,0 +1,33 @@
+.search-container {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.search-container input {
+    flex: 1;
+    padding: 14px;
+    border-radius: 12px;
+    border: 1px solid #ddd;
+}
+
+.search-container button {
+    background: #F97316;
+    color: white;
+    border: none;
+    padding: 14px 22px;
+    border-radius: 12px;
+    font-weight: 600;
+}
+
+.search-container button:hover {
+    background: #EA580C;
+}
+
+#location-map {
+    height: 450px;
+    width: 100%;
+    border-radius: 18px;
+    overflow: hidden;
+    border: 2px solid #FFE2CC;
+}

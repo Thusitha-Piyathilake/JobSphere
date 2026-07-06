@@ -30,6 +30,10 @@ export class Navbar {
     return this.authService.getRole() === 'JOB_SEEKER';
   }
 
+  get isEmployerLoggedIn(): boolean {
+    return this.authService.getRole() === 'EMPLOYER';
+  }
+
   logout(): void {
     this.authService.logout();
     this.router.navigate(['/']);

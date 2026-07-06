@@ -1,1 +1,85 @@
-<p>create-job works!</p>
+<!-- src/app/pages/employer/create-job/create-job.html -->
+<div class="create-job-container">
+  <div class="shape-left"></div>
+  <div class="shape-right"></div>
+
+  <div class="create-job-card">
+    <div class="header-section">
+      <div class="header-icon">💼</div>
+      <div>
+        <h1>{{ isEditMode ? 'Edit Job' : 'Create New Job' }}</h1>
+        <p>{{ isEditMode ? 'Update the job details below' : 'Fill in the details below to post a new job opening' }}</p>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Loading -->
+    <div *ngIf="loadingJob" class="loading-state">
+      <div class="spinner"></div>
+      <p>Loading job details...</p>
+    </div>
+
+    <!-- Form (hidden while loading) -->
+    <div *ngIf="!loadingJob">
+      <div class="form-grid">
+        <div class="input-group">
+          <label>Job Title</label>
+          <input type="text" placeholder="e.g. Senior Software Engineer" [(ngModel)]="job.title">
+        </div>
+        <div class="input-group">
+          <label>Company Name</label>
+          <input type="text" placeholder="e.g. JobSphere Technologies" [(ngModel)]="job.company">
+        </div>
+        <div class="input-group">
+          <label>Location</label>
+          <input type="text" placeholder="e.g. Colombo, Sri Lanka" [(ngModel)]="job.location">
+        </div>
+        <div class="input-group">
+          <label>Category</label>
+          <input type="text" placeholder="e.g. IT & Software" [(ngModel)]="job.category">
+        </div>
+        <div class="input-group">
+          <label>Salary</label>
+          <input type="number" placeholder="e.g. 75000" [(ngModel)]="job.salary">
+        </div>
+        <div class="input-group">
+          <label>Job Type</label>
+          <select [(ngModel)]="job.jobType">
+            <option value="">Select Job Type</option>
+            <option>Full Time</option>
+            <option>Part Time</option>
+            <option>Internship</option>
+            <option>Contract</option>
+            <option>Remote</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="location-picker-section">
+        <label class="map-label">Select Company Location On Map</label>
+        <app-location-picker [address]="job.location" (locationSelected)="onLocationSelected($event)"></app-location-picker>
+        <div class="selected-location" *ngIf="job.latitude && job.longitude">
+          📍 Selected Coordinates: {{ job.latitude | number:'1.4-4' }}, {{ job.longitude | number:'1.4-4' }}
+        </div>
+      </div>
+
+      <div class="description-group">
+        <label>Job Description</label>
+        <textarea placeholder="Describe the job role, responsibilities, requirements and more..." [(ngModel)]="job.description"></textarea>
+      </div>
+
+      <!-- ✅ Button Group with Cancel -->
+      <div class="button-group">
+        <button class="submit-btn" (click)="submitJob()">
+          {{ isEditMode ? '💾 Update Job' : '🚀 Post Job' }}
+        </button>
+        <button type="button" class="cancel-btn" (click)="cancel()">
+          ❌ Cancel
+        </button>
+      </div>
+    </div>
+
+    <p class="footer-text">🔒 Your job will be reviewed and visible to job seekers</p>
+  </div>
+</div>

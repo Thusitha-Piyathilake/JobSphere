@@ -1,1 +1,178 @@
-<p>applicants works!</p>
+<div class="applicants-container">
+
+  <div class="header-card">
+
+    <div>
+      <h1>👨‍💼 Applicants</h1>
+      <p>
+        Review candidates who applied for your jobs
+      </p>
+    </div>
+
+    <div class="count-badge">
+      {{ applications.length }} Applicants
+    </div>
+
+  </div>
+
+  <!-- Loading -->
+
+  <div
+    class="empty-state"
+    *ngIf="loading">
+
+    Loading applicants...
+
+  </div>
+
+  <!-- Empty State -->
+
+  <div
+    class="empty-state"
+    *ngIf="
+      !loading &&
+      applications.length === 0
+    ">
+
+    <div class="empty-icon">
+      📭
+    </div>
+
+    <h2>
+      No Applications Yet
+    </h2>
+
+    <p>
+      Applications submitted by job seekers
+      will appear here.
+    </p>
+
+  </div>
+
+  <!-- Applications -->
+
+  <div
+    class="applications-grid"
+    *ngIf="
+      !loading &&
+      applications.length > 0
+    ">
+
+    <div
+      class="application-card"
+      *ngFor="
+        let application of applications
+      ">
+
+      <div class="card-top">
+
+        <div class="avatar">
+          👤
+        </div>
+
+        <div>
+
+          <h2>
+            {{ application.applicantName }}
+          </h2>
+
+          <p>
+            {{ application.applicantEmail }}
+          </p>
+
+        </div>
+
+      </div>
+
+      <div class="info-row">
+        📅 Applied:
+        {{
+          application.appliedAt
+            | date:'medium'
+        }}
+      </div>
+
+      <div class="info-row">
+        📄 Status:
+        <span
+          class="status"
+          [ngClass]="{
+            'pending':
+              application.status === 'PENDING',
+
+            'accepted':
+              application.status === 'ACCEPTED',
+
+            'rejected':
+              application.status === 'REJECTED'
+          }">
+
+          {{ application.status }}
+
+        </span>
+      </div>
+
+      <div class="cover-letter">
+
+        <strong>
+          Cover Letter
+        </strong>
+
+        <p>
+          {{
+            application.coverLetter
+          }}
+        </p>
+
+      </div>
+
+      <div class="actions">
+
+        <a
+          class="cv-btn"
+          [href]="application.cvUrl"
+          target="_blank">
+
+          📄 View CV
+
+        </a>
+
+        <button
+          class="accept-btn"
+          *ngIf="
+            application.status ===
+            'PENDING'
+          "
+          (click)="
+            acceptApplication(
+              application.id
+            )
+          ">
+
+          Accept
+
+        </button>
+
+        <button
+          class="reject-btn"
+          *ngIf="
+            application.status ===
+            'PENDING'
+          "
+          (click)="
+            rejectApplication(
+              application.id
+            )
+          ">
+
+          Reject
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

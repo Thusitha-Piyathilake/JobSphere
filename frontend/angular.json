@@ -1,11 +1,14 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
+
   "cli": {
     "packageManager": "npm",
     "analytics": false
   },
+
   "newProjectRoot": "projects",
+
   "projects": {
     "frontend": {
       "projectType": "application",
@@ -13,9 +16,12 @@
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
+
       "architect": {
+
         "build": {
           "builder": "@angular/build:application",
+
           "options": {
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
@@ -25,6 +31,11 @@
                 "glob": "**/*",
                 "input": "public",
                 "output": "/"
+              },
+              {
+                "glob": "**/*",
+                "input": "src/assets",
+                "output": "/assets"
               }
             ],
 
@@ -38,6 +49,7 @@
           },
 
           "configurations": {
+
             "production": {
               "budgets": [
                 {
@@ -51,6 +63,7 @@
                   "maximumError": "8kB"
                 }
               ],
+
               "outputHashing": "all"
             },
 

@@ -3,7 +3,9 @@ package com.jobsphere.backend.service;
 import com.jobsphere.backend.dto.ApplicationRequest;
 import com.jobsphere.backend.entity.Application;
 import com.jobsphere.backend.entity.ApplicationStatus;
+import com.jobsphere.backend.entity.Job;
 import com.jobsphere.backend.repository.ApplicationRepository;
+import com.jobsphere.backend.repository.JobRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,7 @@ import java.util.List;
 public class ApplicationService {
 
     private final ApplicationRepository applicationRepository;
+    private final JobRepository jobRepository;
 
     public Application apply(ApplicationRequest request) {
 
@@ -41,25 +44,62 @@ public class ApplicationService {
         return applicationRepository.findByJobSeekerId(jobSeekerId);
     }
 
+    // NEW METHOD
+    public List<Application> getApplicationsForEmployer(
+            Long employerId
+    ) {
+
+        List<Job> jobs =
+                jobRepository.findByEmployerId(
+                        employerId
+                );
+
+        List<Long> jobIds =
+                jobs.stream()
+                        .map(Job::getId)
+                        .toList();
+
+        return applicationRepository.findAll()
+                .stream()
+                .filter(application ->
+                        jobIds.contains(
+                                application.getJobId()
+                        )
+                )
+                .toList();
+    }
+
     public Application acceptApplication(Long id) {
 
         Application application = applicationRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("Application not found"));
+                        new RuntimeException(
+                                "Application not found"
+                        ));
 
-        application.setStatus(ApplicationStatus.ACCEPTED);
+        application.setStatus(
+                ApplicationStatus.ACCEPTED
+        );
 
-        return applicationRepository.save(application);
+        return applicationRepository.save(
+                application
+        );
     }
 
     public Application rejectApplication(Long id) {
 
         Application application = applicationRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("Application not found"));
+                        new RuntimeException(
+                                "Application not found"
+                        ));
 
-        application.setStatus(ApplicationStatus.REJECTED);
+        application.setStatus(
+                ApplicationStatus.REJECTED
+        );
 
-        return applicationRepository.save(application);
+        return applicationRepository.save(
+                application
+        );
     }
 }

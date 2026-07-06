@@ -1,1 +1,50 @@
-<p>my-jobs works!</p>
+<!-- src/app/pages/employer/my-jobs/my-jobs.html -->
+<div class="my-jobs-container">
+
+  <div class="header-card">
+    <div>
+      <h1>📋 My Jobs</h1>
+      <p>Manage all your posted job opportunities</p>
+    </div>
+    <div class="job-count">{{ jobs.length }} Jobs</div>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Loading jobs...</p>
+  </div>
+
+  <!-- Error -->
+  <div *ngIf="!loading && errorMessage" class="alert alert-error">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!loading && !errorMessage && jobs.length === 0" class="empty-state">
+    <div class="empty-icon">📭</div>
+    <h2>No Jobs Posted Yet</h2>
+    <p>Start attracting candidates by creating your first job posting.</p>
+  </div>
+
+  <!-- Jobs Grid -->
+  <div *ngIf="!loading && !errorMessage && jobs.length > 0" class="jobs-grid">
+    <div class="job-card" *ngFor="let job of jobs">
+      <div class="card-header">
+        <h2>{{ job.title }}</h2>
+        <span class="job-type">{{ job.jobType }}</span>
+      </div>
+      <h3>{{ job.company }}</h3>
+      <div class="info-row">📍 {{ job.location }}</div>
+      <div class="info-row">💰 Rs. {{ job.salary | number }}</div>
+      <div class="info-row">🏷️ {{ job.category }}</div>
+      <p class="description">{{ job.description }}</p>
+      <div class="actions">
+        <!-- ✅ Edit button with click handler -->
+        <button class="edit-btn" (click)="editJob(job.id)">Edit</button>
+        <button class="delete-btn" (click)="deleteJob(job.id)">Delete</button>
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -4,7 +4,13 @@
     <!-- Logo -->
     <a
       class="navbar-brand fw-bold"
-      [routerLink]="isJobSeekerLoggedIn ? '/jobseeker/dashboard' : '/'">
+      [routerLink]="
+        isJobSeekerLoggedIn
+          ? '/jobseeker/dashboard'
+          : isEmployerLoggedIn
+            ? '/employer/dashboard'
+            : '/'
+      ">
 
       <span class="brand-job">Job</span>
       <span class="brand-sphere">Sphere</span>
@@ -33,75 +39,89 @@
 
           <a
             class="nav-link"
-            [routerLink]="isJobSeekerLoggedIn ? '/jobseeker/dashboard' : '/'">
-
+            [routerLink]="
+              isJobSeekerLoggedIn
+                ? '/jobseeker/dashboard'
+                : isEmployerLoggedIn
+                  ? '/employer/dashboard'
+                  : '/'
+            ">
             Home
-
           </a>
 
         </li>
 
-        <!-- Logged In Job Seeker Menu -->
-        <ng-container *ngIf="isJobSeekerLoggedIn; else guestMenu">
+        <!-- ================= JOB SEEKER NAVBAR ================= -->
+        <ng-container *ngIf="isJobSeekerLoggedIn">
 
-          <li
-            class="nav-item"
-            routerLinkActive="active-link">
-
-            <a
-              class="nav-link"
-              routerLink="/jobseeker/applications">
-
+          <li class="nav-item" routerLinkActive="active-link">
+            <a class="nav-link" routerLink="/jobseeker/applications">
               Applications
-
             </a>
-
           </li>
 
-          <li
-            class="nav-item"
-            routerLinkActive="active-link">
-
-            <a
-              class="nav-link"
-              routerLink="/jobseeker/saved-jobs">
-
+          <li class="nav-item" routerLinkActive="active-link">
+            <a class="nav-link" routerLink="/jobseeker/saved-jobs">
               Saved Jobs
-
             </a>
-
           </li>
 
-          <li
-            class="nav-item"
-            routerLinkActive="active-link">
-
-            <a
-              class="nav-link"
-              routerLink="/jobseeker/profile">
-
+          <li class="nav-item" routerLinkActive="active-link">
+            <a class="nav-link" routerLink="/jobseeker/profile">
               Profile
-
             </a>
-
           </li>
 
           <li class="nav-item ms-3">
-
             <button
               class="btn recruiter-btn"
               (click)="logout()">
-
               Logout
-
             </button>
-
           </li>
 
         </ng-container>
 
-        <!-- Guest Menu -->
-        <ng-template #guestMenu>
+        <!-- ================= EMPLOYER NAVBAR ================= -->
+        <ng-container *ngIf="isEmployerLoggedIn">
+
+          <li class="nav-item" routerLinkActive="active-link">
+            <a class="nav-link" routerLink="/employer/create-job">
+              Create Job
+            </a>
+          </li>
+
+          <li class="nav-item" routerLinkActive="active-link">
+            <a class="nav-link" routerLink="/employer/my-jobs">
+              My Jobs
+            </a>
+          </li>
+
+          <li class="nav-item" routerLinkActive="active-link">
+            <a class="nav-link" routerLink="/employer/applicants">
+              Applicants
+            </a>
+          </li>
+
+          <li class="nav-item" routerLinkActive="active-link">
+            <a class="nav-link" routerLink="/employer/profile">
+              Profile
+            </a>
+          </li>
+
+          <li class="nav-item ms-3">
+            <button
+              class="btn recruiter-btn"
+              (click)="logout()">
+              Logout
+            </button>
+          </li>
+
+        </ng-container>
+
+        <!-- ================= GUEST NAVBAR ================= -->
+        <ng-container
+          *ngIf="!isJobSeekerLoggedIn && !isEmployerLoggedIn">
 
           <li class="nav-item ms-3">
 
@@ -127,7 +147,7 @@
 
           </li>
 
-        </ng-template>
+        </ng-container>
 
       </ul>
 
