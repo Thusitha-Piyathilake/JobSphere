@@ -23,6 +23,17 @@ export interface RegisterRequest {
   termsAccepted: boolean;
 }
 
+export interface EmployerRegisterRequest {
+  email: string;
+  password: string;
+
+  companyName: string;
+  companyWebsite: string;
+  companyLocation: string;
+  industry: string;
+  companyDescription: string;
+}
+
 export interface LoginResponse {
   token: string;
   role: string;
@@ -63,7 +74,7 @@ export class AuthService {
 
   // ================= EMPLOYER REGISTER =================
   registerEmployer(
-    request: RegisterRequest
+    request: EmployerRegisterRequest
   ): Observable<string> {
     return this.http.post(
       `${this.apiUrl}/register/employer`,
@@ -131,5 +142,13 @@ export class AuthService {
 
   isJobSeeker(): boolean {
     return this.getRole() === 'JOB_SEEKER';
+  }
+
+  isEmployer(): boolean {
+    return this.getRole() === 'EMPLOYER';
+  }
+
+  isAdmin(): boolean {
+    return this.getRole() === 'ADMIN';
   }
 }

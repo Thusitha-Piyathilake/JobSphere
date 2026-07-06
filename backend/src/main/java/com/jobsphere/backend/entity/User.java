@@ -22,7 +22,10 @@ public class User {
 
     private String password;
 
+    // ==================================
     // Job Seeker Profile Information
+    // ==================================
+
     private String firstName;
 
     private String lastName;
@@ -38,6 +41,21 @@ public class User {
 
     @Builder.Default
     private Boolean termsAccepted = false;
+
+    // ==================================
+    // Employer Profile Information
+    // ==================================
+
+    private String companyName;
+
+    private String companyWebsite;
+
+    private String companyLocation;
+
+    private String industry;
+
+    @Column(length = 2000)
+    private String companyDescription;
 
     // Existing logic
     @Enumerated(EnumType.STRING)

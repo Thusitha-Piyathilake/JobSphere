@@ -1,0 +1,49 @@
+<div class="register-container">
+
+  <h1>Employer Registration</h1>
+
+  <input
+    type="text"
+    placeholder="Company Name"
+    [(ngModel)]="registerData.companyName">
+
+  <input
+    type="email"
+    placeholder="Email"
+    [(ngModel)]="registerData.email">
+
+  <input
+    type="password"
+    placeholder="Password"
+    [(ngModel)]="registerData.password">
+
+  <input
+    type="password"
+    placeholder="Confirm Password"
+    [(ngModel)]="confirmPassword">
+
+  <input
+    type="text"
+    placeholder="Website"
+    [(ngModel)]="registerData.companyWebsite">
+
+  <input
+    type="text"
+    placeholder="Location"
+    [(ngModel)]="registerData.companyLocation">
+
+  <input
+    type="text"
+    placeholder="Industry"
+    [(ngModel)]="registerData.industry">
+
+  <textarea
+    placeholder="Company Description"
+    [(ngModel)]="registerData.companyDescription">
+  </textarea>
+
+  <button (click)="register()">
+    Register
+  </button>
+
+</div>

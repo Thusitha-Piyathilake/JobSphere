@@ -5,6 +5,9 @@ import { Home } from './pages/home/home';
 import { Login } from './pages/login/login';
 import { Register } from './pages/register/register';
 
+import { EmployerRegister } from './pages/employer/employer-register/employer-register';
+import { Auth as EmployerAuth } from './pages/employer/employer-auth/employer-auth';
+
 import { Jobs } from './pages/jobs/jobs';
 import { JobDetails } from './pages/job-details/job-details';
 import { ApplyJobComponent } from './pages/jobseeker/apply-job/apply-job';
@@ -20,17 +23,33 @@ import { CreateJob } from './pages/employer/create-job/create-job';
 import { MyJobs } from './pages/employer/my-jobs/my-jobs';
 import { Applicants } from './pages/employer/applicants/applicants';
 
-// 👇 Import the resolver
 import { SavedJobsResolver } from './resolvers/saved-jobs.resolver';
 
 export const routes: Routes = [
+
+  // Home
   { path: '', component: Home },
 
+  // Generic Auth
   { path: 'login', component: Login },
   { path: 'register', component: Register },
 
+  // Job Seeker Auth
   { path: 'jobseeker/auth', component: Auth },
 
+  // Employer Auth
+  {
+    path: 'employer/auth',
+    component: EmployerAuth
+  },
+
+  // Optional standalone employer register page
+  {
+    path: 'register/employer',
+    component: EmployerRegister
+  },
+
+  // Jobs
   { path: 'jobs', component: Jobs },
 
   // IMPORTANT: keep apply route before jobs/:id
@@ -38,7 +57,7 @@ export const routes: Routes = [
 
   { path: 'jobs/:id', component: JobDetails },
 
-  { path: 'login/employer', component: Login },
+  // Legacy login routes
   { path: 'login/jobseeker', component: Login },
 
   // Employer routes
@@ -50,12 +69,17 @@ export const routes: Routes = [
   // Job seeker routes
   { path: 'jobseeker/dashboard', component: JobSeekerDashboardComponent },
   { path: 'jobseeker/applications', component: Applications },
+
   {
     path: 'jobseeker/saved-jobs',
     component: SavedJobs,
-    resolve: { savedJobs: SavedJobsResolver }   // 👈 Add resolver
+    resolve: {
+      savedJobs: SavedJobsResolver
+    }
   },
+
   { path: 'jobseeker/profile', component: ProfileComponent },
 
+  // Fallback
   { path: '**', redirectTo: '' }
 ];

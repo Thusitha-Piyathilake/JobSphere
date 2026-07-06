@@ -9,7 +9,9 @@ public class RegisterRequest {
     private String email;
     private String password;
 
-    // Profile Details
+    // ===============================
+    // Job Seeker Fields
+    // ===============================
     private String firstName;
     private String lastName;
 
@@ -22,4 +24,17 @@ public class RegisterRequest {
     private Boolean receiveJobAlerts;
 
     private Boolean termsAccepted;
+
+    // ===============================
+    // Employer Fields
+    // ===============================
+    private String companyName;
+
+    private String companyWebsite;
+
+    private String companyLocation;
+
+    private String industry;
+
+    private String companyDescription;
 }

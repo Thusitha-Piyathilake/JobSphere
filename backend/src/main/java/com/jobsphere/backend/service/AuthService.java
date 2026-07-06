@@ -60,26 +60,29 @@ public class AuthService {
 
     public String registerEmployer(RegisterRequest request) {
 
-        if (userRepository.existsByEmail(request.getEmail())) {
-            return "Email already exists";
-        }
-
-        User user = User.builder()
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
-
-                .firstName(request.getFirstName())
-                .lastName(request.getLastName())
-
-                .role(Role.EMPLOYER)
-                .provider(AuthProvider.LOCAL)
-                .enabled(true)
-                .build();
-
-        userRepository.save(user);
-
-        return "Employer registered successfully";
+    if (userRepository.existsByEmail(request.getEmail())) {
+        return "Email already exists";
     }
+
+    User user = User.builder()
+            .email(request.getEmail())
+            .password(passwordEncoder.encode(request.getPassword()))
+
+            .companyName(request.getCompanyName())
+            .companyWebsite(request.getCompanyWebsite())
+            .companyLocation(request.getCompanyLocation())
+            .industry(request.getIndustry())
+            .companyDescription(request.getCompanyDescription())
+
+            .role(Role.EMPLOYER)
+            .provider(AuthProvider.LOCAL)
+            .enabled(true)
+            .build();
+
+    userRepository.save(user);
+
+    return "Employer registered successfully";
+}
 
     public String registerAdmin(RegisterRequest request) {
 

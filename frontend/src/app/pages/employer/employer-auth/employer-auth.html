@@ -1,0 +1,110 @@
+<div class="auth-container">
+
+  <div class="auth-card">
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button
+        class="tab-btn"
+        [class.active]="isLogin"
+        (click)="showLogin()">
+        Login
+      </button>
+
+      <button
+        class="tab-btn"
+        [class.active]="!isLogin"
+        (click)="showRegister()">
+        Register
+      </button>
+    </div>
+
+    <!-- Login Form -->
+    <div *ngIf="isLogin">
+
+      <h2>Employer Login</h2>
+
+      <input
+  type="email"
+  placeholder="Email Address"
+  class="form-input"
+  [(ngModel)]="loginData.email">
+
+<input
+  type="password"
+  placeholder="Password"
+  class="form-input"
+  [(ngModel)]="loginData.password">
+
+<button
+  class="submit-btn"
+  (click)="login()">
+  Login
+</button>
+
+    </div>
+
+    <!-- Register Form -->
+    <div *ngIf="!isLogin">
+
+      <h2>Employer Register</h2>
+
+      <input
+  type="text"
+  placeholder="Company Name"
+  class="form-input"
+  [(ngModel)]="registerData.companyName">
+
+<input
+  type="email"
+  placeholder="Email Address"
+  class="form-input"
+  [(ngModel)]="registerData.email">
+
+<input
+  type="password"
+  placeholder="Password"
+  class="form-input"
+  [(ngModel)]="registerData.password">
+
+<input
+  type="password"
+  placeholder="Confirm Password"
+  class="form-input"
+  [(ngModel)]="confirmPassword">
+
+<input
+  type="text"
+  placeholder="Website"
+  class="form-input"
+  [(ngModel)]="registerData.companyWebsite">
+
+<input
+  type="text"
+  placeholder="Industry"
+  class="form-input"
+  [(ngModel)]="registerData.industry">
+
+<input
+  type="text"
+  placeholder="Location"
+  class="form-input"
+  [(ngModel)]="registerData.companyLocation">
+
+<textarea
+  placeholder="Company Description"
+  class="form-input textarea"
+  [(ngModel)]="registerData.companyDescription">
+</textarea>
+
+<button
+  class="submit-btn"
+  (click)="register()">
+  Register
+</button>
+
+    </div>
+
+  </div>
+
+</div>

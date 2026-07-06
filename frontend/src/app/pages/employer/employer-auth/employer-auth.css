@@ -1,0 +1,71 @@
+.auth-container {
+  min-height: 100vh;
+  background: #f7f3ed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.auth-card {
+  width: 850px;
+  background: white;
+  border-radius: 30px;
+  padding: 40px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+}
+
+.tabs {
+  display: flex;
+  background: #f1f1f1;
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 40px;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 18px;
+  border: none;
+  background: transparent;
+  font-size: 20px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.tab-btn.active {
+  background: #ff7a00;
+  color: white;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #13233a;
+  font-size: 42px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 18px;
+  border-radius: 14px;
+  border: 1px solid #ddd;
+  margin-bottom: 18px;
+  font-size: 16px;
+}
+
+.textarea {
+  min-height: 120px;
+  resize: none;
+}
+
+.submit-btn {
+  width: 100%;
+  border: none;
+  background: #ff7a00;
+  color: white;
+  padding: 18px;
+  border-radius: 14px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+}
