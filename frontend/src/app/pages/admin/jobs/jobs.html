@@ -1,1 +1,321 @@
-<p>jobs works!</p>
+<div class="jobs-page">
+
+  <!-- Header -->
+  <div class="page-header">
+
+    <div>
+
+      <h2>Jobs Management</h2>
+
+      <p>Manage all jobs posted on JobSphere.</p>
+
+    </div>
+
+  </div>
+
+  <!-- Filters -->
+  <div class="filters">
+
+    <input
+      type="text"
+      placeholder="🔍 Search by title, company or location..."
+      [(ngModel)]="search">
+
+    <select [(ngModel)]="selectedType">
+
+      <option value="ALL">All Job Types</option>
+      <option value="Full Time">Full Time</option>
+      <option value="Part Time">Part Time</option>
+      <option value="Remote">Remote</option>
+      <option value="Hybrid">Hybrid</option>
+
+    </select>
+
+  </div>
+
+  <!-- Table -->
+
+  <div class="table-card">
+
+    <table>
+
+      <thead>
+
+        <tr>
+
+          <th>Title</th>
+
+          <th>Company</th>
+
+          <th>Location</th>
+
+          <th>Type</th>
+
+          <th>Salary</th>
+
+          <th>Actions</th>
+
+        </tr>
+
+      </thead>
+
+      <tbody>
+
+        <tr *ngFor="let job of filteredJobs">
+
+          <td>{{ job.title }}</td>
+
+          <td>{{ job.company }}</td>
+
+          <td>{{ job.location }}</td>
+
+          <td>
+
+            <span
+              class="type"
+              [ngClass]="{
+                remote: job.jobType === 'Remote',
+                hybrid: job.jobType === 'Hybrid',
+                full: job.jobType === 'Full Time',
+                part: job.jobType === 'Part Time'
+              }">
+
+              {{ job.jobType }}
+
+            </span>
+
+          </td>
+
+          <td>
+
+            {{ job.salary | number }}
+
+          </td>
+
+          <td>
+
+            <div class="actions">
+
+              <button
+                class="view-btn"
+                (click)="view(job)">
+                View
+              </button>
+
+              <button
+                class="delete-btn"
+                (click)="delete(job)">
+                Delete
+              </button>
+
+            </div>
+
+          </td>
+
+        </tr>
+
+        <tr *ngIf="filteredJobs.length === 0">
+
+          <td colspan="6" class="empty">
+
+            No jobs found.
+
+          </td>
+
+        </tr>
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+  <!-- =======================
+       Job Details Modal
+  ======================== -->
+
+  <div
+    class="modal-overlay"
+    *ngIf="showModal">
+
+    <div class="modal-card">
+
+      <div class="modal-header">
+
+        <h3>Job Details</h3>
+
+        <button
+          class="close-btn"
+          (click)="closeModal()">
+
+          ✕
+
+        </button>
+
+      </div>
+
+      <div
+        class="modal-body"
+        *ngIf="selectedJob">
+
+        <div class="info">
+
+          <label>Job Title</label>
+
+          <p>{{ selectedJob.title }}</p>
+
+        </div>
+
+        <div class="info">
+
+          <label>Company</label>
+
+          <p>{{ selectedJob.company }}</p>
+
+        </div>
+
+        <div class="info">
+
+          <label>Location</label>
+
+          <p>{{ selectedJob.location }}</p>
+
+        </div>
+
+        <div class="info">
+
+          <label>Category</label>
+
+          <p>{{ selectedJob.category }}</p>
+
+        </div>
+
+        <div class="info">
+
+          <label>Job Type</label>
+
+          <p>{{ selectedJob.jobType }}</p>
+
+        </div>
+
+        <div class="info">
+
+          <label>Salary</label>
+
+          <p>LKR {{ selectedJob.salary | number }}</p>
+
+        </div>
+
+        <div class="info">
+
+          <label>Employer ID</label>
+
+          <p>{{ selectedJob.employerId }}</p>
+
+        </div>
+
+        <div class="info">
+
+          <label>Created</label>
+
+          <p>{{ selectedJob.createdAt | date:'medium' }}</p>
+
+        </div>
+
+        <div class="info">
+
+          <label>Latitude</label>
+
+          <p>{{ selectedJob.latitude }}</p>
+
+        </div>
+
+        <div class="info">
+
+          <label>Longitude</label>
+
+          <p>{{ selectedJob.longitude }}</p>
+
+        </div>
+
+        <div class="info">
+
+          <label>Description</label>
+
+          <p>{{ selectedJob.description }}</p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- =======================
+       Delete Confirmation Modal
+  ======================== -->
+
+  <div
+    class="modal-overlay"
+    *ngIf="showDeleteModal">
+
+    <div class="modal-card delete-modal">
+
+      <div class="modal-header">
+
+        <h3>Delete Job</h3>
+
+      </div>
+
+      <div class="modal-body">
+
+        <p
+          style="
+            text-align:center;
+            font-size:20px;
+            margin-bottom:30px;">
+
+          Are you sure you want to delete
+
+          <strong>
+
+            {{ jobToDelete?.title }}
+
+          </strong>
+
+          ?
+
+        </p>
+
+        <div
+          style="
+            display:flex;
+            justify-content:center;
+            gap:20px;">
+
+          <button
+            class="view-btn"
+            (click)="cancelDelete()">
+
+            Cancel
+
+          </button>
+
+          <button
+            class="delete-btn"
+            (click)="confirmDelete()">
+
+            Delete
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

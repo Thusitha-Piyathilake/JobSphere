@@ -1,0 +1,296 @@
+.jobs-page{
+    padding:40px;
+}
+
+.page-header h2{
+    font-size:56px;
+    font-weight:800;
+    color:#1e293b;
+}
+
+.page-header p{
+    margin-top:8px;
+    color:#64748b;
+    font-size:18px;
+}
+
+.filters{
+    display:flex;
+    gap:20px;
+    margin:35px 0;
+}
+
+.filters input{
+    flex:1;
+    padding:18px 22px;
+    border-radius:18px;
+    border:1px solid #dbeafe;
+    font-size:18px;
+    outline:none;
+}
+
+.filters select{
+    width:260px;
+    border-radius:18px;
+    border:1px solid #dbeafe;
+    padding:18px;
+    font-size:18px;
+    background:white;
+}
+
+.table-card{
+    background:white;
+    border-radius:25px;
+    overflow:hidden;
+    box-shadow:0 10px 30px rgba(0,0,0,.05);
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+thead{
+    background:#f8fafc;
+}
+
+th{
+    text-align:left;
+    padding:24px;
+    color:#334155;
+    font-size:22px;
+}
+
+td{
+    padding:24px;
+    border-top:1px solid #edf2f7;
+    font-size:18px;
+    vertical-align:middle;
+}
+
+/* ===========================
+   Job Type Badge
+=========================== */
+
+.type{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    width:120px;
+
+    height:42px;
+
+    border-radius:30px;
+
+    color:white;
+
+    font-weight:700;
+
+    font-size:14px;
+
+    white-space:nowrap;
+
+    text-align:center;
+
+    line-height:1;
+
+}
+
+.full{
+    background:#2563eb;
+}
+
+.part{
+    background:#8b5cf6;
+}
+
+.remote{
+    background:#16a34a;
+}
+
+.hybrid{
+    background:#f97316;
+}
+
+/* ===========================
+   Delete Modal
+=========================== */
+
+.delete-modal{
+
+    width:500px;
+
+    max-width:90%;
+
+}
+
+.delete-modal .modal-header{
+
+    justify-content:center;
+
+}
+
+.delete-modal .modal-body{
+
+    padding:40px;
+
+}
+
+.view-btn{
+
+    border:none;
+
+    background:#3b82f6;
+
+    color:white;
+
+    padding:12px 20px;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+    font-weight:600;
+
+    transition:.3s;
+
+    white-space:nowrap;
+
+    flex-shrink:0;
+
+}
+
+.delete-btn{
+
+    border:none;
+
+    background:#ef4444;
+
+    color:white;
+
+    padding:12px 20px;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+    font-weight:600;
+
+    transition:.3s;
+
+    white-space:nowrap;
+
+    flex-shrink:0;
+
+}
+
+.view-btn:hover{
+    background:#2563eb;
+}
+
+.delete-btn:hover{
+    background:#dc2626;
+}
+
+.empty{
+    text-align:center;
+    padding:40px;
+    color:#94a3b8;
+    font-size:20px;
+}
+
+.modal-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.45);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:999;
+}
+
+.modal-card{
+    width:700px;
+    max-width:95%;
+    background:white;
+    border-radius:20px;
+    overflow:hidden;
+    animation:popup .25s ease;
+}
+
+@keyframes popup{
+
+    from{
+        transform:scale(.9);
+        opacity:0;
+    }
+
+    to{
+        transform:scale(1);
+        opacity:1;
+    }
+
+}
+
+.modal-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:24px 30px;
+    background:#f97316;
+    color:white;
+}
+
+.modal-header h3{
+    margin:0;
+    font-size:28px;
+}
+
+.close-btn{
+    border:none;
+    background:none;
+    color:white;
+    font-size:30px;
+    cursor:pointer;
+}
+
+.modal-body{
+    padding:30px;
+    max-height:70vh;
+    overflow:auto;
+}
+
+.info{
+    margin-bottom:20px;
+}
+
+.info label{
+    display:block;
+    color:#64748b;
+    font-size:14px;
+    margin-bottom:6px;
+    font-weight:600;
+}
+
+.actions{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    flex-wrap:nowrap;
+
+}
+
+.info p{
+    margin:0;
+    font-size:18px;
+    color:#1e293b;
+    word-break:break-word;
+}
