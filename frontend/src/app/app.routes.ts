@@ -11,6 +11,7 @@ import { Auth as EmployerAuth } from './pages/employer/employer-auth/employer-au
 import { Jobs } from './pages/jobs/jobs';
 import { JobDetails } from './pages/job-details/job-details';
 import { ApplyJobComponent } from './pages/jobseeker/apply-job/apply-job';
+import { Profile } from './pages/employer/profile/profile';
 
 import { ProfileComponent } from './pages/jobseeker/profile/profile';
 import { Applications } from './pages/jobseeker/applications/applications';
@@ -36,6 +37,8 @@ export const routes: Routes = [
 
   // Job Seeker Auth
   { path: 'jobseeker/auth', component: Auth },
+  { path: 'employer/profile', component: Profile },
+
 
   // Employer Auth
   {

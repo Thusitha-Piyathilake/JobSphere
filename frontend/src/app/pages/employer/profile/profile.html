@@ -1,0 +1,134 @@
+<!-- src/app/pages/employer/profile/profile.html -->
+<div class="profile-container">
+
+  <!-- Loading Spinner -->
+  <div *ngIf="loading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Loading profile...</p>
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="!loading && errorMessage" class="alert alert-error">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Main Content -->
+  <ng-container *ngIf="!loading && !errorMessage">
+
+    <!-- Banner -->
+    <div class="banner-section">
+      <img
+        [src]="profile.bannerUrl || 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d'"
+        class="banner-image">
+      <div class="logo-wrapper">
+        <div class="company-logo" *ngIf="!profile.logoUrl">🏢</div>
+        <img *ngIf="profile.logoUrl" [src]="profile.logoUrl" class="company-logo">
+      </div>
+    </div>
+
+    <!-- Company Header -->
+    <div class="company-card">
+      <div class="company-header">
+        <div>
+          <h1>{{ profile.companyName || 'Company Name' }}</h1>
+          <p class="industry">{{ profile.industry || 'Industry not provided' }}</p>
+        </div>
+        <div>
+          <button class="edit-btn me-3" (click)="toggleEdit()">
+            {{ editMode ? 'Cancel' : '✏️ Edit Profile' }}
+          </button>
+          <button *ngIf="editMode" class="edit-btn" (click)="saveProfile()">
+            💾 Save
+          </button>
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <h2>0</h2>
+          <span>Jobs Posted</span>
+        </div>
+        <div class="stat-card">
+          <h2>0</h2>
+          <span>Applicants</span>
+        </div>
+        <div class="stat-card">
+          <h2>0</h2>
+          <span>Active Jobs</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-grid">
+
+      <!-- LEFT -->
+      <div class="left-column">
+
+        <div class="info-card">
+          <h2>About Company</h2>
+          <p *ngIf="!editMode">{{ profile.description || 'No company description provided.' }}</p>
+          <textarea *ngIf="editMode" rows="6" class="form-control" [(ngModel)]="profile.description"></textarea>
+        </div>
+
+        <div class="info-card">
+          <h2>Company Information</h2>
+
+          <div class="info-row">
+            🌐 Website
+            <span *ngIf="!editMode">{{ profile.website || '-' }}</span>
+            <input *ngIf="editMode" class="form-control w-50" [(ngModel)]="profile.website">
+          </div>
+
+          <div class="info-row">
+            📧 Email
+            <span>{{ profile.companyEmail || '-' }}</span>
+          </div>
+
+          <div class="info-row">
+            📞 Phone
+            <span>{{ profile.companyPhone || '-' }}</span>
+          </div>
+
+          <div class="info-row">
+            📍 Address
+            <span *ngIf="!editMode">{{ profile.address || '-' }}</span>
+            <input *ngIf="editMode" class="form-control w-50" [(ngModel)]="profile.address">
+          </div>
+
+          <div class="info-row">
+            🏭 Industry
+            <span>{{ profile.industry || '-' }}</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT -->
+      <div class="right-column">
+
+        <div class="info-card">
+          <h2>Company Details</h2>
+
+          <div class="detail-item">
+            <span>Founded</span>
+            <strong *ngIf="!editMode">{{ profile.foundedYear || '-' }}</strong>
+            <input *ngIf="editMode" class="form-control w-50" [(ngModel)]="profile.foundedYear">
+          </div>
+
+          <div class="detail-item">
+            <span>Company Size</span>
+            <strong *ngIf="!editMode">{{ profile.companySize || '-' }}</strong>
+            <input *ngIf="editMode" class="form-control w-50" [(ngModel)]="profile.companySize">
+          </div>
+
+          <div class="detail-item">
+            <span>Status</span>
+            <strong class="verified">✔ Verified Employer</strong>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </ng-container>
+</div>

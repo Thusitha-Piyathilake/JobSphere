@@ -49,20 +49,17 @@ export class AuthService {
 
   private apiUrl = 'http://localhost:8080/api/auth';
 
-  // ================= LOGIN =================
-  login(
-    request: LoginRequest
-  ): Observable<LoginResponse> {
+  login(request: LoginRequest): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(
       `${this.apiUrl}/login`,
       request
     );
   }
 
-  // ================= JOB SEEKER REGISTER =================
   registerJobSeeker(
     request: RegisterRequest
   ): Observable<string> {
+
     return this.http.post(
       `${this.apiUrl}/register/jobseeker`,
       request,
@@ -72,10 +69,10 @@ export class AuthService {
     );
   }
 
-  // ================= EMPLOYER REGISTER =================
   registerEmployer(
     request: EmployerRegisterRequest
   ): Observable<string> {
+
     return this.http.post(
       `${this.apiUrl}/register/employer`,
       request,
@@ -85,10 +82,10 @@ export class AuthService {
     );
   }
 
-  // ================= ADMIN REGISTER =================
   registerAdmin(
     request: RegisterRequest
   ): Observable<string> {
+
     return this.http.post(
       `${this.apiUrl}/register/admin`,
       request,
@@ -98,7 +95,6 @@ export class AuthService {
     );
   }
 
-  // ================= LOCAL STORAGE =================
   saveAuth(
     token: string,
     role: string,
@@ -107,13 +103,11 @@ export class AuthService {
 
     localStorage.setItem('token', token);
     localStorage.setItem('role', role);
-    localStorage.setItem(
-      'userId',
-      userId.toString()
-    );
+    localStorage.setItem('userId', userId.toString());
   }
 
   logout(): void {
+
     localStorage.removeItem('token');
     localStorage.removeItem('role');
     localStorage.removeItem('userId');
@@ -129,11 +123,9 @@ export class AuthService {
 
   getUserId(): number | null {
 
-    const userId = localStorage.getItem('userId');
+    const id = localStorage.getItem('userId');
 
-    return userId
-      ? Number(userId)
-      : null;
+    return id ? Number(id) : null;
   }
 
   isLoggedIn(): boolean {
@@ -151,4 +143,13 @@ export class AuthService {
   isAdmin(): boolean {
     return this.getRole() === 'ADMIN';
   }
+
+  // NEW
+  getUser(id: number): Observable<any> {
+
+    return this.http.get<any>(
+      `http://localhost:8080/api/users/${id}`
+    );
+  }
+
 }
