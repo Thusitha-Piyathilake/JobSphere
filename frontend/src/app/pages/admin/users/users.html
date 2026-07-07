@@ -1,1 +1,219 @@
-<p>users works!</p>
+<div class="users-page">
+
+  <!-- Header -->
+  <div class="page-header">
+
+    <div>
+
+      <h2>Users Management</h2>
+
+      <p>Manage all registered users on JobSphere.</p>
+
+    </div>
+
+  </div>
+
+  <!-- Filters -->
+  <div class="filters">
+
+    <input
+      type="text"
+      placeholder="🔍 Search by name or email..."
+      [(ngModel)]="search">
+
+    <select [(ngModel)]="selectedRole">
+
+      <option value="ALL">All Roles</option>
+      <option value="JOB_SEEKER">Job Seekers</option>
+      <option value="EMPLOYER">Employers</option>
+      <option value="ADMIN">Administrators</option>
+
+    </select>
+
+  </div>
+
+  <!-- Table -->
+  <div class="table-card">
+
+    <table>
+
+      <thead>
+
+        <tr>
+
+          <th>Name</th>
+          <th>Email</th>
+          <th>Role</th>
+          <th>Status</th>
+          <th>Actions</th>
+
+        </tr>
+
+      </thead>
+
+      <tbody>
+
+        <tr *ngFor="let user of filteredUsers">
+
+          <td>
+
+            {{ (user.firstName || '') + ' ' + (user.lastName || '') }}
+
+          </td>
+
+          <td>{{ user.email }}</td>
+
+          <td>
+
+            <span
+              class="role"
+
+              [ngClass]="{
+
+                seeker:user.role==='JOB_SEEKER',
+
+                employer:user.role==='EMPLOYER',
+
+                admin:user.role==='ADMIN'
+
+              }">
+
+              {{ user.role }}
+
+            </span>
+
+          </td>
+
+          <td>
+
+            <span
+              class="status"
+
+              [ngClass]="{
+
+                active:user.enabled,
+
+                blocked:!user.enabled
+
+              }">
+
+              {{ user.enabled ? 'Active' : 'Blocked' }}
+
+            </span>
+
+          </td>
+
+          <td>
+
+            <button
+              class="view-btn"
+              (click)="viewUser(user)">
+
+              View
+
+            </button>
+
+            <button
+              *ngIf="user.role !== 'ADMIN' && user.enabled"
+              class="block-btn"
+              (click)="block(user)">
+
+              Block
+
+            </button>
+
+            <button
+              *ngIf="user.role !== 'ADMIN' && !user.enabled"
+              class="block-btn"
+              (click)="unblock(user)">
+
+              Unblock
+
+            </button>
+
+            <button
+              *ngIf="user.role !== 'ADMIN'"
+              class="delete-btn"
+              (click)="delete(user)">
+
+              Delete
+
+            </button>
+
+          </td>
+
+        </tr>
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+</div>
+
+<!-- ============================= -->
+<!-- User Details Modal -->
+<!-- ============================= -->
+
+<div
+  class="modal-overlay"
+  *ngIf="showModal">
+
+  <div class="user-modal">
+
+    <div class="modal-header">
+
+      <h3>User Details</h3>
+
+      <button
+        class="close-btn"
+        (click)="closeModal()">
+
+        ✕
+
+      </button>
+
+    </div>
+
+    <div
+      class="modal-body"
+      *ngIf="selectedUser">
+
+      <div class="detail-row">
+        <strong>Name</strong>
+        <span>{{ (selectedUser.firstName || '') + ' ' + (selectedUser.lastName || '') }}</span>
+      </div>
+
+      <div class="detail-row">
+        <strong>Email</strong>
+        <span>{{ selectedUser.email }}</span>
+      </div>
+
+      <div class="detail-row">
+        <strong>Role</strong>
+        <span>{{ selectedUser.role }}</span>
+      </div>
+
+      <div class="detail-row">
+        <strong>Status</strong>
+        <span>{{ selectedUser.enabled ? 'Active' : 'Blocked' }}</span>
+      </div>
+
+    </div>
+
+    <div class="modal-footer">
+
+      <button
+        class="close-modal-btn"
+        (click)="closeModal()">
+
+        Close
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
