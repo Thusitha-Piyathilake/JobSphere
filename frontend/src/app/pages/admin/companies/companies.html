@@ -1,1 +1,250 @@
-<p>companies works!</p>
+<div class="companies-page">
+
+  <!-- Header -->
+  <div class="page-header">
+
+    <div>
+
+      <h2>Companies Management</h2>
+
+      <p>Manage all registered employers on JobSphere.</p>
+
+    </div>
+
+  </div>
+
+  <!-- Filters -->
+  <div class="filters">
+
+    <input
+      type="text"
+      placeholder="🔍 Search by company name or email..."
+      [(ngModel)]="search">
+
+    <select [(ngModel)]="selectedStatus">
+
+      <option value="ALL">
+        All Status
+      </option>
+
+      <option value="ACTIVE">
+        Active
+      </option>
+
+      <option value="BLOCKED">
+        Blocked
+      </option>
+
+    </select>
+
+  </div>
+
+  <!-- Table -->
+  <div class="table-card">
+
+    <table>
+
+      <thead>
+
+        <tr>
+
+          <th>Company</th>
+
+          <th>Email</th>
+
+          <th>Industry</th>
+
+          <th>Location</th>
+
+          <th>Status</th>
+
+          <th>Actions</th>
+
+        </tr>
+
+      </thead>
+
+      <tbody>
+
+        <tr *ngFor="let company of filteredCompanies">
+
+          <td>
+
+            {{ company.companyName || 'N/A' }}
+
+          </td>
+
+          <td>
+
+            {{ company.email }}
+
+          </td>
+
+          <td>
+
+            {{ company.industry || 'N/A' }}
+
+          </td>
+
+          <td>
+
+            {{ company.companyLocation || 'N/A' }}
+
+          </td>
+
+          <td>
+
+            <span
+              class="status"
+              [ngClass]="{
+                active: company.enabled,
+                blocked: !company.enabled
+              }">
+
+              {{ company.enabled ? 'Active' : 'Blocked' }}
+
+            </span>
+
+          </td>
+
+          <td>
+
+            <button
+              class="view-btn"
+              (click)="view(company)">
+
+              View
+
+            </button>
+
+            <button
+              *ngIf="company.enabled"
+              class="block-btn"
+              (click)="block(company)">
+
+              Block
+
+            </button>
+
+            <button
+              *ngIf="!company.enabled"
+              class="block-btn"
+              (click)="unblock(company)">
+
+              Unblock
+
+            </button>
+
+            <button
+              class="delete-btn"
+              (click)="delete(company)">
+
+              Delete
+
+            </button>
+
+          </td>
+
+        </tr>
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+</div>
+
+<!-- ===========================
+     View Company Modal
+=========================== -->
+
+<div
+  class="modal-overlay"
+  *ngIf="showModal">
+
+  <div class="modal-card">
+
+    <div class="modal-header">
+
+      <h3>Company Details</h3>
+
+      <button
+        class="close-btn"
+        (click)="closeModal()">
+
+        ×
+
+      </button>
+
+    </div>
+
+    <div
+      class="modal-body"
+      *ngIf="selectedCompany">
+
+      <div class="detail-row">
+
+        <strong>Company Name</strong>
+
+        <span>{{ selectedCompany.companyName || 'N/A' }}</span>
+
+      </div>
+
+      <div class="detail-row">
+
+        <strong>Email</strong>
+
+        <span>{{ selectedCompany.email }}</span>
+
+      </div>
+
+      <div class="detail-row">
+
+        <strong>Website</strong>
+
+        <span>{{ selectedCompany.companyWebsite || 'N/A' }}</span>
+
+      </div>
+
+      <div class="detail-row">
+
+        <strong>Industry</strong>
+
+        <span>{{ selectedCompany.industry || 'N/A' }}</span>
+
+      </div>
+
+      <div class="detail-row">
+
+        <strong>Location</strong>
+
+        <span>{{ selectedCompany.companyLocation || 'N/A' }}</span>
+
+      </div>
+
+      <div class="detail-row">
+
+        <strong>Description</strong>
+
+        <span>{{ selectedCompany.companyDescription || 'N/A' }}</span>
+
+      </div>
+
+      <div class="detail-row">
+
+        <strong>Status</strong>
+
+        <span>
+
+          {{ selectedCompany.enabled ? 'Active' : 'Blocked' }}
+
+        </span>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
