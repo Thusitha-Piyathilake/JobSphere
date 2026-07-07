@@ -60,29 +60,29 @@ public class AuthService {
 
     public String registerEmployer(RegisterRequest request) {
 
-    if (userRepository.existsByEmail(request.getEmail())) {
-        return "Email already exists";
+        if (userRepository.existsByEmail(request.getEmail())) {
+            return "Email already exists";
+        }
+
+        User user = User.builder()
+                .email(request.getEmail())
+                .password(passwordEncoder.encode(request.getPassword()))
+
+                .companyName(request.getCompanyName())
+                .companyWebsite(request.getCompanyWebsite())
+                .companyLocation(request.getCompanyLocation())
+                .industry(request.getIndustry())
+                .companyDescription(request.getCompanyDescription())
+
+                .role(Role.EMPLOYER)
+                .provider(AuthProvider.LOCAL)
+                .enabled(true)
+                .build();
+
+        userRepository.save(user);
+
+        return "Employer registered successfully";
     }
-
-    User user = User.builder()
-            .email(request.getEmail())
-            .password(passwordEncoder.encode(request.getPassword()))
-
-            .companyName(request.getCompanyName())
-            .companyWebsite(request.getCompanyWebsite())
-            .companyLocation(request.getCompanyLocation())
-            .industry(request.getIndustry())
-            .companyDescription(request.getCompanyDescription())
-
-            .role(Role.EMPLOYER)
-            .provider(AuthProvider.LOCAL)
-            .enabled(true)
-            .build();
-
-    userRepository.save(user);
-
-    return "Employer registered successfully";
-}
 
     public String registerAdmin(RegisterRequest request) {
 
@@ -113,14 +113,32 @@ public class AuthService {
                 .orElseThrow(() ->
                         new RuntimeException("Invalid email or password"));
 
-        if (!passwordEncoder.matches(
-                request.getPassword(),
-                user.getPassword())) {
+        System.out.println("======================================");
+        System.out.println("LOGIN DEBUG");
+        System.out.println("User Found      : " + user.getEmail());
+        System.out.println("Role            : " + user.getRole());
+        System.out.println("Enabled         : " + user.getEnabled());
+        System.out.println("Provider        : " + user.getProvider());
+        System.out.println("Entered Password: " + request.getPassword());
+        System.out.println("Stored Password : " + user.getPassword());
 
+        boolean matches = passwordEncoder.matches(
+                request.getPassword(),
+                user.getPassword()
+        );
+
+        System.out.println("Password Matches: " + matches);
+        System.out.println("======================================");
+
+        if (!matches) {
             throw new RuntimeException("Invalid email or password");
         }
 
         String token = jwtService.generateToken(user.getEmail());
+
+        System.out.println("LOGIN SUCCESS");
+        System.out.println("Generated Role : " + user.getRole().name());
+        System.out.println("======================================");
 
         return new LoginResponse(
                 token,

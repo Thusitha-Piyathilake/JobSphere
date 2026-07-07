@@ -4,6 +4,7 @@ import { Routes } from '@angular/router';
 import { Home } from './pages/home/home';
 import { Login } from './pages/login/login';
 import { Register } from './pages/register/register';
+import { Dashboard } from './pages/admin/dashboard/dashboard';
 
 import { EmployerRegister } from './pages/employer/employer-register/employer-register';
 import { Auth as EmployerAuth } from './pages/employer/employer-auth/employer-auth';
@@ -38,6 +39,7 @@ export const routes: Routes = [
   // Job Seeker Auth
   { path: 'jobseeker/auth', component: Auth },
   { path: 'employer/profile', component: Profile },
+  { path: 'admin/dashboard', component: Dashboard },
 
 
   // Employer Auth
