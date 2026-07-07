@@ -1,0 +1,55 @@
+<div class="admin-layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+
+    <nav>
+
+      <a routerLink="/admin/dashboard" routerLinkActive="active">
+        🏠 Dashboard
+      </a>
+
+      <a routerLink="/admin/users" routerLinkActive="active">
+        👥 Users
+      </a>
+
+      <a routerLink="/admin/companies" routerLinkActive="active">
+        🏢 Companies
+      </a>
+
+      <a routerLink="/admin/jobs" routerLinkActive="active">
+        💼 Jobs
+      </a>
+
+      <a routerLink="/admin/categories" routerLinkActive="active">
+        📂 Categories
+      </a>
+
+      <a routerLink="/admin/locations" routerLinkActive="active">
+        📍 Locations
+      </a>
+
+      <a routerLink="/admin/statistics" routerLinkActive="active">
+        📊 Statistics
+      </a>
+
+    </nav>
+
+    <button class="logout-btn">
+      🚪 Logout
+    </button>
+
+  </aside>
+
+  <!-- Main Content -->
+  <main class="content">
+
+    <section class="page-content">
+
+      <router-outlet></router-outlet>
+
+    </section>
+
+  </main>
+
+</div>

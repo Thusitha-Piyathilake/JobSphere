@@ -34,6 +34,10 @@ export class Navbar {
     return this.authService.getRole() === 'EMPLOYER';
   }
 
+  get isAdminLoggedIn(): boolean {
+  return this.authService.getRole() === 'ADMIN';
+}
+
   logout(): void {
     this.authService.logout();
     this.router.navigate(['/']);
