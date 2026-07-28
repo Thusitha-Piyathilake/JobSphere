@@ -21,16 +21,46 @@
 
   <section class="hero" *ngIf="!loading && !errorMessage">
     <div class="hero-left">
+
+      <!-- ✅ UPDATED LOGO SECTION -->
       <div class="logo-editable">
-        <img *ngIf="profile.logoUrl" [src]="profile.logoUrl" class="logo-img" alt="Company logo">
-        <span *ngIf="!profile.logoUrl" class="logo-fallback">🏢</span>
-        <div class="logo-hover" (click)="toggleEdit()">
-          <svg viewBox="0 0 24 24" fill="none"><path d="M4 20h4l10.5-10.5a2.1 2.1 0 00-3-3L5 17v3z" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <img
+          *ngIf="profile.logoUrl"
+          [src]="profile.logoUrl"
+          class="logo-img"
+          alt="Company logo"
+        >
+        <span
+          *ngIf="!profile.logoUrl"
+          class="logo-fallback"
+        >
+          🏢
+        </span>
+        <div
+          class="logo-hover"
+          (click)="logoInput.click()"
+        >
+          <svg viewBox="0 0 24 24" fill="none">
+            <path
+              d="M4 20h4l10.5-10.5a2.1 2.1 0 00-3-3L5 17v3z"
+              stroke="white"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
           <span>CHANGE LOGO</span>
         </div>
-        <!-- Logo upload input – kept for future use, but no logic binding -->
-        <input type="file" id="logo-upload" accept="image/*" style="display:none;">
+        <input
+          #logoInput
+          type="file"
+          accept="image/*"
+          style="display:none"
+          (change)="onLogoSelected($event)"
+        >
       </div>
+      <!-- END UPDATED SECTION -->
+
       <div>
         <div class="hero-name-row">
           <h1>{{ profile.companyName || 'Company Name' }}</h1>

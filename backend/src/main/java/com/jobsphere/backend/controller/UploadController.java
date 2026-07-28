@@ -16,12 +16,34 @@ public class UploadController {
 
     private final CloudinaryService cloudinaryService;
 
+    // ==========================================
+    // Upload Job Seeker CV
+    // ==========================================
+
     @PostMapping("/cv")
     public ResponseEntity<?> uploadCv(
             @RequestParam("file") MultipartFile file
     ) {
 
         String url = cloudinaryService.uploadCv(file);
+
+        return ResponseEntity.ok(
+                Map.of(
+                        "url", url
+                )
+        );
+    }
+
+    // ==========================================
+    // Upload Company Logo
+    // ==========================================
+
+    @PostMapping("/company-logo")
+    public ResponseEntity<?> uploadCompanyLogo(
+            @RequestParam("file") MultipartFile file
+    ) {
+
+        String url = cloudinaryService.uploadCompanyLogo(file);
 
         return ResponseEntity.ok(
                 Map.of(

@@ -13,6 +13,10 @@ public class CloudinaryService {
 
     private final Cloudinary cloudinary;
 
+    // ==========================================
+    // Upload Job Seeker CV
+    // ==========================================
+
     public String uploadCv(MultipartFile file) {
 
         try {
@@ -28,10 +32,43 @@ public class CloudinaryService {
             return uploadResult.get("secure_url").toString();
 
         } catch (Exception e) {
+
             throw new RuntimeException(
                     "Failed to upload CV",
                     e
             );
+
         }
+
     }
+
+    // ==========================================
+    // Upload Company Logo
+    // ==========================================
+
+    public String uploadCompanyLogo(MultipartFile file) {
+
+        try {
+
+            Map uploadResult = cloudinary.uploader().upload(
+                    file.getBytes(),
+                    Map.of(
+                            "folder", "jobsphere/company-logos",
+                            "resource_type", "image"
+                    )
+            );
+
+            return uploadResult.get("secure_url").toString();
+
+        } catch (Exception e) {
+
+            throw new RuntimeException(
+                    "Failed to upload company logo",
+                    e
+            );
+
+        }
+
+    }
+
 }

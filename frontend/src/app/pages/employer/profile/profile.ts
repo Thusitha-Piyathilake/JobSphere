@@ -6,11 +6,12 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { EmployerProfileService } from '../../../services/employer-profile.service';
+import { UploadService } from '../../../services/upload.service';
 import { EmployerProfile } from '../../../models/employer-profile.model';
 import { AuthService } from '../../../services/auth.service';
 
-// ✅ Correct relative path – verify the file exists at this location
 import { ReplacePipe } from '../../../pipes/replace.pipe';
+
 @Component({
   selector: 'app-profile',
   standalone: true,
@@ -25,6 +26,7 @@ import { ReplacePipe } from '../../../pipes/replace.pipe';
 export class Profile implements OnInit {
 
   private profileService = inject(EmployerProfileService);
+  private uploadService = inject(UploadService);
   private authService = inject(AuthService);
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
@@ -49,21 +51,28 @@ export class Profile implements OnInit {
   };
 
   ngOnInit(): void {
+
     console.log('[Profile] Role:', this.authService.getRole());
+
     if (!this.authService.isEmployer()) {
       this.router.navigate(['/login']);
       return;
     }
+
     this.loadProfile();
   }
 
   loadProfile(): void {
+
     this.loading = true;
     this.errorMessage = '';
+
     const employerId = Number(localStorage.getItem('userId'));
 
     this.authService.getUser(employerId).subscribe({
+
       next: (user) => {
+
         this.profile.employerId = employerId;
         this.profile.companyName = user.companyName;
         this.profile.companyEmail = user.email;
@@ -73,75 +82,181 @@ export class Profile implements OnInit {
         this.profile.description = user.companyDescription;
 
         this.profileService.getProfile(employerId).subscribe({
+
           next: (extraProfile) => {
-            this.profile = { ...this.profile, ...extraProfile };
+
+            this.profile = {
+              ...this.profile,
+              ...extraProfile
+            };
+
             this.loading = false;
             this.cdr.detectChanges();
+
           },
+
           error: () => {
+
             this.loading = false;
             this.cdr.detectChanges();
+
           }
+
         });
+
       },
+
       error: (err) => {
+
         console.error(err);
         this.errorMessage = 'Failed to load company information.';
         this.loading = false;
+
       }
+
     });
+
   }
 
   toggleEdit(): void {
+
     this.editMode = !this.editMode;
     this.errorMessage = '';
+
+  }
+
+  // ==========================================================
+  // Upload Company Logo
+  // ==========================================================
+
+  onLogoSelected(event: Event): void {
+
+    const input = event.target as HTMLInputElement;
+
+    if (!input.files || input.files.length === 0) {
+      return;
+    }
+
+    const file = input.files[0];
+
+    this.uploadService.uploadCompanyLogo(file).subscribe({
+
+      next: (response) => {
+
+        this.profile.logoUrl = response.url;
+
+        this.cdr.detectChanges();
+
+        alert('Company logo uploaded successfully.');
+
+      },
+
+      error: (err) => {
+
+        console.error(err);
+
+        alert('Failed to upload company logo.');
+
+      }
+
+    });
+
   }
 
   saveProfile(): void {
+
     this.profile.employerId = Number(localStorage.getItem('userId'));
+
     this.errorMessage = '';
 
     if (this.profile.id) {
-      this.profileService.updateProfile(this.profile.employerId, this.profile).subscribe({
+
+      this.profileService.updateProfile(
+        this.profile.employerId,
+        this.profile
+      ).subscribe({
+
         next: (response) => {
+
           this.profile = response;
+
           this.editMode = false;
+
           alert('Profile updated successfully!');
+
           this.cdr.detectChanges();
+
         },
+
         error: (err) => {
+
           console.error(err);
-          this.errorMessage = 'Failed to update profile. Please try again.';
+
+          this.errorMessage =
+            'Failed to update profile. Please try again.';
+
         }
+
       });
+
     } else {
+
       this.profileService.createProfile(this.profile).subscribe({
+
         next: (response) => {
+
           this.profile = response;
+
           this.editMode = false;
+
           alert('Profile created successfully!');
+
           this.cdr.detectChanges();
+
         },
+
         error: (err) => {
+
           console.error(err);
-          this.errorMessage = 'Failed to create profile. Please try again.';
+
+          this.errorMessage =
+            'Failed to create profile. Please try again.';
+
         }
+
       });
+
     }
+
   }
 
   copyLink(): void {
-    const link = `jobsphere.lk/company/${this.profile.companyName?.toLowerCase().replace(/ /g, '-') || 'company'}`;
+
+    const link =
+      `jobsphere.lk/company/${this.profile.companyName?.toLowerCase().replace(/ /g, '-') || 'company'}`;
+
     navigator.clipboard?.writeText(link).then(() => {
+
       alert('Link copied to clipboard!');
+
     }).catch(() => {
+
       const input = document.createElement('input');
+
       input.value = link;
+
       document.body.appendChild(input);
+
       input.select();
+
       document.execCommand('copy');
+
       document.body.removeChild(input);
+
       alert('Link copied to clipboard!');
+
     });
+
   }
+
 }

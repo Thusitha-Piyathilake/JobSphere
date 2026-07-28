@@ -1,3 +1,5 @@
+// src/app/services/upload.service.ts
+
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -11,10 +13,13 @@ export class UploadService {
 
   private apiUrl = 'http://localhost:8080/api/upload';
 
+  // ============================
+  // Upload Job Seeker CV
+  // ============================
+
   uploadCv(file: File): Observable<any> {
 
     const formData = new FormData();
-
     formData.append('file', file);
 
     return this.http.post(
@@ -22,4 +27,20 @@ export class UploadService {
       formData
     );
   }
+
+  // ============================
+  // Upload Company Logo
+  // ============================
+
+  uploadCompanyLogo(file: File): Observable<any> {
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    return this.http.post(
+      `${this.apiUrl}/company-logo`,
+      formData
+    );
+  }
+
 }
