@@ -1,134 +1,189 @@
-<div class="auth-container">
+<!-- src/app/pages/jobseeker/auth/auth.html -->
 
-    <div class="auth-card">
+<div class="shell">
 
-        <div class="tabs">
-            <button
-                class="tab-btn"
-                [class.active]="isLogin"
-                (click)="switchToLogin()">
-                Login
-            </button>
+  <!-- LEFT BRAND PANEL (unchanged) -->
+  <div class="brand-panel">
+    <div class="logo">
+      <div class="logo-mark"><span>JS</span></div>
+      Job<span class="dot">Sphere</span>
+    </div>
 
-            <button
-                class="tab-btn"
-                [class.active]="!isLogin"
-                (click)="switchToRegister()">
-                Register
-            </button>
+    <div class="brand-mid">
+      <h1>Your next role is already on the board.</h1>
+      <p>Create a profile once, and apply to Sri Lanka's best tech &amp; product jobs in a couple of clicks.</p>
+
+      <div class="board-mini">
+        <div class="label">Now Hiring</div>
+        <div class="flap-row-mini"><span class="role">Software Engineer</span><span class="co">WSO2</span></div>
+        <div class="flap-row-mini"><span class="role">UI/UX Designer</span><span class="co">CodeGen</span></div>
+        <div class="flap-row-mini"><span class="role">DevOps Engineer</span><span class="co">99x</span></div>
+      </div>
+    </div>
+
+    <div class="brand-stats">
+      <div>
+        <div class="num"><span class="o">9</span></div>
+        <div class="lbl">Jobs open now</div>
+      </div>
+      <div>
+        <div class="num">42</div>
+        <div class="lbl">Companies hiring</div>
+      </div>
+      <div>
+        <div class="num">07</div>
+        <div class="lbl">Districts</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT FORM PANEL -->
+  <div class="form-panel">
+    <div class="form-card">
+
+      <!-- Tabs -->
+      <div class="tabs">
+        <button class="tab-btn" [class.active]="isLogin" (click)="switchToLogin()">Login</button>
+        <button class="tab-btn" [class.active]="!isLogin" (click)="switchToRegister()">Register</button>
+      </div>
+
+      <!-- ============================================ -->
+      <!--  LOGIN PANEL                                 -->
+      <!-- ============================================ -->
+
+      <div class="panel-view" [class.active]="isLogin" id="panel-login">
+        <div class="form-head">
+          <h2>Job Seeker Login</h2>
+          <p>Welcome back — let's find you a role.</p>
         </div>
 
-        <!-- LOGIN -->
-        <div *ngIf="isLogin">
+        <form (ngSubmit)="login()" #loginForm="ngForm">
+          <div class="field-block">
+            <label for="l-email">Email</label>
+            <input type="email" id="l-email" placeholder="you@example.com" [(ngModel)]="loginEmail" name="loginEmail" required>
+          </div>
 
-            <h2>Job Seeker Login</h2>
-
-            <input
-                type="email"
-                placeholder="Email"
-                [(ngModel)]="loginEmail"
-                class="form-control mb-3">
-
-            <input
-                type="password"
-                placeholder="Password"
-                [(ngModel)]="loginPassword"
-                class="form-control mb-3">
-
-            <button class="main-btn" (click)="login()">
-                Login
-            </button>
-
-        </div>
-
-        <!-- REGISTER -->
-        <div *ngIf="!isLogin">
-
-            <h2>Job Seeker Register</h2>
-
-            <div class="row">
-                <div class="col">
-                    <input
-                        type="text"
-                        placeholder="First Name"
-                        [(ngModel)]="firstName"
-                        class="form-control mb-3">
-                </div>
-
-                <div class="col">
-                    <input
-                        type="text"
-                        placeholder="Last Name"
-                        [(ngModel)]="lastName"
-                        class="form-control mb-3">
-                </div>
+          <div class="field-block">
+            <label for="l-pass">Password</label>
+            <div class="pw-wrap">
+              <input type="password" id="l-pass" placeholder="Enter your password" [(ngModel)]="loginPassword" name="loginPassword" required>
             </div>
+          </div>
 
-            <input
-                type="email"
-                placeholder="Email"
-                [(ngModel)]="registerEmail"
-                class="form-control mb-3">
+          <div class="row-between">
+            <label class="remember">
+              <input type="checkbox"> Remember me
+            </label>
+            <a href="#" class="forgot">Forgot password?</a>
+          </div>
 
-            <input
-                type="password"
-                placeholder="Password"
-                [(ngModel)]="registerPassword"
-                class="form-control mb-3">
+          <button type="submit" class="submit-btn">Login</button>
+        </form>
 
-            <input
-                type="password"
-                placeholder="Confirm Password"
-                [(ngModel)]="confirmPassword"
-                class="form-control mb-3">
+        <!-- ============ NEW: Google Sign-In container ============ -->
+        <div class="divider-text">or</div>
 
-            <select
-                class="form-control mb-3"
-                [(ngModel)]="gender">
+        <div id="googleSignInButton"></div>
 
-                <option value="">Select Gender</option>
+        <p class="switch-line">
+          New to JobSphere?
+          <a href="javascript:void(0)" (click)="switchToRegister()">Create an account</a>
+        </p>
+      </div>
+
+      <!-- ============================================ -->
+      <!--  REGISTER PANEL (unchanged)                  -->
+      <!-- ============================================ -->
+
+      <div class="panel-view" [class.active]="!isLogin" id="panel-register">
+        <div class="form-head">
+          <h2>Job Seeker Register</h2>
+          <p>Set up your profile in under 2 minutes.</p>
+        </div>
+
+        <form (ngSubmit)="register()" #registerForm="ngForm">
+          <!-- First Name / Last Name -->
+          <div class="field-block field-row">
+            <div>
+              <label for="r-first">First Name</label>
+              <input type="text" id="r-first" placeholder="Nimal" [(ngModel)]="firstName" name="firstName" required>
+            </div>
+            <div>
+              <label for="r-last">Last Name</label>
+              <input type="text" id="r-last" placeholder="Perera" [(ngModel)]="lastName" name="lastName" required>
+            </div>
+          </div>
+
+          <!-- Email -->
+          <div class="field-block">
+            <label for="r-email">Email</label>
+            <input type="email" id="r-email" placeholder="you@example.com" [(ngModel)]="registerEmail" name="registerEmail" required>
+          </div>
+
+          <!-- Password / Confirm Password -->
+          <div class="field-block field-row">
+            <div>
+              <label for="r-pass">Password</label>
+              <input type="password" id="r-pass" placeholder="Create a password" [(ngModel)]="registerPassword" name="registerPassword" required>
+            </div>
+            <div>
+              <label for="r-cpass">Confirm Password</label>
+              <input type="password" id="r-cpass" placeholder="Re-enter password" [(ngModel)]="confirmPassword" name="confirmPassword" required>
+            </div>
+          </div>
+
+          <!-- Gender / Home Town -->
+          <div class="field-block field-row">
+            <div>
+              <label for="r-gender">Gender</label>
+              <select id="r-gender" [(ngModel)]="gender" name="gender">
+                <option value="">Select gender</option>
                 <option>Male</option>
                 <option>Female</option>
-            </select>
-
-            <input
-                type="text"
-                placeholder="Home Town"
-                [(ngModel)]="homeTown"
-                class="form-control mb-3">
-
-            <div class="mb-3">
-                <input type="file" class="form-control">
+                <option>Prefer not to say</option>
+              </select>
             </div>
-
-            <div class="form-check mb-2">
-                <input
-                    type="checkbox"
-                    class="form-check-input"
-                    [(ngModel)]="acceptTerms">
-
-                <label class="form-check-label">
-                    I agree to Terms and Conditions
-                </label>
+            <div>
+              <label for="r-town">Home Town</label>
+              <input type="text" id="r-town" placeholder="e.g. Negombo" [(ngModel)]="homeTown" name="homeTown">
             </div>
+          </div>
 
-            <div class="form-check mb-3">
-                <input
-                    type="checkbox"
-                    class="form-check-input"
-                    [(ngModel)]="receiveEmails">
-
-                <label class="form-check-label">
-                    Receive job alerts by email
-                </label>
+          <!-- Resume / CV (visual only) -->
+          <div class="field-block">
+            <label>Resume / CV <span style="font-weight:500; color:var(--muted);">(optional)</span></label>
+            <div class="dropzone">
+              <div class="doc-ico">📎</div>
+              <div>
+                <div class="t1">Choose a file to upload</div>
+                <div class="t2">PDF or DOCX, up to 5MB</div>
+              </div>
+              <input type="file" (change)="onFileSelected($event)">
             </div>
+          </div>
 
-            <button class="main-btn" (click)="register()">
-                Register
-            </button>
+          <!-- Checkboxes -->
+          <div class="check-list">
+            <div class="check-row">
+              <input type="checkbox" id="terms" [(ngModel)]="acceptTerms" name="acceptTerms">
+              <label for="terms">I agree to the Terms and Conditions</label>
+            </div>
+            <div class="check-row">
+              <input type="checkbox" id="alerts" [(ngModel)]="receiveEmails" name="receiveEmails" checked>
+              <label for="alerts">Receive job alerts by email</label>
+            </div>
+          </div>
 
-        </div>
+          <button type="submit" class="submit-btn">Create Account</button>
+        </form>
+
+        <p class="switch-line">
+          Already have an account?
+          <a href="javascript:void(0)" (click)="switchToLogin()">Log in</a>
+        </p>
+      </div>
 
     </div>
+  </div>
 
 </div>

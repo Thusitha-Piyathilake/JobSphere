@@ -1,18 +1,25 @@
 <!-- src/app/pages/employer/create-job/create-job.html -->
-<div class="create-job-container">
-  <div class="shape-left"></div>
-  <div class="shape-right"></div>
 
-  <div class="create-job-card">
-    <div class="header-section">
-      <div class="header-icon">💼</div>
-      <div>
-        <h1>{{ isEditMode ? 'Edit Job' : 'Create New Job' }}</h1>
-        <p>{{ isEditMode ? 'Update the job details below' : 'Fill in the details below to post a new job opening' }}</p>
-      </div>
+<div class="wrap">
+
+  <!-- ============================================ -->
+  <!--  PAGE HEAD                                   -->
+  <!-- ============================================ -->
+
+  <div class="page-head">
+    <div class="head-ico">💼</div>
+    <div>
+      <h1>{{ isEditMode ? 'Edit Job' : 'Create New Job' }}</h1>
+      <p>{{ isEditMode ? 'Update the job details below' : 'Fill in the details below to post a new job opening' }}</p>
     </div>
+  </div>
 
-    <div class="divider"></div>
+  <!-- ============================================ -->
+  <!--  FORM CARD                                   -->
+  <!-- ============================================ -->
+
+  <section class="form-card">
+    <div class="top-rule"></div>
 
     <!-- Loading -->
     <div *ngIf="loadingJob" class="loading-state">
@@ -20,66 +27,85 @@
       <p>Loading job details...</p>
     </div>
 
-    <!-- Form (hidden while loading) -->
+    <!-- Form -->
     <div *ngIf="!loadingJob">
-      <div class="form-grid">
-        <div class="input-group">
-          <label>Job Title</label>
-          <input type="text" placeholder="e.g. Senior Software Engineer" [(ngModel)]="job.title">
-        </div>
-        <div class="input-group">
-          <label>Company Name</label>
-          <input type="text" placeholder="e.g. JobSphere Technologies" [(ngModel)]="job.company">
-        </div>
-        <div class="input-group">
-          <label>Location</label>
-          <input type="text" placeholder="e.g. Colombo, Sri Lanka" [(ngModel)]="job.location">
-        </div>
-        <div class="input-group">
-          <label>Category</label>
-          <input type="text" placeholder="e.g. IT & Software" [(ngModel)]="job.category">
-        </div>
-        <div class="input-group">
-          <label>Salary</label>
-          <input type="number" placeholder="e.g. 75000" [(ngModel)]="job.salary">
-        </div>
-        <div class="input-group">
-          <label>Job Type</label>
-          <select [(ngModel)]="job.jobType">
-            <option value="">Select Job Type</option>
-            <option>Full Time</option>
-            <option>Part Time</option>
-            <option>Internship</option>
-            <option>Contract</option>
-            <option>Remote</option>
-          </select>
-        </div>
-      </div>
+      <form (ngSubmit)="submitJob()" #jobForm="ngForm">
 
-      <div class="location-picker-section">
-        <label class="map-label">Select Company Location On Map</label>
-        <app-location-picker [address]="job.location" (locationSelected)="onLocationSelected($event)"></app-location-picker>
-        <div class="selected-location" *ngIf="job.latitude && job.longitude">
-          📍 Selected Coordinates: {{ job.latitude | number:'1.4-4' }}, {{ job.longitude | number:'1.4-4' }}
+        <!-- Row 1: Job Title + Company -->
+        <div class="field-row">
+          <div class="field-block">
+            <label for="jobTitle">Job Title</label>
+            <input type="text" id="jobTitle" placeholder="e.g. Senior Software Engineer" [(ngModel)]="job.title" name="jobTitle" required>
+          </div>
+          <div class="field-block">
+            <label for="companyName">Company Name</label>
+            <input type="text" id="companyName" placeholder="e.g. JobSphere Technologies" [(ngModel)]="job.company" name="companyName" required>
+          </div>
         </div>
-      </div>
 
-      <div class="description-group">
-        <label>Job Description</label>
-        <textarea placeholder="Describe the job role, responsibilities, requirements and more..." [(ngModel)]="job.description"></textarea>
-      </div>
+        <!-- Row 2: Location + Category -->
+        <div class="field-row">
+          <div class="field-block">
+            <label for="location">Location</label>
+            <input type="text" id="location" placeholder="e.g. Colombo, Sri Lanka" [(ngModel)]="job.location" name="location" required>
+          </div>
+          <div class="field-block">
+            <label for="category">Category</label>
+            <input type="text" id="category" placeholder="e.g. IT & Software" [(ngModel)]="job.category" name="category">
+          </div>
+        </div>
 
-      <!-- ✅ Button Group with Cancel -->
-      <div class="button-group">
-        <button class="submit-btn" (click)="submitJob()">
-          {{ isEditMode ? '💾 Update Job' : '🚀 Post Job' }}
-        </button>
-        <button type="button" class="cancel-btn" (click)="cancel()">
-          ❌ Cancel
-        </button>
-      </div>
+        <!-- Row 3: Salary + Job Type -->
+        <div class="field-row">
+          <div class="field-block">
+            <label for="salary">Salary</label>
+            <input type="number" id="salary" placeholder="e.g. 75000" [(ngModel)]="job.salary" name="salary">
+          </div>
+          <div class="field-block">
+            <label for="jobType">Job Type</label>
+            <select id="jobType" [(ngModel)]="job.jobType" name="jobType">
+              <option value="">Select Job Type</option>
+              <option>Full Time</option>
+              <option>Part Time</option>
+              <option>Remote</option>
+              <option>Hybrid</option>
+              <option>Internship</option>
+              <option>Contract</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- ============================================ -->
+        <!--  MAP COMPONENT (REAL)                        -->
+        <!-- ============================================ -->
+        <div class="field-block full location-picker-section">
+          <div class="map-label">Select Company Location On Map</div>
+          <app-location-picker
+            [address]="job.location"
+            (locationSelected)="onLocationSelected($event)">
+          </app-location-picker>
+          <div class="selected-location" *ngIf="job.latitude && job.longitude">
+            📍 Selected Coordinates: {{ job.latitude | number:'1.4-4' }}, {{ job.longitude | number:'1.4-4' }}
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="field-block full">
+          <label for="description">Job Description</label>
+          <textarea id="description" placeholder="Describe the job role, responsibilities, requirements and more..." [(ngModel)]="job.description" name="description"></textarea>
+        </div>
+
+        <!-- Buttons -->
+        <div class="button-group">
+          <button type="submit" class="post-btn">🚀 {{ isEditMode ? 'Update Job' : 'Post Job' }}</button>
+          <button type="button" class="cancel-btn" (click)="cancel()">✕ Cancel</button>
+        </div>
+
+        <p class="review-note">🔒 Your job will be reviewed and visible to job seekers</p>
+
+      </form>
     </div>
 
-    <p class="footer-text">🔒 Your job will be reviewed and visible to job seekers</p>
-  </div>
+  </section>
+
 </div>

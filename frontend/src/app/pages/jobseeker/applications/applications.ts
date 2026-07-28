@@ -3,185 +3,127 @@
 import {
   Component,
   OnInit,
+  OnDestroy,
   inject,
   ChangeDetectorRef
 } from '@angular/core';
-
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { forkJoin } from 'rxjs';
-
-import {
-  ApplicationService,
-  Application
-} from '../../../services/application.service';
-
-import {
-  JobService
-} from '../../../services/job.service';
-
-interface ApplicationWithJob extends Application {
-  jobTitle: string;
-  jobCompany: string;
-  jobLocation: string;
-  jobType: string;
-}
+import { ApplicationService, ApplicationWithJob } from '../../../services/application.service';
 
 @Component({
   selector: 'app-applications',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './applications.html',
-  styleUrl: './applications.css'
+  styleUrl: './applications.css',
 })
-export class Applications implements OnInit {
+export class Applications implements OnInit, OnDestroy {
 
-  private applicationService =
-    inject(ApplicationService);
-
-  private jobService =
-    inject(JobService);
-
-  // ✅ FIXED
-  public router =
-    inject(Router);
-
-  private cdr =
-    inject(ChangeDetectorRef);
+  private applicationService = inject(ApplicationService);
+  private cdr = inject(ChangeDetectorRef);
+  readonly router = inject(Router);
 
   applications: ApplicationWithJob[] = [];
-
   loading = true;
+
+  private isDestroyed = false;
+  private retryTimer: any = null;
 
   ngOnInit(): void {
     this.loadApplications();
   }
 
+  ngOnDestroy(): void {
+    this.isDestroyed = true;
+    if (this.retryTimer) {
+      clearTimeout(this.retryTimer);
+      this.retryTimer = null;
+    }
+  }
+
   loadApplications(): void {
+    if (this.retryTimer) {
+      clearTimeout(this.retryTimer);
+      this.retryTimer = null;
+    }
 
-    const jobSeekerId =
-      Number(localStorage.getItem('userId')) || 1;
+    const jobSeekerId = this.getJobSeekerId();
 
-    console.log(
-      '[Applications] Fetching for ID:',
-      jobSeekerId
-    );
+    if (!jobSeekerId) {
+      console.log('[Applications] Waiting for userId...');
+      this.retryTimer = setTimeout(() => this.loadApplications(), 300);
+      return;
+    }
 
+    this.fetchData(jobSeekerId);
+  }
+
+  private getJobSeekerId(): number {
+    const id =
+      localStorage.getItem('userId') ||
+      localStorage.getItem('jobSeekerId') ||
+      localStorage.getItem('id');
+    return Number(id) || 0;
+  }
+
+  private fetchData(jobSeekerId: number): void {
+    if (this.isDestroyed) return;
+
+    // ✅ Correct method name: getApplicationsByJobSeeker
     this.applicationService
       .getApplicationsByJobSeeker(jobSeekerId)
       .subscribe({
+        next: (data: ApplicationWithJob[]) => {
+          if (this.isDestroyed) return;
 
-        next: (apps) => {
-
-          console.log(
-            '[Applications] Received:',
-            apps
-          );
-
-          if (!apps || apps.length === 0) {
-            this.applications = [];
-            this.loading = false;
-            this.cdr.detectChanges();
-            return;
-          }
-
-          const jobRequests =
-            apps.map(app =>
-              this.jobService.getJobById(app.jobId)
-            );
-
-          forkJoin(jobRequests).subscribe({
-
-            next: (jobs) => {
-
-              this.applications =
-                apps.map((app, index) => ({
-
-                  ...app,
-
-                  jobTitle:
-                    jobs[index].title,
-
-                  jobCompany:
-                    jobs[index].company,
-
-                  jobLocation:
-                    jobs[index].location,
-
-                  jobType:
-                    jobs[index].jobType
-                }));
-
-              console.log(
-                '[Applications] Final:',
-                this.applications
-              );
-
-              this.loading = false;
-
-              this.cdr.detectChanges();
-            },
-
-            error: (err) => {
-
-              console.error(
-                'Error fetching job details:',
-                err
-              );
-
-              this.loading = false;
-
-              this.cdr.detectChanges();
-            }
+          this.applications = (data || []).sort((a: ApplicationWithJob, b: ApplicationWithJob) => {
+            const dateA = new Date(a.appliedAt).getTime();
+            const dateB = new Date(b.appliedAt).getTime();
+            return dateB - dateA;
           });
-        },
-
-        error: (err) => {
-
-          console.error(
-            'Error fetching applications:',
-            err
-          );
 
           this.loading = false;
-
           this.cdr.detectChanges();
+
+          console.log(
+            '[Applications] Loaded',
+            this.applications.length,
+            'applications'
+          );
+        },
+        error: (err: any) => {
+          if (this.isDestroyed) return;
+          console.error('[Applications] API error:', err);
+          this.retryTimer = setTimeout(() => this.loadApplications(), 1000);
         }
       });
   }
 
-  viewJob(jobId: number): void {
-
-    this.router.navigate([
-      '/jobs',
-      jobId
-    ]);
+  refresh(): void {
+    this.loading = true;
+    this.loadApplications();
   }
 
-  getStatusClass(
-    status: string
-  ): string {
+  // These methods are not used by job seekers but kept for completeness.
+  acceptApplication(applicationId: number): void {
+    // Not used – you can remove this method if you want.
+  }
 
-    const map: {
-      [key: string]: string
-    } = {
+  rejectApplication(applicationId: number): void {
+    // Not used.
+  }
 
-      PENDING:
-        'status-pending',
+  getStatusClass(status: string): string {
+    switch ((status || '').toUpperCase()) {
+      case 'PENDING':   return 'pending';
+      case 'ACCEPTED':  return 'accepted';
+      case 'REJECTED':  return 'rejected';
+      default:          return '';
+    }
+  }
 
-      ACCEPTED:
-        'status-accepted',
-
-      REJECTED:
-        'status-rejected',
-
-      WITHDRAWN:
-        'status-withdrawn'
-    };
-
-    return (
-      map[status] ||
-      'status-pending'
-    );
+  viewJob(jobId: number): void {
+    this.router.navigate(['/jobs', jobId]);
   }
 }

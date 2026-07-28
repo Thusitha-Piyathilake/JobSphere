@@ -1,50 +1,96 @@
 <!-- src/app/pages/employer/my-jobs/my-jobs.html -->
-<div class="my-jobs-container">
 
-  <div class="header-card">
-    <div>
-      <h1>📋 My Jobs</h1>
-      <p>Manage all your posted job opportunities</p>
+<div class="wrap">
+
+  <!-- ============================================ -->
+  <!--  BANNER                                      -->
+  <!-- ============================================ -->
+
+  <section class="banner">
+    <div class="banner-left">
+      <div class="banner-ico">📋</div>
+      <div>
+        <h1>My Jobs</h1>
+        <p>Manage all your posted job opportunities</p>
+      </div>
     </div>
-    <div class="job-count">{{ jobs.length }} Jobs</div>
-  </div>
+    <div class="banner-right">
+      <span class="count-chip">{{ jobs.length }} JOB{{ jobs.length !== 1 ? 'S' : '' }}</span>
+      <button class="btn btn-primary" routerLink="/employer/create-job">+ New Job</button>
+    </div>
+  </section>
 
-  <!-- Loading -->
+  <!-- ============================================ -->
+  <!--  LOADING                                    -->
+  <!-- ============================================ -->
+
   <div *ngIf="loading" class="loading-state">
     <div class="spinner"></div>
     <p>Loading jobs...</p>
   </div>
 
-  <!-- Error -->
+  <!-- ============================================ -->
+  <!--  ERROR                                      -->
+  <!-- ============================================ -->
+
   <div *ngIf="!loading && errorMessage" class="alert alert-error">
     {{ errorMessage }}
   </div>
 
-  <!-- Empty State -->
+  <!-- ============================================ -->
+  <!--  EMPTY STATE                                -->
+  <!-- ============================================ -->
+
   <div *ngIf="!loading && !errorMessage && jobs.length === 0" class="empty-state">
     <div class="empty-icon">📭</div>
     <h2>No Jobs Posted Yet</h2>
     <p>Start attracting candidates by creating your first job posting.</p>
+    <button class="btn btn-primary" routerLink="/employer/create-job">+ Create Job</button>
   </div>
 
-  <!-- Jobs Grid -->
-  <div *ngIf="!loading && !errorMessage && jobs.length > 0" class="jobs-grid">
+  <!-- ============================================ -->
+  <!--  JOB GRID                                   -->
+  <!-- ============================================ -->
+
+  <div *ngIf="!loading && !errorMessage && jobs.length > 0" class="job-grid">
+
+    <!-- Existing jobs (no "Post another job" card) -->
     <div class="job-card" *ngFor="let job of jobs">
-      <div class="card-header">
-        <h2>{{ job.title }}</h2>
-        <span class="job-type">{{ job.jobType }}</span>
+      <div class="job-card-top">
+        <h4>{{ job.title }}</h4>
+        <span class="type-pill">{{ job.jobType }}</span>
       </div>
-      <h3>{{ job.company }}</h3>
-      <div class="info-row">📍 {{ job.location }}</div>
-      <div class="info-row">💰 Rs. {{ job.salary | number }}</div>
-      <div class="info-row">🏷️ {{ job.category }}</div>
-      <p class="description">{{ job.description }}</p>
-      <div class="actions">
-        <!-- ✅ Edit button with click handler -->
-        <button class="edit-btn" (click)="editJob(job.id)">Edit</button>
-        <button class="delete-btn" (click)="deleteJob(job.id)">Delete</button>
+      <div class="company">{{ job.company }}</div>
+
+      <div class="address-line">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+          <path d="M12 22s7-6.2 7-12a7 7 0 10-14 0c0 5.8 7 12 7 12z" stroke="currentColor" stroke-width="2"/>
+          <circle cx="12" cy="10" r="2.5" stroke="currentColor" stroke-width="2"/>
+        </svg>
+        <span>{{ job.location }}</span>
+      </div>
+
+      <div class="job-meta-row">
+        <span class="pill salary">Rs. {{ job.salary | number }}</span>
+        <span class="pill">🏷️ {{ job.category || 'General' }}</span>
+      </div>
+
+      <div class="job-desc">{{ job.description || 'No description provided.' }}</div>
+
+      <div class="status-row">
+        <span class="status-dot"></span>
+        ACTIVE
+        <span style="margin:0 4px; opacity:.5;">·</span>
+        <span class="status-dot applicants"></span>
+        0 APPLICANTS
+      </div>
+
+      <div class="job-card-foot">
+        <button class="btn btn-edit" (click)="editJob(job.id)">Edit</button>
+        <button class="btn btn-delete" (click)="deleteJob(job.id)">Delete</button>
       </div>
     </div>
+
   </div>
 
 </div>

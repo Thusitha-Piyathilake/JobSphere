@@ -55,10 +55,8 @@ public class SavedJobService {
         );
     }
 
+    // ✅ UPDATED: Return null instead of throwing an exception
     public Job getJobDetails(Long jobId) {
-
-        return jobRepository.findById(jobId)
-                .orElseThrow(() ->
-                        new RuntimeException("Job not found"));
+        return jobRepository.findById(jobId).orElse(null);
     }
 }

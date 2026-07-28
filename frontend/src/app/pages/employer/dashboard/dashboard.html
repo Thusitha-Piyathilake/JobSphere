@@ -1,109 +1,157 @@
-<div class="dashboard-container">
+<!-- src/app/pages/employer/dashboard/dashboard.html -->
 
-  <!-- Welcome -->
-  <div class="welcome-card">
+<div class="wrap">
 
-    <h1>Welcome Back 👋</h1>
+  <!-- ============================================ -->
+  <!--  WELCOME BANNER                              -->
+  <!-- ============================================ -->
 
-    <p>
-      Manage your jobs and applicants efficiently with JobSphere.
-    </p>
+  <section class="banner">
+    <div class="banner-left">
+      <div class="banner-eyebrow">TECH SOLUTIONS · EMPLOYER</div>
+      <h1>Welcome back 👋</h1>
+      <p>Manage your jobs and applicants efficiently with JobSphere.</p>
+    </div>
+    <div class="banner-actions">
+      <button class="btn btn-white" routerLink="/employer/create-job">+ Create Job</button>
+      <button class="btn btn-outline-light" routerLink="/employer/applicants">View Applicants</button>
+    </div>
+  </section>
 
-  </div>
+  <!-- ============================================ -->
+  <!--  STATS                                       -->
+  <!-- ============================================ -->
 
-  <!-- Statistics -->
   <div class="stats-grid">
-
-    <div
-      class="stat-card"
-      *ngFor="let stat of stats">
-
-      <div class="stat-icon">
-        {{ stat.icon }}
+    <div class="stat-card" *ngFor="let stat of stats; let i = index">
+      <div class="stat-top">
+        <div class="stat-ico" [ngClass]="stat.iconClass">{{ stat.icon }}</div>
+        <span class="trend" [ngClass]="stat.trendClass">{{ stat.trend }}</span>
       </div>
-
-      <h2>{{ stat.value }}</h2>
-
-      <p>{{ stat.title }}</p>
-
+      <div>
+        <div class="stat-num">{{ stat.value }}</div>
+        <div class="stat-label">{{ stat.title }}</div>
+      </div>
+      <svg class="sparkline" viewBox="0 0 100 26" preserveAspectRatio="none">
+        <polyline [attr.points]="stat.sparkline" fill="none" [attr.stroke]="stat.color" stroke-width="2"/>
+      </svg>
     </div>
-
   </div>
 
-  <!-- Quick Actions -->
-  <div class="actions-section">
+  <!-- ============================================ -->
+  <!--  CONTENT GRID                                -->
+  <!-- ============================================ -->
 
-    <h2>Quick Actions</h2>
+  <div class="content-grid">
 
-    <div class="actions-grid">
+    <!-- MAIN COLUMN -->
+    <main>
 
-      <a
-        routerLink="/employer/create-job"
-        class="action-btn">
+      <!-- Chart -->
+      <section class="panel">
+        <div class="panel-head">
+          <div>
+            <h2>Applications this quarter</h2>
+            <div class="sub">Weekly volume across all job posts</div>
+          </div>
+          <div class="chart-legend">
+            <div class="legend-item"><span class="legend-dot" style="background:#FF6A1F;"></span>Applications</div>
+            <div class="legend-item"><span class="legend-dot" style="background:#14172A;"></span>Interviews</div>
+          </div>
+        </div>
+        <div class="chart-wrap">
+          <svg viewBox="0 0 600 200" preserveAspectRatio="none">
+            <line x1="0" y1="40" x2="600" y2="40" stroke="#EDE9E0" stroke-width="1"/>
+            <line x1="0" y1="90" x2="600" y2="90" stroke="#EDE9E0" stroke-width="1"/>
+            <line x1="0" y1="140" x2="600" y2="140" stroke="#EDE9E0" stroke-width="1"/>
+            <line x1="0" y1="190" x2="600" y2="190" stroke="#EDE9E0" stroke-width="1"/>
+            <polygon points="0,150 50,130 100,140 150,110 200,120 250,90 300,100 350,70 400,80 450,55 500,60 550,30 600,40 600,200 0,200"
+              fill="#FF6A1F" opacity="0.12"/>
+            <polyline points="0,150 50,130 100,140 150,110 200,120 250,90 300,100 350,70 400,80 450,55 500,60 550,30 600,40"
+              fill="none" stroke="#FF6A1F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="0,180 50,175 100,178 150,165 200,168 250,155 300,160 350,145 400,150 450,135 500,140 550,120 600,128"
+              fill="none" stroke="#14172A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1 7"/>
+            <circle cx="600" cy="40" r="5" fill="#FF6A1F"/>
+            <circle cx="600" cy="128" r="4" fill="#14172A"/>
+          </svg>
+          <div class="chart-xaxis">
+            <span>W1</span><span>W2</span><span>W3</span><span>W4</span><span>W5</span><span>W6</span><span>W7</span>
+          </div>
+        </div>
+      </section>
 
-        ➕ Create Job
+      <!-- Recent Jobs Table -->
+      <section class="panel">
+        <div class="panel-head">
+          <div>
+            <h2>Recent Job Posts</h2>
+            <div class="sub">Your latest listings and their status</div>
+          </div>
+          <a routerLink="/employer/my-jobs" class="panel-link">View all →</a>
+        </div>
+        <table>
+          <thead>
+            <tr><th>Job Title</th><th>Applicants</th><th>Status</th><th></th></tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let job of recentJobs">
+              <td>
+                <div class="job-title-cell">
+                  <div class="mini-logo">{{ job.initials }}</div>
+                  <div>
+                    <div class="jt-name">{{ job.title }}</div>
+                    <div class="jt-meta">{{ job.location }} · {{ job.type }}</div>
+                  </div>
+                </div>
+              </td>
+              <td class="applicant-count">{{ job.applicants }}</td>
+              <td><span class="status-badge" [ngClass]="job.statusClass">{{ job.status }}</span></td>
+              <td style="text-align:right;"><a routerLink="/employer/my-jobs" class="panel-link">Manage</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
 
-      </a>
+    </main>
 
-      <a
-        routerLink="/employer/my-jobs"
-        class="action-btn">
+    <!-- SIDEBAR -->
+    <aside>
 
-        📋 My Jobs
+      <!-- Applicant Pipeline -->
+      <section class="panel">
+        <div class="panel-head"><h2>Applicant Pipeline</h2></div>
+        <div class="funnel-row" *ngFor="let stage of pipeline">
+          <div class="funnel-top"><span class="stage">{{ stage.name }}</span><span class="count">{{ stage.count }}</span></div>
+          <div class="funnel-bar"><div class="funnel-fill" [style.width.%]="stage.percent"></div></div>
+        </div>
+      </section>
 
-      </a>
+      <!-- Upcoming Interviews -->
+      <section class="panel">
+        <div class="panel-head"><h2>Upcoming Interviews</h2></div>
+        <div class="interview-item" *ngFor="let interview of interviews">
+          <div class="interview-date"><span class="d">{{ interview.day }}</span><span class="m">{{ interview.month }}</span></div>
+          <div>
+            <div class="interview-name">{{ interview.name }}</div>
+            <div class="interview-role">{{ interview.role }}</div>
+          </div>
+          <div class="interview-time">{{ interview.time }}</div>
+        </div>
+      </section>
 
-      <a
-        routerLink="/employer/applicants"
-        class="action-btn">
+      <!-- Recent Activity -->
+      <section class="panel">
+        <div class="panel-head"><h2>Recent Activity</h2></div>
+        <div class="activity-item" *ngFor="let activity of activities">
+          <div class="activity-dot" [style.background]="activity.dotColor"></div>
+          <div>
+            <div class="activity-text" [innerHTML]="activity.text"></div>
+            <div class="activity-time">{{ activity.time }}</div>
+          </div>
+        </div>
+      </section>
 
-        👥 Applicants
-
-      </a>
-
-    </div>
-
-  </div>
-
-  <!-- Recent Jobs -->
-  <div class="recent-jobs">
-
-    <h2>Recent Job Posts</h2>
-
-    <table>
-
-      <thead>
-        <tr>
-          <th>Job Title</th>
-          <th>Applicants</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-
-      <tbody>
-
-        <tr *ngFor="let job of recentJobs">
-
-          <td>{{ job.title }}</td>
-
-          <td>{{ job.applicants }}</td>
-
-          <td>
-            <span
-              class="status"
-              [class.active]="job.status === 'Active'"
-              [class.closed]="job.status === 'Closed'">
-
-              {{ job.status }}
-
-            </span>
-          </td>
-
-        </tr>
-
-      </tbody>
-
-    </table>
+    </aside>
 
   </div>
 

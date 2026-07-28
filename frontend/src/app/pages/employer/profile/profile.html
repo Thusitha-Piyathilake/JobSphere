@@ -1,134 +1,188 @@
 <!-- src/app/pages/employer/profile/profile.html -->
-<div class="profile-container">
 
-  <!-- Loading Spinner -->
+<div class="wrap">
+
+  <!-- ============================================ -->
+  <!--  LOADING / ERROR                              -->
+  <!-- ============================================ -->
+
   <div *ngIf="loading" class="loading-state">
     <div class="spinner"></div>
     <p>Loading profile...</p>
   </div>
 
-  <!-- Error Message -->
   <div *ngIf="!loading && errorMessage" class="alert alert-error">
     {{ errorMessage }}
   </div>
 
-  <!-- Main Content -->
-  <ng-container *ngIf="!loading && !errorMessage">
+  <!-- ============================================ -->
+  <!--  HERO BANNER                                 -->
+  <!-- ============================================ -->
 
-    <!-- Banner -->
-    <div class="banner-section">
-      <img
-        [src]="profile.bannerUrl || 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d'"
-        class="banner-image">
-      <div class="logo-wrapper">
-        <div class="company-logo" *ngIf="!profile.logoUrl">🏢</div>
-        <img *ngIf="profile.logoUrl" [src]="profile.logoUrl" class="company-logo">
+  <section class="hero" *ngIf="!loading && !errorMessage">
+    <div class="hero-left">
+      <div class="logo-editable">
+        <img *ngIf="profile.logoUrl" [src]="profile.logoUrl" class="logo-img" alt="Company logo">
+        <span *ngIf="!profile.logoUrl" class="logo-fallback">🏢</span>
+        <div class="logo-hover" (click)="toggleEdit()">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M4 20h4l10.5-10.5a2.1 2.1 0 00-3-3L5 17v3z" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span>CHANGE LOGO</span>
+        </div>
+        <!-- Logo upload input – kept for future use, but no logic binding -->
+        <input type="file" id="logo-upload" accept="image/*" style="display:none;">
       </div>
-    </div>
-
-    <!-- Company Header -->
-    <div class="company-card">
-      <div class="company-header">
-        <div>
+      <div>
+        <div class="hero-name-row">
           <h1>{{ profile.companyName || 'Company Name' }}</h1>
-          <p class="industry">{{ profile.industry || 'Industry not provided' }}</p>
+          <span class="verified-chip">✔ VERIFIED</span>
         </div>
-        <div>
-          <button class="edit-btn me-3" (click)="toggleEdit()">
-            {{ editMode ? 'Cancel' : '✏️ Edit Profile' }}
-          </button>
-          <button *ngIf="editMode" class="edit-btn" (click)="saveProfile()">
-            💾 Save
-          </button>
-        </div>
-      </div>
-
-      <div class="stats-grid">
-        <div class="stat-card">
-          <h2>0</h2>
-          <span>Jobs Posted</span>
-        </div>
-        <div class="stat-card">
-          <h2>0</h2>
-          <span>Applicants</span>
-        </div>
-        <div class="stat-card">
-          <h2>0</h2>
-          <span>Active Jobs</span>
+        <div class="hero-industry">{{ profile.industry || 'Industry not provided' }} · {{ profile.address || 'Location not provided' }}</div>
+        <div class="hero-tags">
+          <span class="hero-tag" *ngIf="profile.foundedYear">FOUNDED {{ profile.foundedYear }}</span>
+          <span class="hero-tag" *ngIf="profile.companySize">{{ profile.companySize }} EMPLOYEES</span>
+          <span class="hero-tag" *ngIf="!profile.foundedYear && !profile.companySize">No company details yet</span>
         </div>
       </div>
     </div>
+    <div class="hero-right">
+      <button class="btn btn-white" (click)="toggleEdit()">
+        {{ editMode ? 'Cancel' : '✎ Edit Profile' }}
+      </button>
+      <button *ngIf="editMode" class="btn btn-primary" (click)="saveProfile()" style="margin-left: 10px;">
+        💾 Save
+      </button>
+    </div>
+  </section>
 
+  <!-- ============================================ -->
+  <!--  COMPLETENESS CARD                           -->
+  <!-- ============================================ -->
+
+  <div class="complete-card" *ngIf="!loading && !errorMessage">
+    <div class="ring-wrap">
+      <svg width="52" height="52" viewBox="0 0 52 52">
+        <circle cx="26" cy="26" r="21" fill="none" stroke="#EDE9E0" stroke-width="6"/>
+        <circle cx="26" cy="26" r="21" fill="none" stroke="#FF6A1F" stroke-width="6" stroke-linecap="round"
+          stroke-dasharray="132" stroke-dashoffset="33"/>
+      </svg>
+      <div class="pct">75%</div>
+    </div>
+    <div class="complete-text">
+      <div class="t1">Your company profile is 75% complete</div>
+      <div class="t2">Add a phone number so candidates and JobSphere support can reach you.</div>
+    </div>
+    <div class="complete-cta">
+      <button class="btn btn-primary" (click)="toggleEdit()">Add Phone Number</button>
+    </div>
+  </div>
+
+  <!-- ============================================ -->
+  <!--  STATS                                       -->
+  <!-- ============================================ -->
+
+  <div class="stats-grid" *ngIf="!loading && !errorMessage">
+    <div class="stat-card">
+      <div class="stat-ico orange">📋</div>
+      <div>
+        <div class="stat-num">0</div>
+        <div class="stat-label">Jobs Posted</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-ico blue">👥</div>
+      <div>
+        <div class="stat-num">0</div>
+        <div class="stat-label">Applicants</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-ico mint">🟢</div>
+      <div>
+        <div class="stat-num">0</div>
+        <div class="stat-label">Active Jobs</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================ -->
+  <!--  MAIN CONTENT GRID                           -->
+  <!-- ============================================ -->
+
+  <main *ngIf="!loading && !errorMessage">
     <div class="content-grid">
 
-      <!-- LEFT -->
-      <div class="left-column">
+      <!-- LEFT COLUMN -->
+      <div>
+        <!-- About Company -->
+        <section class="panel">
+          <div class="panel-head">
+            <h2>About Company</h2>
+            <a href="javascript:void(0)" class="panel-edit" (click)="toggleEdit()">Edit</a>
+          </div>
+          <p *ngIf="!editMode" class="body-text">{{ profile.description || 'No company description provided.' }}</p>
+          <textarea *ngIf="editMode" class="form-textarea" rows="4" [(ngModel)]="profile.description"></textarea>
+        </section>
 
-        <div class="info-card">
-          <h2>About Company</h2>
-          <p *ngIf="!editMode">{{ profile.description || 'No company description provided.' }}</p>
-          <textarea *ngIf="editMode" rows="6" class="form-control" [(ngModel)]="profile.description"></textarea>
-        </div>
-
-        <div class="info-card">
-          <h2>Company Information</h2>
-
-          <div class="info-row">
-            🌐 Website
-            <span *ngIf="!editMode">{{ profile.website || '-' }}</span>
-            <input *ngIf="editMode" class="form-control w-50" [(ngModel)]="profile.website">
+        <!-- Company Information -->
+        <section class="panel">
+          <div class="panel-head">
+            <h2>Company Information</h2>
+            <a href="javascript:void(0)" class="panel-edit" (click)="toggleEdit()">Edit</a>
           </div>
 
           <div class="info-row">
-            📧 Email
-            <span>{{ profile.companyEmail || '-' }}</span>
+            <div class="k"><span class="ico">🌐</span> Website</div>
+            <div *ngIf="!editMode" class="v link">{{ profile.website || '-' }}</div>
+            <input *ngIf="editMode" class="form-input" [(ngModel)]="profile.website" placeholder="https://...">
           </div>
 
           <div class="info-row">
-            📞 Phone
-            <span>{{ profile.companyPhone || '-' }}</span>
+            <div class="k"><span class="ico">✉️</span> Email</div>
+            <div class="v">{{ profile.companyEmail || '-' }}</div>
           </div>
 
           <div class="info-row">
-            📍 Address
-            <span *ngIf="!editMode">{{ profile.address || '-' }}</span>
-            <input *ngIf="editMode" class="form-control w-50" [(ngModel)]="profile.address">
+            <div class="k"><span class="ico">📞</span> Phone</div>
+            <div *ngIf="!editMode" class="v empty" (click)="toggleEdit()">+ Add phone</div>
+            <input *ngIf="editMode" class="form-input" [(ngModel)]="profile.companyPhone" placeholder="+94 ...">
           </div>
 
           <div class="info-row">
-            🏭 Industry
-            <span>{{ profile.industry || '-' }}</span>
+            <div class="k"><span class="ico">📍</span> Address</div>
+            <div *ngIf="!editMode" class="v">{{ profile.address || '-' }}</div>
+            <input *ngIf="editMode" class="form-input" [(ngModel)]="profile.address" placeholder="Colombo, Sri Lanka">
           </div>
-        </div>
 
+          <div class="info-row">
+            <div class="k"><span class="ico">🏷️</span> Industry</div>
+            <div *ngIf="!editMode" class="v">{{ profile.industry || '-' }}</div>
+            <input *ngIf="editMode" class="form-input" [(ngModel)]="profile.industry" placeholder="Software">
+          </div>
+        </section>
       </div>
 
-      <!-- RIGHT -->
-      <div class="right-column">
+      <!-- RIGHT COLUMN -->
+      <div>
+        <!-- Company Details -->
+        <section class="panel">
+          <div class="panel-head"><h2>Company Details</h2></div>
+          <div class="detail-row"><span class="k">Founded</span><span *ngIf="!editMode" class="v">{{ profile.foundedYear || '-' }}</span><input *ngIf="editMode" class="form-input" [(ngModel)]="profile.foundedYear" placeholder="2000"></div>
+          <div class="detail-row"><span class="k">Company Size</span><span *ngIf="!editMode" class="v">{{ profile.companySize || '-' }}</span><input *ngIf="editMode" class="form-input" [(ngModel)]="profile.companySize" placeholder="100"></div>
+          <div class="detail-row"><span class="k">Status</span><span class="v verified">✔ Verified Employer</span></div>
+        </section>
 
-        <div class="info-card">
-          <h2>Company Details</h2>
-
-          <div class="detail-item">
-            <span>Founded</span>
-            <strong *ngIf="!editMode">{{ profile.foundedYear || '-' }}</strong>
-            <input *ngIf="editMode" class="form-control w-50" [(ngModel)]="profile.foundedYear">
-          </div>
-
-          <div class="detail-item">
-            <span>Company Size</span>
-            <strong *ngIf="!editMode">{{ profile.companySize || '-' }}</strong>
-            <input *ngIf="editMode" class="form-control w-50" [(ngModel)]="profile.companySize">
-          </div>
-
-          <div class="detail-item">
-            <span>Status</span>
-            <strong class="verified">✔ Verified Employer</strong>
+        <!-- Public Profile Link -->
+        <div class="share-card">
+          <h3>Public profile link</h3>
+          <p>Candidates can view this page before applying.</p>
+          <div class="link-row">
+            <input type="text" readonly value="jobsphere.lk/company/{{ profile.companyName | lowercase | replace:' ':'-' }}">
+            <button class="copy-btn" (click)="copyLink()">Copy</button>
           </div>
         </div>
-
       </div>
+
     </div>
+  </main>
 
-  </ng-container>
 </div>

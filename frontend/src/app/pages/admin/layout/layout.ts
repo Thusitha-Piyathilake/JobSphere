@@ -1,12 +1,32 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-layout',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [
+    CommonModule,
+    RouterModule
+  ],
   templateUrl: './layout.html',
   styleUrl: './layout.css'
 })
-export class Layout {}
+export class Layout {
+
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {}
+
+  logout(): void {
+
+    this.authService.logout();
+
+    this.router.navigate(['/']);
+
+  }
+
+}

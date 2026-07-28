@@ -1,6 +1,7 @@
 package com.jobsphere.backend.controller;
 
 import com.jobsphere.backend.dto.ApplicationRequest;
+import com.jobsphere.backend.dto.ApplicationWithJobDTO;
 import com.jobsphere.backend.entity.Application;
 import com.jobsphere.backend.service.ApplicationService;
 import lombok.RequiredArgsConstructor;
@@ -29,23 +30,21 @@ public class ApplicationController {
         return applicationService.getApplicationsForJob(jobId);
     }
 
+    // ✅ CHANGED: now returns DTO with full job details
     @GetMapping("/jobseeker/{jobSeekerId}")
-    public List<Application> getApplicationsForJobSeeker(
+    public List<ApplicationWithJobDTO> getApplicationsForJobSeeker(
             @PathVariable Long jobSeekerId
     ) {
-        return applicationService.getApplicationsForJobSeeker(jobSeekerId);
+        return applicationService.getApplicationsForJobSeekerWithDetails(jobSeekerId);
     }
 
     // NEW ENDPOINT
     @GetMapping("/employer/{employerId}")
-    public List<Application> getApplicationsForEmployer(
-            @PathVariable Long employerId
-    ) {
-        return applicationService
-                .getApplicationsForEmployer(
-                        employerId
-                );
-    }
+public List<ApplicationWithJobDTO> getApplicationsForEmployer(
+        @PathVariable Long employerId
+) {
+    return applicationService.getApplicationsForEmployerWithDetails(employerId);
+}
 
     @PutMapping("/{id}/accept")
     public Application acceptApplication(

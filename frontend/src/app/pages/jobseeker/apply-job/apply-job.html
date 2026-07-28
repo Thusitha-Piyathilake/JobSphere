@@ -1,89 +1,85 @@
-<div class="container mt-5">
+<!-- src/app/pages/jobseeker/apply-job/apply-job.html -->
 
-  <div class="card shadow-lg p-5">
+<div class="apply-container">
 
-    <h1 class="mb-5">
-      Apply for Job
-    </h1>
+  <!-- ============================================ -->
+  <!--  BREADCRUMB                                  -->
+  <!-- ============================================ -->
 
-    <div class="mb-4">
-
-      <label class="form-label">
-        Your Name
-      </label>
-
-      <input
-        type="text"
-        class="form-control"
-        [(ngModel)]="applicantName">
-
-    </div>
-
-    <div class="mb-4">
-
-      <label class="form-label">
-        Your Email
-      </label>
-
-      <input
-        type="email"
-        class="form-control"
-        [(ngModel)]="applicantEmail">
-
-    </div>
-
-    <div class="mb-4">
-
-      <label class="form-label">
-        Message or Cover Letter
-      </label>
-
-      <textarea
-        rows="8"
-        class="form-control"
-        [(ngModel)]="coverLetter">
-
-      </textarea>
-
-    </div>
-
-    <div class="mb-4">
-
-      <label class="form-label">
-        Upload Resume / CV
-      </label>
-
-      <input
-        type="file"
-        class="form-control"
-        accept=".pdf,.doc,.docx"
-        (change)="onFileSelected($event)">
-
-    </div>
-
-    <div class="form-check mb-5">
-
-      <input
-        class="form-check-input"
-        type="checkbox"
-        [(ngModel)]="emailCopy">
-
-      <label class="form-check-label">
-
-        Email me a copy of my application
-
-      </label>
-
-    </div>
-
-    <button
-      class="btn btn-primary btn-lg"
-      (click)="submitApplication()">
-
-      Send Application
-
-    </button>
-
+  <div class="crumb">
+    <a routerLink="/">Home</a> <span class="sep">/</span>
+    <a routerLink="/jobs">Jobs</a> <span class="sep">/</span>
+    <span class="current">Apply</span>
   </div>
+
+  <!-- ============================================ -->
+  <!--  JOB CONTEXT STRIP                           -->
+  <!-- ============================================ -->
+
+  <div class="job-context">
+    <div class="logo-sm">{{ jobTitle.charAt(0) || 'J' }}</div>
+    <div class="info">
+      <div class="role">{{ jobTitle || 'Software Engineering Intern' }}</div>
+      <div class="meta">{{ jobCompany || 'IFS' }} · {{ jobLocation || 'Colombo' }} · Rs {{ jobSalary || '25,000' }}/mo</div>
+    </div>
+    <a routerLink="/jobs" class="close-x">✕</a>
+  </div>
+
+  <!-- ============================================ -->
+  <!--  FORM CARD                                   -->
+  <!-- ============================================ -->
+
+  <section class="form-card">
+    <h1>Apply for this job</h1>
+    <p class="sub">Takes about 2 minutes. {{ jobCompany || 'The company' }} will receive your details directly.</p>
+
+    <form (ngSubmit)="submitApplication()" #applyForm="ngForm">
+
+      <!-- Your Name -->
+      <div class="field-block">
+        <label for="name">Your Name <span class="req">*</span></label>
+        <input type="text" id="name" placeholder="e.g. Nimal Perera" [(ngModel)]="applicantName" name="applicantName" required>
+      </div>
+
+      <!-- Your Email -->
+      <div class="field-block">
+        <label for="email">Your Email <span class="req">*</span></label>
+        <input type="email" id="email" placeholder="you@example.com" [(ngModel)]="applicantEmail" name="applicantEmail" required>
+      </div>
+
+      <!-- Cover Letter -->
+      <div class="field-block">
+        <label for="message">Message or Cover Letter <span class="opt">Optional</span></label>
+        <textarea id="message" placeholder="Tell {{ jobCompany || 'the company' }} why you're a good fit for this role..." [(ngModel)]="coverLetter" name="coverLetter" maxlength="1000"></textarea>
+        <!-- ✅ FIXED: safe character count without optional chain -->
+        <div class="char-count">{{ (coverLetter || '').length }} / 1000</div>
+      </div>
+
+      <!-- File Upload -->
+      <div class="field-block">
+        <label for="resume">Upload Resume / CV <span class="req">*</span></label>
+        <div class="dropzone">
+          <div class="doc-ico">📎</div>
+          <div>
+            <div class="t1">Drop your file here</div>
+            <div class="t2">PDF or DOCX, up to 5MB</div>
+          </div>
+          <span class="browse">Browse</span>
+          <input type="file" id="resume" accept=".pdf,.doc,.docx" (change)="onFileSelected($event)">
+        </div>
+      </div>
+
+      <!-- Email Copy Checkbox -->
+      <div class="checkbox-row">
+        <input type="checkbox" id="copy" [(ngModel)]="emailCopy" name="emailCopy">
+        <label for="copy">Email me a copy of my application</label>
+      </div>
+
+      <!-- Submit -->
+      <button type="submit" class="submit-btn">Send Application →</button>
+      <p class="form-footnote">By applying, you agree to share these details with {{ jobCompany || 'the company' }} via JobSphere.</p>
+
+    </form>
+  </section>
 
 </div>

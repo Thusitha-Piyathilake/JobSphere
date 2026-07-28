@@ -18,18 +18,20 @@ public class JwtService {
             SECRET_KEY.getBytes(StandardCharsets.UTF_8)
     );
 
-    public String generateToken(String email) {
-
+    // NEW method with role and userId
+    public String generateToken(String email, String role, Long userId) {
         return Jwts.builder()
                 .subject(email)
+                .claim("role", role)
+                .claim("userId", userId)
                 .issuedAt(new Date())
-                .expiration(
-                        new Date(
-                                System.currentTimeMillis()
-                                        + 1000L * 60 * 60 * 24
-                        )
-                )
+                .expiration(new Date(System.currentTimeMillis() + 1000L * 60 * 60 * 24))
                 .signWith(key)
                 .compact();
+    }
+
+    // Keep old method if needed elsewhere (optional)
+    public String generateToken(String email) {
+        return generateToken(email, "USER", 0L); // fallback
     }
 }

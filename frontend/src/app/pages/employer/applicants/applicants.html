@@ -1,176 +1,98 @@
-<div class="applicants-container">
+<!-- src/app/pages/employer/applicants/applicants.html -->
 
-  <div class="header-card">
+<div class="wrap">
 
-    <div>
-      <h1>👨‍💼 Applicants</h1>
-      <p>
-        Review candidates who applied for your jobs
-      </p>
+  <!-- ============================================ -->
+  <!--  BANNER                                      -->
+  <!-- ============================================ -->
+
+  <section class="banner">
+    <div class="banner-left">
+      <div class="banner-ico">🧑‍💼</div>
+      <div>
+        <h1>Applicants</h1>
+        <p>Review candidates who applied for your jobs</p>
+      </div>
     </div>
+    <span class="count-chip">{{ applications.length }} APPLICANT{{ applications.length !== 1 ? 'S' : '' }}</span>
+  </section>
 
-    <div class="count-badge">
-      {{ applications.length }} Applicants
+  <!-- ============================================ -->
+  <!--  FILTER CHIPS                                -->
+  <!-- ============================================ -->
+
+  <div class="filter-row">
+    <div class="filter-chip" [class.active]="selectedFilter === 'ALL'" (click)="setFilter('ALL')">
+      All <span class="n">{{ filterCounts.ALL }}</span>
     </div>
-
+    <div class="filter-chip" [class.active]="selectedFilter === 'PENDING'" (click)="setFilter('PENDING')">
+      Pending <span class="n">{{ filterCounts.PENDING }}</span>
+    </div>
+    <div class="filter-chip" [class.active]="selectedFilter === 'ACCEPTED'" (click)="setFilter('ACCEPTED')">
+      Accepted <span class="n">{{ filterCounts.ACCEPTED }}</span>
+    </div>
+    <div class="filter-chip" [class.active]="selectedFilter === 'REJECTED'" (click)="setFilter('REJECTED')">
+      Rejected <span class="n">{{ filterCounts.REJECTED }}</span>
+    </div>
   </div>
 
-  <!-- Loading -->
+  <!-- ============================================ -->
+  <!--  LOADING                                    -->
+  <!-- ============================================ -->
 
-  <div
-    class="empty-state"
-    *ngIf="loading">
-
-    Loading applicants...
-
+  <div *ngIf="loading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Loading applicants...</p>
   </div>
 
-  <!-- Empty State -->
+  <!-- ============================================ -->
+  <!--  EMPTY STATE                                -->
+  <!-- ============================================ -->
 
-  <div
-    class="empty-state"
-    *ngIf="
-      !loading &&
-      applications.length === 0
-    ">
-
-    <div class="empty-icon">
-      📭
-    </div>
-
-    <h2>
-      No Applications Yet
-    </h2>
-
-    <p>
-      Applications submitted by job seekers
-      will appear here.
-    </p>
-
+  <div *ngIf="!loading && filteredApplications.length === 0" class="empty-state">
+    <div class="empty-icon">📭</div>
+    <h2>No Applications Yet</h2>
+    <p>Applications submitted by job seekers will appear here.</p>
   </div>
 
-  <!-- Applications -->
+  <!-- ============================================ -->
+  <!--  APPLICATION GRID                            -->
+  <!-- ============================================ -->
 
-  <div
-    class="applications-grid"
-    *ngIf="
-      !loading &&
-      applications.length > 0
-    ">
+  <div *ngIf="!loading && filteredApplications.length > 0" class="app-grid">
 
-    <div
-      class="application-card"
-      *ngFor="
-        let application of applications
-      ">
-
-      <div class="card-top">
-
-        <div class="avatar">
-          👤
-        </div>
-
+    <div class="app-card" *ngFor="let application of filteredApplications">
+      <div class="app-top">
+        <div class="app-avatar">{{ application.applicantName.charAt(0) | uppercase }}</div>
         <div>
-
-          <h2>
-            {{ application.applicantName }}
-          </h2>
-
-          <p>
-            {{ application.applicantEmail }}
-          </p>
-
+          <div class="app-name">{{ application.applicantName }}</div>
+          <div class="app-email">{{ application.applicantEmail }}</div>
+          <div class="app-role-tag">{{ application.job?.title || 'Job' }}</div>
         </div>
-
       </div>
 
-      <div class="info-row">
-        📅 Applied:
-        {{
-          application.appliedAt
-            | date:'medium'
-        }}
+      <div class="meta-line">
+        <span class="ico">📅</span> Applied {{ application.appliedAt | date:'MMM d, y · h:mm a' }}
+      </div>
+      <div class="meta-line">
+        <span class="ico">📄</span> Status:
+        <span class="status-badge" [ngClass]="{
+          'status-pending': application.status === 'PENDING',
+          'status-accepted': application.status === 'ACCEPTED',
+          'status-rejected': application.status === 'REJECTED'
+        }">{{ application.status || 'PENDING' }}</span>
       </div>
 
-      <div class="info-row">
-        📄 Status:
-        <span
-          class="status"
-          [ngClass]="{
-            'pending':
-              application.status === 'PENDING',
-
-            'accepted':
-              application.status === 'ACCEPTED',
-
-            'rejected':
-              application.status === 'REJECTED'
-          }">
-
-          {{ application.status }}
-
-        </span>
+      <div class="cover-block">
+        <div class="label">Cover Letter</div>
+        <div class="text">{{ application.coverLetter || 'No cover letter provided.' }}</div>
       </div>
 
-      <div class="cover-letter">
-
-        <strong>
-          Cover Letter
-        </strong>
-
-        <p>
-          {{
-            application.coverLetter
-          }}
-        </p>
-
+      <div class="app-actions">
+        <a class="btn btn-cv" [href]="application.cvUrl" target="_blank">📄 View CV</a>
+        <button class="btn btn-accept" *ngIf="application.status === 'PENDING'" (click)="acceptApplication(application.id)">Accept</button>
+        <button class="btn btn-reject" *ngIf="application.status === 'PENDING'" (click)="rejectApplication(application.id)">Reject</button>
       </div>
-
-      <div class="actions">
-
-        <a
-          class="cv-btn"
-          [href]="application.cvUrl"
-          target="_blank">
-
-          📄 View CV
-
-        </a>
-
-        <button
-          class="accept-btn"
-          *ngIf="
-            application.status ===
-            'PENDING'
-          "
-          (click)="
-            acceptApplication(
-              application.id
-            )
-          ">
-
-          Accept
-
-        </button>
-
-        <button
-          class="reject-btn"
-          *ngIf="
-            application.status ===
-            'PENDING'
-          "
-          (click)="
-            rejectApplication(
-              application.id
-            )
-          ">
-
-          Reject
-
-        </button>
-
-      </div>
-
     </div>
 
   </div>

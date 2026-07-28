@@ -1,113 +1,191 @@
+<!-- src/app/pages/job-details/job-details.html -->
+
 <div class="job-details-container" *ngIf="job">
 
-  <!-- Hero Card -->
-  <div class="hero-card">
+  <!-- ============================================ -->
+  <!--  BREADCRUMB                                  -->
+  <!-- ============================================ -->
 
-    <div class="hero-left">
-      <div class="company-logo">
-        {{ job.company.charAt(0) }}
-      </div>
-
-      <div>
-        <h1>{{ job.title }}</h1>
-        <h3>{{ job.company }}</h3>
-
-        <div class="job-meta">
-          <span>📍 {{ job.location }}</span>
-          <span>💼 {{ job.jobType }}</span>
-          <span>💰 Rs {{ job.salary | number }}</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="hero-buttons">
-
-      <button
-        class="save-btn"
-        (click)="saveJob()">
-        ❤️ Save Job
-      </button>
-
-      <button
-        class="apply-btn"
-        (click)="applyJob()">
-        Apply Now
-      </button>
-
-    </div>
-
+  <div class="crumb">
+    <a routerLink="/">Home</a> <span class="sep">/</span>
+    <a routerLink="/jobs">Jobs</a> <span class="sep">/</span>
+    <span class="current">{{ job.title }}</span>
   </div>
 
-  <!-- Main Content -->
+  <!-- ============================================ -->
+  <!--  JOB HEADER CARD                             -->
+  <!-- ============================================ -->
+
+  <section class="job-header">
+    <div class="job-logo-lg">{{ job.company.charAt(0) | uppercase }}</div>
+    <div class="job-header-body">
+      <div class="job-header-top">
+        <div>
+          <h1>{{ job.title }}</h1>
+          <div class="job-company">
+            {{ job.company }} <span class="dotsep">·</span> {{ job.location }}
+          </div>
+          <div class="job-badges">
+            <span class="badge-new">POSTED 2 DAYS AGO</span>
+            <span class="badge-applicants">18 APPLICANTS</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="address-row">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+          <path d="M12 22s7-6.2 7-12a7 7 0 10-14 0c0 5.8 7 12 7 12z" stroke="currentColor" stroke-width="2"/>
+          <circle cx="12" cy="10" r="2.5" stroke="currentColor" stroke-width="2"/>
+        </svg>
+        <span>{{ job.location }}</span>
+      </div>
+
+      <!-- ========================================== -->
+      <!--  REMOVED: job-meta pills                  -->
+      <!--  Now only the action buttons remain       -->
+      <!-- ========================================== -->
+      <div class="job-header-foot">
+        <div class="header-actions">
+          <button class="btn btn-save" (click)="saveJob()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 21s-7.5-4.6-10-9.3C.4 8 2 4 6 4c2.2 0 3.8 1.2 6 3.6C14.2 5.2 15.8 4 18 4c4 0 5.6 4 4 7.7C19.5 16.4 12 21 12 21z"/>
+            </svg>
+            Save
+          </button>
+          <button class="btn btn-primary" (click)="applyJob()">Apply Now</button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================ -->
+  <!--  CONTENT GRID                                -->
+  <!-- ============================================ -->
+
   <div class="content-grid">
 
-    <!-- Left Column -->
-    <div class="main-content">
+    <!-- LEFT COLUMN -->
+    <main>
 
-      <div class="section-card">
+      <!-- About -->
+      <section class="panel">
+        <h2><span class="idx">01</span>About this job</h2>
+        <p class="body-text">{{ job.description || 'No description provided.' }}</p>
+      </section>
 
-        <h2>About this job</h2>
+      <!-- Required Skills -->
+      <section class="panel">
+        <h2><span class="idx">02</span>Required Skills</h2>
+        <div class="skills-wrap">
+          <span class="skill-pill">Java</span>
+          <span class="skill-pill">Spring Boot</span>
+          <span class="skill-pill">REST API</span>
+          <span class="skill-pill">MySQL</span>
+          <span class="skill-pill">Git</span>
+        </div>
+      </section>
 
-        <p>
-          {{ job.description }}
-        </p>
+      <!-- What you'll do -->
+      <section class="panel">
+        <h2><span class="idx">03</span>What you'll do</h2>
+        <ul class="respons-list">
+          <li>Build and maintain features on a production Java / Spring Boot codebase</li>
+          <li>Write and review REST APIs consumed by internal and customer-facing apps</li>
+          <li>Pair with senior engineers on code reviews and design discussions</li>
+          <li>Work with MySQL for schema design and query optimisation</li>
+        </ul>
+      </section>
 
+      <!-- Location map -->
+      <section class="panel map-panel">
+        <div class="map-panel-head">
+          <h2 style="margin-bottom:2px;"><span class="idx">04</span>Location</h2>
+          <p style="font-size:13px; color:var(--muted, #8B8D97);">Approximate commute from Negombo</p>
+        </div>
+        <div class="map-canvas">
+          <app-job-map
+            [jobLatitude]="job.latitude"
+            [jobLongitude]="job.longitude"
+          ></app-job-map>
+        </div>
+        <div class="map-dist">
+          <span>Distance: <b>~37 km</b></span>
+          <span>Est. drive: <b>55–70 min</b></span>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- RIGHT COLUMN (Sidebar) -->
+    <aside>
+
+      <!-- Apply CTA -->
+      <div class="apply-cta">
+        <div class="mono-stat">
+          <span>APPLICATIONS CLOSE IN</span>
+          <b>6 DAYS</b>
+        </div>
+        <button class="btn btn-primary" (click)="applyJob()">Apply Now</button>
+        <button class="btn btn-outline-light" (click)="saveJob()">Save for later</button>
       </div>
 
-      <div class="section-card">
+      <!-- Job Information -->
+      <div class="panel side-panel">
+        <h2 style="margin-bottom:20px;">Job Information</h2>
+        <dl>
+          <!-- LOCATION -->
+          <div class="row">
+            <div class="ico">📍</div>
+            <div>
+              <dt>Location</dt>
+              <dd>{{ job.location }}</dd>
+            </div>
+          </div>
+          <div class="divider"></div>
 
-        <h2>Required Skills</h2>
+          <!-- JOB TYPE -->
+          <div class="row">
+            <div class="ico">💼</div>
+            <div>
+              <dt>Job Type</dt>
+              <dd>{{ job.jobType }}</dd>
+            </div>
+          </div>
+          <div class="divider"></div>
 
-        <div class="skills">
+          <!-- SALARY -->
+          <div class="row">
+            <div class="ico">💰</div>
+            <div>
+              <dt>Salary</dt>
+              <dd>Rs {{ job.salary | number }} / month</dd>
+            </div>
+          </div>
+          <div class="divider"></div>
 
-          <span class="skill">Java</span>
-          <span class="skill">Spring Boot</span>
-          <span class="skill">REST API</span>
-          <span class="skill">MySQL</span>
-          <span class="skill">Git</span>
-
-        </div>
-
+          <!-- CATEGORY -->
+          <div class="row">
+            <div class="ico">🏷️</div>
+            <div>
+              <dt>Category</dt>
+              <dd>{{ job.category || 'Software Engineering' }}</dd>
+            </div>
+          </div>
+        </dl>
       </div>
 
-    </div>
-
-    <!-- Right Column -->
-    <div class="sidebar">
-
-      <div class="section-card">
-
-        <h2>Job Information</h2>
-
-        <div class="info-item">
-          <strong>📍 Location</strong>
-          <p>{{ job.location }}</p>
+      <!-- Company Card -->
+      <div class="panel company-card">
+        <div class="job-logo-lg">{{ job.company.charAt(0) | uppercase }}</div>
+        <div style="flex:1;">
+          <div class="cname">{{ job.company }}</div>
+          <div class="cmeta">{{ job.location }}</div>
         </div>
-
-        <div class="info-item">
-          <strong>💼 Job Type</strong>
-          <p>{{ job.jobType }}</p>
-        </div>
-
-        <div class="info-item">
-          <strong>💰 Salary</strong>
-          <p>Rs {{ job.salary | number }}</p>
-        </div>
-
       </div>
+      <a href="#" class="btn btn-ghost" style="width:100%; margin-top:-14px;">View company profile</a>
 
-      <div class="section-card">
-
-        <h2>Location</h2>
-
-        <app-job-map
-          [jobLatitude]="job.latitude"
-          [jobLongitude]="job.longitude">
-        </app-job-map>
-
-      </div>
-
-    </div>
+    </aside>
 
   </div>
 

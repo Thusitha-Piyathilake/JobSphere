@@ -1,4 +1,9 @@
-import { Component, inject } from '@angular/core';
+import {
+  Component,
+  inject,
+  AfterViewInit
+} from '@angular/core';
+
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -9,27 +14,34 @@ import {
   EmployerRegisterRequest
 } from '../../../services/auth.service';
 
+import { GoogleAuthService } from '../../../services/google-auth.service';
+
+declare const google: any;
+
 @Component({
   selector: 'app-employer-auth',
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './employer-auth.html',
-  styleUrl: './employer-auth.css',
+  styleUrl: './employer-auth.css'
 })
-export class Auth {
+export class Auth implements AfterViewInit {
 
   private authService = inject(AuthService);
+  private googleAuthService = inject(GoogleAuthService);
   private router = inject(Router);
 
   isLogin = true;
 
   // ================= LOGIN =================
+
   loginData: LoginRequest = {
     email: '',
     password: ''
   };
 
   // ================= REGISTER =================
+
   registerData: EmployerRegisterRequest = {
     companyName: '',
     email: '',
@@ -49,6 +61,62 @@ export class Auth {
   showRegister() {
     this.isLogin = false;
   }
+
+  // ===================================================
+  // GOOGLE SIGN IN
+  // ===================================================
+
+  ngAfterViewInit(): void {
+
+    this.googleAuthService.initialize((idToken: string) => {
+
+      this.authService
+        .authenticateWithGoogle(idToken, 'EMPLOYER')
+        .subscribe({
+
+          next: (response) => {
+
+            this.authService.saveAuth(
+              response.token,
+              response.role,
+              response.userId
+            );
+
+            if (response.role === 'EMPLOYER') {
+              this.router.navigate(['/employer/dashboard']);
+            } else {
+              alert('This Google account is not registered as an employer.');
+              this.authService.logout();
+            }
+
+          },
+
+          error: (err) => {
+            console.error(err);
+            alert('Google login failed');
+          }
+
+        });
+
+    });
+
+    const element = document.getElementById('googleEmployerButton');
+
+    if (element) {
+      google.accounts.id.renderButton(
+        element,
+        {
+          theme: 'outline',
+          size: 'large',
+          shape: 'rectangular',
+          width: 450
+        }
+      );
+    }
+
+  }
+
+  // ================= LOGIN =================
 
   login() {
 
@@ -70,6 +138,7 @@ export class Auth {
             alert('This account is not an employer account.');
             this.authService.logout();
           }
+
         },
 
         error: (error) => {
@@ -78,7 +147,10 @@ export class Auth {
         }
 
       });
+
   }
+
+  // ================= REGISTER =================
 
   register() {
 
@@ -96,14 +168,11 @@ export class Auth {
 
           alert('Employer registered successfully! Please login to continue.');
 
-          // Switch back to login tab
           this.isLogin = true;
 
-          // Pre-fill login email
           this.loginData.email = this.registerData.email;
           this.loginData.password = '';
 
-          // Clear registration form
           this.registerData = {
             companyName: '',
             email: '',
@@ -115,6 +184,7 @@ export class Auth {
           };
 
           this.confirmPassword = '';
+
         },
 
         error: (error) => {
@@ -123,6 +193,7 @@ export class Auth {
         }
 
       });
+
   }
 
 }

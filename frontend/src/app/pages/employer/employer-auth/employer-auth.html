@@ -1,110 +1,246 @@
-<div class="auth-container">
+<!-- src/app/pages/employer/auth/employer-auth.html -->
 
-  <div class="auth-card">
+<div class="shell">
 
-    <!-- Tabs -->
-    <div class="tabs">
-      <button
-        class="tab-btn"
-        [class.active]="isLogin"
-        (click)="showLogin()">
-        Login
-      </button>
-
-      <button
-        class="tab-btn"
-        [class.active]="!isLogin"
-        (click)="showRegister()">
-        Register
-      </button>
+  <!-- LEFT BRAND PANEL -->
+  <div class="brand-panel">
+    <div class="logo">
+      <div class="logo-mark"><span>JS</span></div>
+      Job<span class="dot">Sphere</span>
     </div>
 
-    <!-- Login Form -->
-    <div *ngIf="isLogin">
+    <div class="brand-mid">
+      <h1>Your next role is already on the board.</h1>
+      <p>Create a profile once, and apply to Sri Lanka's best tech &amp; product jobs in a couple of clicks.</p>
 
-      <h2>Employer Login</h2>
-
-      <input
-  type="email"
-  placeholder="Email Address"
-  class="form-input"
-  [(ngModel)]="loginData.email">
-
-<input
-  type="password"
-  placeholder="Password"
-  class="form-input"
-  [(ngModel)]="loginData.password">
-
-<button
-  class="submit-btn"
-  (click)="login()">
-  Login
-</button>
-
+      <div class="board-mini">
+        <div class="label">Now Hiring</div>
+        <div class="flap-row-mini"><span class="role">Software Engineer</span><span class="co">WSO2</span></div>
+        <div class="flap-row-mini"><span class="role">UI/UX Designer</span><span class="co">CodeGen</span></div>
+        <div class="flap-row-mini"><span class="role">DevOps Engineer</span><span class="co">99x</span></div>
+      </div>
     </div>
 
-    <!-- Register Form -->
-    <div *ngIf="!isLogin">
+    <div class="brand-stats">
+      <div>
+        <div class="num"><span class="o">9</span></div>
+        <div class="lbl">Jobs open now</div>
+      </div>
+      <div>
+        <div class="num">42</div>
+        <div class="lbl">Companies hiring</div>
+      </div>
+      <div>
+        <div class="num">07</div>
+        <div class="lbl">Districts</div>
+      </div>
+    </div>
+  </div>
 
-      <h2>Employer Register</h2>
+  <!-- RIGHT PANEL -->
+  <div class="form-panel">
+    <div class="form-card">
 
-      <input
-  type="text"
-  placeholder="Company Name"
-  class="form-input"
-  [(ngModel)]="registerData.companyName">
+      <!-- Tabs -->
+      <div class="tabs">
+        <button
+          class="tab-btn"
+          [class.active]="isLogin"
+          (click)="showLogin()">
+          Login
+        </button>
 
-<input
-  type="email"
-  placeholder="Email Address"
-  class="form-input"
-  [(ngModel)]="registerData.email">
+        <button
+          class="tab-btn"
+          [class.active]="!isLogin"
+          (click)="showRegister()">
+          Register
+        </button>
+      </div>
 
-<input
-  type="password"
-  placeholder="Password"
-  class="form-input"
-  [(ngModel)]="registerData.password">
+      <!-- ================= LOGIN ================= -->
 
-<input
-  type="password"
-  placeholder="Confirm Password"
-  class="form-input"
-  [(ngModel)]="confirmPassword">
+      <div class="panel-view" [class.active]="isLogin">
 
-<input
-  type="text"
-  placeholder="Website"
-  class="form-input"
-  [(ngModel)]="registerData.companyWebsite">
+        <div class="form-head">
+          <h2>Employer Login</h2>
+          <p>Welcome back — manage your job postings and candidates.</p>
+        </div>
 
-<input
-  type="text"
-  placeholder="Industry"
-  class="form-input"
-  [(ngModel)]="registerData.industry">
+        <form (ngSubmit)="login()" #loginForm="ngForm">
 
-<input
-  type="text"
-  placeholder="Location"
-  class="form-input"
-  [(ngModel)]="registerData.companyLocation">
+          <div class="field-block">
+            <label>Email</label>
+            <input
+              type="email"
+              [(ngModel)]="loginData.email"
+              name="loginEmail"
+              placeholder="you@example.com"
+              required>
+          </div>
 
-<textarea
-  placeholder="Company Description"
-  class="form-input textarea"
-  [(ngModel)]="registerData.companyDescription">
-</textarea>
+          <div class="field-block">
+            <label>Password</label>
+            <input
+              type="password"
+              [(ngModel)]="loginData.password"
+              name="loginPassword"
+              placeholder="Enter your password"
+              required>
+          </div>
 
-<button
-  class="submit-btn"
-  (click)="register()">
-  Register
-</button>
+          <div class="row-between">
+            <label class="remember">
+              <input type="checkbox">
+              Remember me
+            </label>
+
+            <a href="#" class="forgot">
+              Forgot password?
+            </a>
+          </div>
+
+          <button
+            type="submit"
+            class="submit-btn">
+            Login
+          </button>
+
+        </form>
+
+        <!-- GOOGLE SIGN IN -->
+
+        <div class="divider-text">or</div>
+
+        <div
+          id="googleEmployerButton"
+          style="display:flex;justify-content:center;">
+        </div>
+
+        <p class="switch-line">
+          New to JobSphere?
+          <a href="javascript:void(0)"
+             (click)="showRegister()">
+            Create an employer account
+          </a>
+        </p>
+
+      </div>
+
+      <!-- ================= REGISTER ================= -->
+
+      <div class="panel-view" [class.active]="!isLogin">
+
+        <div class="form-head">
+          <h2>Employer Register</h2>
+          <p>Set up your company profile and start hiring in minutes.</p>
+        </div>
+
+        <form (ngSubmit)="register()" #registerForm="ngForm">
+
+          <div class="field-block">
+            <label>Company Name</label>
+            <input
+              type="text"
+              [(ngModel)]="registerData.companyName"
+              name="companyName"
+              placeholder="e.g. Tech Solutions"
+              required>
+          </div>
+
+          <div class="field-block">
+            <label>Email Address</label>
+            <input
+              type="email"
+              [(ngModel)]="registerData.email"
+              name="registerEmail"
+              placeholder="you@company.com"
+              required>
+          </div>
+
+          <div class="field-block field-row">
+
+            <div>
+              <label>Password</label>
+              <input
+                type="password"
+                [(ngModel)]="registerData.password"
+                name="registerPassword"
+                placeholder="Create a password"
+                required>
+            </div>
+
+            <div>
+              <label>Confirm Password</label>
+              <input
+                type="password"
+                [(ngModel)]="confirmPassword"
+                name="confirmPassword"
+                placeholder="Re-enter password"
+                required>
+            </div>
+
+          </div>
+
+          <div class="field-block field-row">
+
+            <div>
+              <label>Company Website</label>
+              <input
+                type="text"
+                [(ngModel)]="registerData.companyWebsite"
+                name="companyWebsite"
+                placeholder="https://company.com">
+            </div>
+
+            <div>
+              <label>Industry</label>
+              <input
+                type="text"
+                [(ngModel)]="registerData.industry"
+                name="industry"
+                placeholder="Software Development">
+            </div>
+
+          </div>
+
+          <div class="field-block">
+            <label>Company Location</label>
+            <input
+              type="text"
+              [(ngModel)]="registerData.companyLocation"
+              name="companyLocation"
+              placeholder="Colombo, Sri Lanka">
+          </div>
+
+          <div class="field-block">
+            <label>Company Description</label>
+            <textarea
+              rows="3"
+              [(ngModel)]="registerData.companyDescription"
+              name="companyDescription"
+              placeholder="Tell potential candidates about your company..."></textarea>
+          </div>
+
+          <button
+            type="submit"
+            class="submit-btn">
+            Create Employer Account
+          </button>
+
+        </form>
+
+        <p class="switch-line">
+          Already have an employer account?
+          <a href="javascript:void(0)"
+             (click)="showLogin()">
+            Log in
+          </a>
+        </p>
+
+      </div>
 
     </div>
-
   </div>
 
 </div>

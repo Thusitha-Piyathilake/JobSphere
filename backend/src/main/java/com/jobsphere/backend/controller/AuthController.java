@@ -7,6 +7,8 @@ import com.jobsphere.backend.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
@@ -16,37 +18,35 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/register/jobseeker")
-    public String registerJobSeeker(
-            @RequestBody RegisterRequest request
-    ) {
+    public String registerJobSeeker(@RequestBody RegisterRequest request) {
         return authService.registerJobSeeker(request);
     }
 
     @PostMapping("/register/employer")
-    public String registerEmployer(
-            @RequestBody RegisterRequest request
-    ) {
+    public String registerEmployer(@RequestBody RegisterRequest request) {
         return authService.registerEmployer(request);
     }
 
     @PostMapping("/register/admin")
-    public String registerAdmin(
-            @RequestBody RegisterRequest request
-    ) {
+    public String registerAdmin(@RequestBody RegisterRequest request) {
         return authService.registerAdmin(request);
     }
 
     @PostMapping("/login")
-    public LoginResponse login(
-            @RequestBody LoginRequest request
-    ) {
-
+    public LoginResponse login(@RequestBody LoginRequest request) {
         System.out.println("=================================");
         System.out.println("LOGIN REQUEST RECEIVED");
         System.out.println("EMAIL: " + request.getEmail());
         System.out.println("PASSWORD: " + request.getPassword());
         System.out.println("=================================");
-
         return authService.login(request);
+    }
+
+    // NEW: Google login endpoint
+    @PostMapping("/google")
+    public LoginResponse googleLogin(@RequestBody Map<String, String> body) throws Exception {
+        String idToken = body.get("idToken");
+        String role = body.get("role");
+        return authService.authenticateWithGoogle(idToken, role);
     }
 }

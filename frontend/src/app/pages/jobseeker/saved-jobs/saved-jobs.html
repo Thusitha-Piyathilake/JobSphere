@@ -1,83 +1,83 @@
+<!-- src/app/pages/jobseeker/saved-jobs/saved-jobs.html -->
+
 <div class="saved-container">
 
-  <div class="header-card">
+  <!-- ============================================ -->
+  <!--  BANNER (dark navy with stats)               -->
+  <!-- ============================================ -->
 
-    <h1>❤️ Saved Jobs</h1>
-
-    <p>
-      Keep track of opportunities you're interested in.
-    </p>
-
-    <div class="count-badge">
-      {{ savedJobs.length }} Saved Jobs
+  <section class="banner">
+    <div class="banner-left">
+      <div class="banner-eyebrow">
+        <span class="heart">♡</span> YOUR SHORTLIST
+      </div>
+      <h1>Saved Jobs</h1>
+      <p>Everything you've bookmarked, in one place — apply whenever you're ready.</p>
     </div>
+    <div class="banner-right">
+      <div class="stat-chip">
+        <div class="num">{{ savedJobs.length }}</div>
+        <div class="lbl">SAVED</div>
+      </div>
+      <div class="stat-chip">
+        <div class="num">{{ closingSoonCount() }}</div>
+        <div class="lbl">CLOSING SOON</div>
+      </div>
+    </div>
+  </section>
 
+  <!-- ============================================ -->
+  <!--  TOOLBAR                                     -->
+  <!-- ============================================ -->
+
+  <div class="toolbar" *ngIf="savedJobs.length > 0">
+    <div class="count-label">
+      <b>{{ savedJobs.length }}</b> jobs saved to your shortlist
+    </div>
+    <div class="toolbar-actions">
+      <select class="sort-select">
+        <option>Recently saved</option>
+        <option>Highest salary</option>
+        <option>Closing soon</option>
+      </select>
+      <a href="javascript:void(0)" class="clear-link" (click)="clearAll()">✕ Clear all</a>
+    </div>
   </div>
 
-  <div
-    class="empty-state"
-    *ngIf="savedJobs.length === 0">
+  <!-- ============================================ -->
+  <!--  JOB GRID                                    -->
+  <!-- ============================================ -->
 
-    <div class="empty-icon">
-      💼
-    </div>
-
-    <h2>No Saved Jobs Yet</h2>
-
-    <p>
-      Save jobs to quickly access them later.
-    </p>
-
+  <div class="job-grid" *ngIf="savedJobs.length > 0">
+    <article class="job-card" *ngFor="let job of savedJobs">
+      <div class="job-card-top">
+        <div class="job-logo">{{ job.company.charAt(0) | uppercase }}</div>
+        <div class="saved-badge">♥</div>
+      </div>
+      <h4>{{ job.title }}</h4>
+      <div class="company">{{ job.company }}</div>
+      <div class="job-meta">
+        <span class="pill">📍 {{ job.location }}</span>
+        <span class="pill">{{ job.jobType }}</span>
+        <span class="pill salary">Rs {{ job.salary | number }}</span>
+      </div>
+      <div class="saved-meta">SAVED {{ getSavedDays(job) }} DAYS AGO</div>
+      <div class="job-card-foot">
+        <button class="btn btn-primary" (click)="viewJob(job.id)">View Job</button>
+        <button class="btn btn-remove" (click)="removeSavedJob(job.id)">Remove</button>
+      </div>
+    </article>
   </div>
 
-  <div
-    class="jobs-grid"
-    *ngIf="savedJobs.length > 0">
+  <!-- ============================================ -->
+  <!--  EMPTY STATE                                 -->
+  <!-- ============================================ -->
 
-    <div
-      class="job-card"
-      *ngFor="let job of savedJobs">
-
-      <div class="company-logo">
-        {{ job.company.charAt(0) }}
-      </div>
-
-      <h2>{{ job.title }}</h2>
-
-      <h4>{{ job.company }}</h4>
-
-      <div class="job-info">
-
-        <span>📍 {{ job.location }}</span>
-
-        <span>💼 {{ job.jobType }}</span>
-
-        <span>💰 Rs {{ job.salary | number }}</span>
-
-      </div>
-
-      <div class="actions">
-
-        <button
-          class="view-btn"
-          (click)="viewJob(job.id)">
-
-          View Job
-
-        </button>
-
-        <button
-          class="remove-btn"
-          (click)="removeSavedJob(job.id)">
-
-          Remove
-
-        </button>
-
-      </div>
-
-    </div>
-
+  <div class="empty-state" *ngIf="savedJobs.length === 0">
+    <div class="icon">🗂️</div>
+    <h3>Nothing saved yet</h3>
+    <p>Tap the heart on any job to add it to your shortlist.</p>
+    <a routerLink="/jobs" class="btn btn-primary">Browse jobs</a>
   </div>
 
 </div>

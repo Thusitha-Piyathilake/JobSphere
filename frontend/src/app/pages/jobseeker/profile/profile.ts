@@ -1,3 +1,5 @@
+// src/app/pages/jobseeker/profile/profile.ts
+
 import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -105,6 +107,28 @@ export class ProfileComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
+  // ---------- computed helpers for completeness ----------
+  get completenessPercent(): number {
+    let filled = 0;
+    if (this.user.firstName?.trim()) filled++;
+    if (this.user.lastName?.trim()) filled++;
+    if (this.user.phone?.trim()) filled++;
+    if (this.user.skills?.length) filled++;
+    return Math.round((filled / 4) * 100);
+  }
+
+  completenessCirc(): string {
+    const circumference = 2 * Math.PI * 24; // r=24
+    const percent = this.completenessPercent / 100;
+    return String(circumference * percent);
+  }
+
+  completenessOffset(): string {
+    const circumference = 2 * Math.PI * 24;
+    return String(circumference);
+  }
+
+  // ---------- skills getter/setter (unchanged) ----------
   get skillsDisplay(): string {
     return (this.user.skills || []).join(', ');
   }

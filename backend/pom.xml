@@ -65,6 +65,13 @@
 			<version>0.12.7</version>
 		</dependency>
 
+		<!-- Google OAuth Client for ID token verification -->
+		<dependency>
+			<groupId>com.google.api-client</groupId>
+			<artifactId>google-api-client</artifactId>
+			<version>2.2.0</version>
+		</dependency>
+
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-impl</artifactId>
@@ -160,5 +167,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>

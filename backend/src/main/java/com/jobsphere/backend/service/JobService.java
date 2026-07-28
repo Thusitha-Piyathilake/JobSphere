@@ -38,7 +38,9 @@ public class JobService {
     }
 
     public List<Job> getAllJobs() {
-        return jobRepository.findAll();
+
+    return jobRepository.findAllByOrderByCreatedAtDesc();
+
     }
 
     public List<Job> getJobsByEmployer(Long employerId) {

@@ -40,7 +40,7 @@ import { JobDetails } from './pages/job-details/job-details';
 // ======================
 import { ApplyJobComponent } from './pages/jobseeker/apply-job/apply-job';
 import { ProfileComponent } from './pages/jobseeker/profile/profile';
-import { Applications } from './pages/jobseeker/applications/applications';
+import { Applications } from './pages/jobseeker/applications/applications';  // ✅ UNCOMMENTED
 import { JobSeekerDashboardComponent } from './pages/jobseeker/jobseeker-dashboard/jobseeker-dashboard';
 import { Auth } from './pages/jobseeker/auth/auth';
 import { SavedJobs } from './pages/jobseeker/saved-jobs/saved-jobs';
@@ -80,48 +80,14 @@ export const routes: Routes = [
     path: 'admin',
     component: Layout,
     children: [
-
-      {
-        path: '',
-        redirectTo: 'dashboard',
-        pathMatch: 'full'
-      },
-
-      {
-        path: 'dashboard',
-        component: Dashboard
-      },
-
-      {
-        path: 'users',
-        component: Users
-      },
-
-      {
-        path: 'companies',
-        component: Companies
-      },
-
-      {
-        path: 'jobs',
-        component: AdminJobs
-      },
-
-      {
-        path: 'categories',
-        component: Categories
-      },
-
-      {
-        path: 'locations',
-        component: Locations
-      },
-
-      {
-        path: 'statistics',
-        component: Statistics
-      }
-
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+      { path: 'dashboard', component: Dashboard },
+      { path: 'users', component: Users },
+      { path: 'companies', component: Companies },
+      { path: 'jobs', component: AdminJobs },
+      { path: 'categories', component: Categories },
+      { path: 'locations', component: Locations },
+      { path: 'statistics', component: Statistics }
     ]
   },
 
@@ -129,28 +95,15 @@ export const routes: Routes = [
   // Employer Auth
   // ======================
 
-  {
-    path: 'employer/auth',
-    component: EmployerAuth
-  },
-
-  // Optional standalone employer register page
-
-  {
-    path: 'register/employer',
-    component: EmployerRegister
-  },
+  { path: 'employer/auth', component: EmployerAuth },
+  { path: 'register/employer', component: EmployerRegister },
 
   // ======================
   // Jobs
   // ======================
 
   { path: 'jobs', component: Jobs },
-
-  // Keep apply route before jobs/:id
-
   { path: 'jobs/:id/apply', component: ApplyJobComponent },
-
   { path: 'jobs/:id', component: JobDetails },
 
   // ======================
@@ -175,14 +128,13 @@ export const routes: Routes = [
 
   { path: 'jobseeker/dashboard', component: JobSeekerDashboardComponent },
 
+  // ✅ UNCOMMENTED – now active
   { path: 'jobseeker/applications', component: Applications },
 
   {
     path: 'jobseeker/saved-jobs',
     component: SavedJobs,
-    resolve: {
-      savedJobs: SavedJobsResolver
-    }
+    resolve: { savedJobs: SavedJobsResolver }
   },
 
   { path: 'jobseeker/profile', component: ProfileComponent },
@@ -192,5 +144,4 @@ export const routes: Routes = [
   // ======================
 
   { path: '**', redirectTo: '' }
-
 ];

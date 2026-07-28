@@ -1,8 +1,11 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+
 import { AuthService } from '../../../services/auth.service';
+import { GoogleAuthService } from '../../../services/google-auth.service';
+declare const google: any;
 
 @Component({
   selector: 'app-auth',
@@ -11,9 +14,10 @@ import { AuthService } from '../../../services/auth.service';
   templateUrl: './auth.html',
   styleUrl: './auth.css'
 })
-export class Auth {
+export class Auth implements AfterViewInit {
 
   private authService = inject(AuthService);
+  private googleAuthService = inject(GoogleAuthService);
   private router = inject(Router);
 
   isLogin = true;
@@ -53,6 +57,59 @@ export class Auth {
   acceptTerms = false;
 
   // ======================
+  // GOOGLE SIGN IN
+  // ======================
+
+  ngAfterViewInit(): void {
+
+    this.googleAuthService.initialize((idToken: string) => {
+
+      this.authService
+        .authenticateWithGoogle(idToken, 'JOB_SEEKER')
+        .subscribe({
+
+          next: (response) => {
+
+            this.authService.saveAuth(
+              response.token,
+              response.role,
+              response.userId
+            );
+
+            if (response.role === 'JOB_SEEKER') {
+              this.router.navigate(['/jobseeker/dashboard']);
+            }
+            else if (response.role === 'EMPLOYER') {
+              this.router.navigate(['/employer/dashboard']);
+            }
+            else {
+              this.router.navigate(['/admin/dashboard']);
+            }
+
+          },
+
+          error: (err) => {
+            console.error(err);
+            alert('Google login failed');
+          }
+
+        });
+
+    });
+
+    google.accounts.id.renderButton(
+      document.getElementById('googleSignInButton'),
+      {
+        theme: 'outline',
+        size: 'large',
+        width: 450,
+        shape: 'rectangular'
+      }
+    );
+
+  }
+
+  // ======================
   // LOGIN
   // ======================
 
@@ -63,37 +120,35 @@ export class Auth {
       password: this.loginPassword
     };
 
-    this.authService.login(request).subscribe({
+    this.authService.login(request)
+      .subscribe({
 
-      next: (response) => {
+        next: (response) => {
 
-        this.authService.saveAuth(
-          response.token,
-          response.role,
-          response.userId
-        );
+          this.authService.saveAuth(
+            response.token,
+            response.role,
+            response.userId
+          );
 
-        console.log('Login successful');
-        console.log(response);
+          if (response.role === 'JOB_SEEKER') {
+            this.router.navigate(['/jobseeker/dashboard']);
+          }
+          else if (response.role === 'EMPLOYER') {
+            this.router.navigate(['/employer/dashboard']);
+          }
+          else {
+            this.router.navigate(['/admin/dashboard']);
+          }
 
-        if (response.role === 'JOB_SEEKER') {
-          this.router.navigate(['/jobseeker/dashboard']);
+        },
+
+        error: () => {
+          alert('Invalid email or password');
         }
 
-        else if (response.role === 'EMPLOYER') {
-          this.router.navigate(['/employer/dashboard']);
-        }
+      });
 
-        else if (response.role === 'ADMIN') {
-          this.router.navigate(['/admin/dashboard']);
-        }
-      },
-
-      error: (error) => {
-        console.error(error);
-        alert('Invalid email or password');
-      }
-    });
   }
 
   // ======================
@@ -115,47 +170,59 @@ export class Auth {
     const request = {
       firstName: this.firstName,
       lastName: this.lastName,
-
       email: this.registerEmail,
       password: this.registerPassword,
-
       gender: this.gender,
       homeTown: this.homeTown,
-
       cvUrl: this.cvUrl,
-
       receiveJobAlerts: this.receiveEmails,
       termsAccepted: this.acceptTerms
     };
 
-    this.authService.registerJobSeeker(request).subscribe({
+    this.authService.registerJobSeeker(request)
+      .subscribe({
 
-      next: (response) => {
+        next: () => {
 
-        console.log(response);
+          alert('Registration successful');
 
-        alert('Registration successful');
+          this.loginEmail = this.registerEmail;
 
-        this.loginEmail = this.registerEmail;
+          this.firstName = '';
+          this.lastName = '';
+          this.registerEmail = '';
+          this.registerPassword = '';
+          this.confirmPassword = '';
+          this.gender = '';
+          this.homeTown = '';
+          this.cvUrl = '';
+          this.receiveEmails = true;
+          this.acceptTerms = false;
 
-        this.firstName = '';
-        this.lastName = '';
-        this.registerEmail = '';
-        this.registerPassword = '';
-        this.confirmPassword = '';
-        this.gender = '';
-        this.homeTown = '';
-        this.cvUrl = '';
-        this.receiveEmails = true;
-        this.acceptTerms = false;
+          this.isLogin = true;
 
-        this.isLogin = true;
-      },
+        },
 
-      error: (error) => {
-        console.error(error);
-        alert('Registration failed');
-      }
-    });
+        error: () => {
+          alert('Registration failed');
+        }
+
+      });
+
   }
+
+  // ======================
+  // FILE UPLOAD
+  // ======================
+
+  onFileSelected(event: any): void {
+
+    const file = event.target.files[0];
+
+    if (file) {
+      console.log(file.name);
+    }
+
+  }
+
 }

@@ -81,8 +81,9 @@
       <div class="top-row">
 
         <div>
-          <h2>{{ app.jobTitle }}</h2>
-          <h4>{{ app.jobCompany }}</h4>
+          <!-- ✅ Use safe navigation '?' to handle null job -->
+          <h2>{{ app.job?.title || 'Job not found' }}</h2>
+          <h4>{{ app.job?.company || 'Unknown company' }}</h4>
         </div>
 
         <span
@@ -98,11 +99,11 @@
       <div class="job-details">
 
         <div class="detail-item">
-          📍 {{ app.jobLocation }}
+          📍 {{ app.job?.location || 'No location' }}
         </div>
 
         <div class="detail-item">
-          💼 {{ app.jobType }}
+          💼 {{ app.job?.jobType || 'N/A' }}
         </div>
 
         <div class="detail-item">

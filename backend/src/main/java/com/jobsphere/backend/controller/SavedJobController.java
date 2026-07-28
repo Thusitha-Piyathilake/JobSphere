@@ -5,6 +5,7 @@ import com.jobsphere.backend.entity.Job;
 import com.jobsphere.backend.entity.SavedJob;
 import com.jobsphere.backend.service.SavedJobService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -42,10 +43,15 @@ public class SavedJobController {
         );
     }
 
+    // ✅ UPDATED: Return 404 if job not found, otherwise 200 with job
     @GetMapping("/job/{jobId}")
-    public Job getJobDetails(
+    public ResponseEntity<Job> getJobDetails(
             @PathVariable Long jobId
     ) {
-        return savedJobService.getJobDetails(jobId);
+        Job job = savedJobService.getJobDetails(jobId);
+        if (job == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(job);
     }
 }

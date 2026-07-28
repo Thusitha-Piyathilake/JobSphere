@@ -1,3 +1,5 @@
+// src/app/pages/jobseeker/apply-job/apply-job.ts
+
 import {
   Component,
   inject
@@ -36,103 +38,60 @@ import {
 })
 export class ApplyJobComponent {
 
-  private uploadService =
-    inject(UploadService);
-
-  private applicationService =
-    inject(ApplicationService);
-
-  private route =
-    inject(ActivatedRoute);
-
-  private router =
-    inject(Router);
+  private uploadService = inject(UploadService);
+  private applicationService = inject(ApplicationService);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
 
   applicantName = '';
   applicantEmail = '';
   coverLetter = '';
   emailCopy = false;
-
   selectedFile?: File;
 
-  onFileSelected(event: any): void {
+  // UI helpers for job context (static for now – replace with real data later)
+  jobTitle = 'Software Engineering Intern';
+  jobCompany = 'IFS';
+  jobLocation = 'Colombo';
+  jobSalary = '25,000';
 
-    this.selectedFile =
-      event.target.files[0];
+  onFileSelected(event: any): void {
+    this.selectedFile = event.target.files[0];
   }
 
   submitApplication(): void {
-
     if (!this.selectedFile) {
       alert('Please select your CV');
       return;
     }
 
-    this.uploadService
-      .uploadCv(this.selectedFile)
-      .subscribe({
+    this.uploadService.uploadCv(this.selectedFile).subscribe({
+      next: (uploadResponse) => {
+        const request = {
+          jobId: Number(this.route.snapshot.paramMap.get('id')),
+          jobSeekerId: Number(localStorage.getItem('userId')),
+          applicantName: this.applicantName,
+          applicantEmail: this.applicantEmail,
+          coverLetter: this.coverLetter,
+          cvUrl: uploadResponse.url,
+          emailCopy: this.emailCopy
+        };
 
-        next: (uploadResponse) => {
-
-          const request = {
-
-            jobId: Number(
-              this.route.snapshot.paramMap.get('id')
-            ),
-
-            jobSeekerId: Number(
-              localStorage.getItem('userId')
-            ),
-
-            applicantName:
-              this.applicantName,
-
-            applicantEmail:
-              this.applicantEmail,
-
-            coverLetter:
-              this.coverLetter,
-
-            cvUrl:
-              uploadResponse.url,
-
-            emailCopy:
-              this.emailCopy
-          };
-
-          this.applicationService
-            .apply(request)
-            .subscribe({
-
-              next: () => {
-
-                alert(
-                  'Application submitted successfully!'
-                );
-
-                this.router.navigate([
-                  '/jobseeker/applications'
-                ]);
-              },
-
-              error: (error) => {
-                console.error(error);
-
-                alert(
-                  'Failed to submit application'
-                );
-              }
-            });
-        },
-
-        error: (error) => {
-
-          console.error(error);
-
-          alert(
-            'Failed to upload CV'
-          );
-        }
-      });
+        this.applicationService.apply(request).subscribe({
+          next: () => {
+            alert('Application submitted successfully!');
+            this.router.navigate(['/jobseeker/applications']);
+          },
+          error: (error) => {
+            console.error(error);
+            alert('Failed to submit application');
+          }
+        });
+      },
+      error: (error) => {
+        console.error(error);
+        alert('Failed to upload CV');
+      }
+    });
   }
 }
