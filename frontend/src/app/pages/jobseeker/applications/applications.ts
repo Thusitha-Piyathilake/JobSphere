@@ -16,7 +16,7 @@ import { ApplicationService, ApplicationWithJob } from '../../../services/applic
   standalone: true,
   imports: [CommonModule],
   templateUrl: './applications.html',
-  styleUrl: './applications.css',
+  styleUrls: ['./applications.css'],
 })
 export class Applications implements OnInit, OnDestroy {
 
@@ -26,6 +26,9 @@ export class Applications implements OnInit, OnDestroy {
 
   applications: ApplicationWithJob[] = [];
   loading = true;
+
+  // Filter state
+  selectedFilter: 'ALL' | 'PENDING' | 'ACCEPTED' | 'REJECTED' = 'ALL';
 
   private isDestroyed = false;
   private retryTimer: any = null;
@@ -70,7 +73,6 @@ export class Applications implements OnInit, OnDestroy {
   private fetchData(jobSeekerId: number): void {
     if (this.isDestroyed) return;
 
-    // ✅ Correct method name: getApplicationsByJobSeeker
     this.applicationService
       .getApplicationsByJobSeeker(jobSeekerId)
       .subscribe({
@@ -105,15 +107,36 @@ export class Applications implements OnInit, OnDestroy {
     this.loadApplications();
   }
 
-  // These methods are not used by job seekers but kept for completeness.
-  acceptApplication(applicationId: number): void {
-    // Not used – you can remove this method if you want.
+  // ---------- Filter logic ----------
+  setFilter(filter: 'ALL' | 'PENDING' | 'ACCEPTED' | 'REJECTED'): void {
+    this.selectedFilter = filter;
   }
 
-  rejectApplication(applicationId: number): void {
-    // Not used.
+  get filteredApplications(): ApplicationWithJob[] {
+    if (this.selectedFilter === 'ALL') {
+      return this.applications;
+    }
+    return this.applications.filter(app => app.status === this.selectedFilter);
   }
 
+  // ---------- Stats ----------
+  get totalApplications(): number {
+    return this.applications.length;
+  }
+
+  get pendingCount(): number {
+    return this.applications.filter(a => a.status === 'PENDING').length;
+  }
+
+  get acceptedCount(): number {
+    return this.applications.filter(a => a.status === 'ACCEPTED').length;
+  }
+
+  get rejectedCount(): number {
+    return this.applications.filter(a => a.status === 'REJECTED').length;
+  }
+
+  // ---------- Helper for status class ----------
   getStatusClass(status: string): string {
     switch ((status || '').toUpperCase()) {
       case 'PENDING':   return 'pending';
@@ -123,7 +146,9 @@ export class Applications implements OnInit, OnDestroy {
     }
   }
 
+  // ---------- Navigate to job ----------
   viewJob(jobId: number): void {
+    if (!jobId) return;
     this.router.navigate(['/jobs', jobId]);
   }
 }

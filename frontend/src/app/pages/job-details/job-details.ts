@@ -1,3 +1,5 @@
+// src/app/pages/job-details/job-details.ts
+
 import {
   Component,
   OnInit,
@@ -186,5 +188,14 @@ export class JobDetails implements OnInit {
     );
   }
 
-  
+  // ==========================================================
+  // NEW: Navigate to the company profile
+  // ==========================================================
+  viewCompany(): void {
+    if (!this.job) return;
+    this.router.navigate([
+      '/company',
+      this.job.employerId
+    ]);
+  }
 }

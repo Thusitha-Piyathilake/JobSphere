@@ -195,10 +195,27 @@
         <div class="job-grid">
 
           <article class="job-card" *ngFor="let job of filteredJobs">
+            <!-- ✅ UPDATED LOGO SECTION -->
             <div class="job-card-top">
-              <div class="job-logo">{{ job.company | slice:0:2 | uppercase }}</div>
-              <span class="job-tag-new" *ngIf="isNewJob(job)">New</span>
+              <div class="job-logo">
+                <img
+                  *ngIf="job.companyLogo"
+                  [src]="job.companyLogo"
+                  [alt]="job.company"
+                  class="company-logo-img"
+                >
+                <span *ngIf="!job.companyLogo">
+                  {{ job.company | slice:0:2 | uppercase }}
+                </span>
+              </div>
+              <span
+                class="job-tag-new"
+                *ngIf="isNewJob(job)"
+              >
+                New
+              </span>
             </div>
+            <!-- END UPDATED SECTION -->
             <h4>{{ job.title }}</h4>
             <div class="company">{{ job.company }} · {{ getCity(job.location) }}</div>
             <div class="job-meta">

@@ -496,4 +496,22 @@ img, svg { display: block; max-width: 100%; }
   .header-actions .btn {
     flex: 1;
   }
+
+  .btn-company{
+
+    background:#ffffff;
+
+    color:#14172A;
+
+    border:1px solid #E9E5DC;
+
+}
+
+.btn-company:hover{
+
+    background:#14172A;
+
+    color:#ffffff;
+
+}
 }

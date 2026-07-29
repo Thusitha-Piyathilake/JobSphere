@@ -1,7 +1,10 @@
 package com.jobsphere.backend.service;
 
 import com.jobsphere.backend.dto.JobRequest;
+import com.jobsphere.backend.dto.JobResponse;
+import com.jobsphere.backend.entity.EmployerProfile;
 import com.jobsphere.backend.entity.Job;
+import com.jobsphere.backend.repository.EmployerProfileRepository;
 import com.jobsphere.backend.repository.JobRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,6 +17,7 @@ import java.util.List;
 public class JobService {
 
     private final JobRepository jobRepository;
+    private final EmployerProfileRepository employerProfileRepository;
 
     public Job createJob(JobRequest request) {
 
@@ -22,11 +26,8 @@ public class JobService {
                 .company(request.getCompany())
                 .location(request.getLocation())
                 .category(request.getCategory())
-
-                // OpenStreetMap coordinates
                 .latitude(request.getLatitude())
                 .longitude(request.getLongitude())
-
                 .salary(request.getSalary())
                 .jobType(request.getJobType())
                 .description(request.getDescription())
@@ -37,34 +38,99 @@ public class JobService {
         return jobRepository.save(job);
     }
 
-    public List<Job> getAllJobs() {
+    // =====================================================
+    // Convert Job -> JobResponse
+    // =====================================================
 
-    return jobRepository.findAllByOrderByCreatedAtDesc();
+    private JobResponse mapToResponse(Job job) {
+
+        String logo = "";
+
+        EmployerProfile profile = employerProfileRepository
+                .findByEmployerId(job.getEmployerId())
+                .orElse(null);
+
+        if (profile != null) {
+            logo = profile.getLogoUrl();
+        }
+
+        return JobResponse.builder()
+                .id(job.getId())
+                .title(job.getTitle())
+                .company(job.getCompany())
+                .companyLogo(logo)
+                .location(job.getLocation())
+                .latitude(job.getLatitude())
+                .longitude(job.getLongitude())
+                .category(job.getCategory())
+                .salary(job.getSalary())
+                .jobType(job.getJobType())
+                .description(job.getDescription())
+                .createdAt(job.getCreatedAt())
+                .employerId(job.getEmployerId())
+                .build();
+    }
+
+    // =====================================================
+    // GET ALL JOBS
+    // =====================================================
+
+    public List<JobResponse> getAllJobs() {
+
+        return jobRepository
+                .findAllByOrderByCreatedAtDesc()
+                .stream()
+                .map(this::mapToResponse)
+                .toList();
 
     }
 
-    public List<Job> getJobsByEmployer(Long employerId) {
-        return jobRepository.findByEmployerId(employerId);
+    // =====================================================
+    // GET JOBS BY EMPLOYER
+    // =====================================================
+
+    public List<JobResponse> getJobsByEmployer(Long employerId) {
+
+        return jobRepository
+                .findByEmployerId(employerId)
+                .stream()
+                .map(this::mapToResponse)
+                .toList();
+
     }
 
-    public Job getJobById(Long id) {
-        return jobRepository.findById(id)
-                .orElseThrow(() ->
-                        new RuntimeException("Job not found"));
+    // =====================================================
+    // GET JOB BY ID
+    // =====================================================
+
+    public JobResponse getJobById(Long id) {
+
+        return mapToResponse(
+
+                jobRepository.findById(id)
+                        .orElseThrow(() ->
+                                new RuntimeException("Job not found"))
+
+        );
+
     }
+
+    // =====================================================
+    // UPDATE JOB
+    // =====================================================
 
     public Job updateJob(Long id, JobRequest request) {
 
-        Job job = getJobById(id);
+        Job job = jobRepository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("Job not found"));
 
         job.setTitle(request.getTitle());
         job.setCompany(request.getCompany());
         job.setLocation(request.getLocation());
-
-        // OpenStreetMap coordinates
         job.setLatitude(request.getLatitude());
         job.setLongitude(request.getLongitude());
-
+        job.setCategory(request.getCategory());
         job.setSalary(request.getSalary());
         job.setJobType(request.getJobType());
         job.setDescription(request.getDescription());
@@ -74,35 +140,60 @@ public class JobService {
 
     public String deleteJob(Long id) {
 
-        Job job = getJobById(id);
-
-        jobRepository.delete(job);
+        jobRepository.deleteById(id);
 
         return "Job deleted successfully";
+
     }
 
-    // ================= SEARCH FEATURES =================
+    // =====================================================
+    // SEARCH
+    // =====================================================
 
-    public List<Job> searchByTitle(String title) {
-        return jobRepository.findByTitleContainingIgnoreCase(title);
+    public List<JobResponse> searchByTitle(String title) {
+
+        return jobRepository
+                .findByTitleContainingIgnoreCase(title)
+                .stream()
+                .map(this::mapToResponse)
+                .toList();
+
     }
 
-    public List<Job> searchByLocation(String location) {
-        return jobRepository.findByLocationContainingIgnoreCase(location);
+    public List<JobResponse> searchByLocation(String location) {
+
+        return jobRepository
+                .findByLocationContainingIgnoreCase(location)
+                .stream()
+                .map(this::mapToResponse)
+                .toList();
+
     }
 
-    public List<Job> searchByJobType(String jobType) {
-        return jobRepository.findByJobTypeContainingIgnoreCase(jobType);
+    public List<JobResponse> searchByJobType(String jobType) {
+
+        return jobRepository
+                .findByJobTypeContainingIgnoreCase(jobType)
+                .stream()
+                .map(this::mapToResponse)
+                .toList();
+
     }
 
-    public List<Job> searchByTitleAndLocation(
+    public List<JobResponse> searchByTitleAndLocation(
             String title,
             String location
     ) {
+
         return jobRepository
                 .findByTitleContainingIgnoreCaseAndLocationContainingIgnoreCase(
                         title,
                         location
-                );
+                )
+                .stream()
+                .map(this::mapToResponse)
+                .toList();
+
     }
+
 }

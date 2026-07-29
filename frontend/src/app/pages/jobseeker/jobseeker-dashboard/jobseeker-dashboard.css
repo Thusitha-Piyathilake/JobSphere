@@ -407,15 +407,41 @@ img, svg { display: block; max-width: 100%; }
   align-items: flex-start;
   margin-bottom: 14px;
 }
+
+/* ========== UPDATED LOGO ========== */
 .job-logo {
-  width: 44px; height:44px;
-  border-radius: 10px;
-  background: var(--navy, #14172A);
-  display: flex; align-items:center; justify-content:center;
-  font-family:'IBM Plex Mono', monospace; font-weight:600; font-size:14px;
-  color: var(--orange, #FF6A1F);
+  width:44px;
+  height:44px;
+  border-radius:10px;
+  background:var(--navy);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:'IBM Plex Mono', monospace;
+  font-weight:600;
+  font-size:14px;
+  color:var(--orange);
   flex-shrink:0;
+  overflow:hidden;
 }
+
+.company-logo-img {
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  border-radius:10px;
+  display:block;
+}
+
+.job-logo span {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:100%;
+  height:100%;
+}
+/* ================================ */
+
 .job-tag-new {
   font-family:'IBM Plex Mono', monospace;
   font-size: 10.5px;

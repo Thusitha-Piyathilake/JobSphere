@@ -41,18 +41,27 @@
       </div>
 
       <!-- ========================================== -->
-      <!--  REMOVED: job-meta pills                  -->
-      <!--  Now only the action buttons remain       -->
+      <!--  UPDATED ACTION BUTTONS                    -->
       <!-- ========================================== -->
       <div class="job-header-foot">
         <div class="header-actions">
+          <!-- Save Button -->
           <button class="btn btn-save" (click)="saveJob()">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
               <path d="M12 21s-7.5-4.6-10-9.3C.4 8 2 4 6 4c2.2 0 3.8 1.2 6 3.6C14.2 5.2 15.8 4 18 4c4 0 5.6 4 4 7.7C19.5 16.4 12 21 12 21z"/>
             </svg>
             Save
           </button>
-          <button class="btn btn-primary" (click)="applyJob()">Apply Now</button>
+
+          <!-- View Company Button -->
+          <button class="btn btn-company" (click)="viewCompany()">
+            View Company
+          </button>
+
+          <!-- Apply Now Button -->
+          <button class="btn btn-primary" (click)="applyJob()">
+            Apply Now
+          </button>
         </div>
       </div>
 

@@ -126,7 +126,7 @@ export class Profile implements OnInit {
   }
 
   // ==========================================================
-  // Upload Company Logo
+  // Upload Company Logo – updated to save the profile
   // ==========================================================
 
   onLogoSelected(event: Event): void {
@@ -145,16 +145,33 @@ export class Profile implements OnInit {
 
         this.profile.logoUrl = response.url;
 
-        this.cdr.detectChanges();
+        this.profileService.updateProfile(
+          this.profile.employerId,
+          this.profile
+        ).subscribe({
 
-        alert('Company logo uploaded successfully.');
+          next: (updatedProfile) => {
+
+            this.profile = updatedProfile;
+            this.cdr.detectChanges();
+            alert('Company logo saved successfully.');
+
+          },
+
+          error: (err) => {
+
+            console.error(err);
+            alert('Logo uploaded but profile could not be updated.');
+
+          }
+
+        });
 
       },
 
       error: (err) => {
 
         console.error(err);
-
         alert('Failed to upload company logo.');
 
       }

@@ -40,10 +40,13 @@ import { JobDetails } from './pages/job-details/job-details';
 // ======================
 import { ApplyJobComponent } from './pages/jobseeker/apply-job/apply-job';
 import { ProfileComponent } from './pages/jobseeker/profile/profile';
-import { Applications } from './pages/jobseeker/applications/applications';  // ✅ UNCOMMENTED
+import { Applications } from './pages/jobseeker/applications/applications';
 import { JobSeekerDashboardComponent } from './pages/jobseeker/jobseeker-dashboard/jobseeker-dashboard';
 import { Auth } from './pages/jobseeker/auth/auth';
 import { SavedJobs } from './pages/jobseeker/saved-jobs/saved-jobs';
+
+// ✅ CORRECTED import path – the folder is 'company', not 'company-profile'
+import { CompanyProfile } from './pages/company/company-profile';
 
 // ======================
 // Resolver
@@ -112,6 +115,12 @@ export const routes: Routes = [
 
   { path: 'login/jobseeker', component: Login },
 
+  // ✅ Company route
+  {
+    path: 'company/:id',
+    component: CompanyProfile
+  },
+
   // ======================
   // Employer Routes
   // ======================
@@ -127,16 +136,12 @@ export const routes: Routes = [
   // ======================
 
   { path: 'jobseeker/dashboard', component: JobSeekerDashboardComponent },
-
-  // ✅ UNCOMMENTED – now active
   { path: 'jobseeker/applications', component: Applications },
-
   {
     path: 'jobseeker/saved-jobs',
     component: SavedJobs,
     resolve: { savedJobs: SavedJobsResolver }
   },
-
   { path: 'jobseeker/profile', component: ProfileComponent },
 
   // ======================

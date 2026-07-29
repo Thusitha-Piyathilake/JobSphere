@@ -1,0 +1,144 @@
+<!-- src/app/pages/company/company-profile.html -->
+
+<div class="wrap">
+
+  <!-- ============================================ -->
+  <!--  LOADING / ERROR                             -->
+  <!-- ============================================ -->
+
+  <div *ngIf="loading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Loading company...</p>
+  </div>
+
+  <div *ngIf="!loading && error" class="alert alert-error">
+    Failed to load company profile. Please try again.
+  </div>
+
+  <!-- ============================================ -->
+  <!--  COMPANY HERO                                -->
+  <!-- ============================================ -->
+
+  <section class="hero" *ngIf="!loading && !error && company">
+    <div class="hero-left">
+      <div class="company-logo-lg">
+        <img
+          *ngIf="company.logoUrl"
+          [src]="company.logoUrl"
+          alt="Company logo"
+          class="logo-img"
+        >
+        <span *ngIf="!company.logoUrl" class="logo-fallback">
+          {{ company.companyName?.charAt(0) || 'C' }}
+        </span>
+      </div>
+      <div>
+        <div class="hero-name-row">
+          <h1>{{ company.companyName || 'Company Name' }}</h1>
+          <span class="verified-chip">✔ VERIFIED</span>
+        </div>
+        <div class="hero-industry">
+          {{ company.industry || 'Industry not provided' }}
+          <span *ngIf="company.address">· {{ company.address }}</span>
+        </div>
+        <div class="hero-tags">
+          <span class="hero-tag" *ngIf="company.foundedYear">FOUNDED {{ company.foundedYear }}</span>
+          <span class="hero-tag" *ngIf="company.companySize">{{ company.companySize }} EMPLOYEES</span>
+          <span class="hero-tag" *ngIf="!company.foundedYear && !company.companySize">No company details</span>
+        </div>
+        <p class="description">{{ company.description || 'No description available.' }}</p>
+        <div class="hero-actions">
+          <a
+            *ngIf="company.website"
+            [href]="company.website"
+            target="_blank"
+            class="btn btn-white"
+          >
+            Visit Website
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================ -->
+  <!--  COMPANY STATS / DETAILS                     -->
+  <!-- ============================================ -->
+
+  <div class="stats-grid" *ngIf="!loading && !error && company">
+    <div class="stat-card">
+      <div class="stat-ico blue">✉️</div>
+      <div>
+        <div class="stat-label">Email</div>
+        <div class="stat-value">{{ company.companyEmail || '-' }}</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-ico orange">📞</div>
+      <div>
+        <div class="stat-label">Phone</div>
+        <div class="stat-value">{{ company.companyPhone || '-' }}</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-ico mint">🏷️</div>
+      <div>
+        <div class="stat-label">Industry</div>
+        <div class="stat-value">{{ company.industry || '-' }}</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-ico navy">📍</div>
+      <div>
+        <div class="stat-label">Location</div>
+        <div class="stat-value">{{ company.address || '-' }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================ -->
+  <!--  OPEN POSITIONS                              -->
+  <!-- ============================================ -->
+
+  <section class="listings" *ngIf="!loading && !error && company">
+    <div class="listings-top">
+      <div>
+        <h2>Open Positions</h2>
+        <p>{{ jobs.length }} job{{ jobs.length !== 1 ? 's' : '' }} available</p>
+      </div>
+    </div>
+
+    <div *ngIf="jobs.length === 0" class="empty-state">
+      No open positions at the moment.
+    </div>
+
+    <div class="job-grid">
+      <article class="job-card" *ngFor="let job of jobs">
+        <div class="job-card-top">
+          <div class="job-logo">
+            <img
+              *ngIf="job.companyLogo"
+              [src]="job.companyLogo"
+              [alt]="job.company"
+              class="company-logo-img"
+            >
+            <span *ngIf="!job.companyLogo">
+              {{ job.company | slice:0:2 | uppercase }}
+            </span>
+          </div>
+        </div>
+        <h4>{{ job.title }}</h4>
+        <div class="company">{{ job.company }} · {{ job.location }}</div>
+        <div class="job-meta">
+          <span class="pill">📍 {{ job.location }}</span>
+          <span class="pill">{{ job.jobType }}</span>
+          <span class="pill salary">Rs {{ job.salary }}</span>
+        </div>
+        <div class="job-card-foot">
+          <button class="btn btn-primary" (click)="openJob(job.id)">View Job →</button>
+        </div>
+      </article>
+    </div>
+  </section>
+
+</div>
