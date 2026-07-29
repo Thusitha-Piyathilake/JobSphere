@@ -2,6 +2,7 @@ package com.jobsphere.backend.security;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
@@ -11,12 +12,12 @@ import java.util.Date;
 @Service
 public class JwtService {
 
-    private static final String SECRET_KEY =
-            "jobsphere_super_secret_key_for_development_only_2026_jobsphere_secret";
+    @Value("${jwt.secret}")
+    private String secretKey;
 
-    private final SecretKey key = Keys.hmacShaKeyFor(
-            SECRET_KEY.getBytes(StandardCharsets.UTF_8)
-    );
+    private SecretKey getKey() {
+        return Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
+    }
 
     // NEW method with role and userId
     public String generateToken(String email, String role, Long userId) {
@@ -26,7 +27,7 @@ public class JwtService {
                 .claim("userId", userId)
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + 1000L * 60 * 60 * 24))
-                .signWith(key)
+                .signWith(getKey())
                 .compact();
     }
 
