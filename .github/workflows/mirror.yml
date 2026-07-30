@@ -16,10 +16,12 @@ jobs:
           fetch-depth: 0
 
       - name: Mirror repository
+        env:
+          MIRROR_TOKEN: ${{ secrets.MIRROR_TOKEN }}
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
 
-          git remote add mirror https://x-access-token:${{ secrets.MIRROR_TOKEN }}@github.com/dilshan-piyathilke/JobSphere.git
+          git remote add mirror https://x-access-token:${MIRROR_TOKEN}@github.com/dilshan-piyathilke/JobSphere.git
 
-          git push mirror main --force
+          git push --force mirror main
