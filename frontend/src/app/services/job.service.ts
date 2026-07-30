@@ -10,8 +10,7 @@ import { CreateJobRequest } from '../models/create-job-request.model';
 })
 export class JobService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8080/api/jobs';
-
+private apiUrl = 'https://jobsphere-production-34dc.up.railway.app/api/jobs';
   getAllJobs(): Observable<Job[]> {
     return this.http.get<Job[]>(this.apiUrl);
   }

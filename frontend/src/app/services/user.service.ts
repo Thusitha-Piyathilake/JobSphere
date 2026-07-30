@@ -16,7 +16,7 @@ export interface User {
 })
 export class UserService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8080/api/jobseekers';
+private apiUrl = 'https://jobsphere-production-34dc.up.railway.app/api/jobseekers';
 
   getUserById(id: number): Observable<User> {
     return this.http.get<User>(`${this.apiUrl}/${id}`);

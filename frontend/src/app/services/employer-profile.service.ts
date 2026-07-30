@@ -9,8 +9,7 @@ import { EmployerProfile } from '../models/employer-profile.model';
 })
 export class EmployerProfileService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8080/api/employer-profile';
-
+private apiUrl = 'https://jobsphere-production-34dc.up.railway.app/api/employer-profile';
   // ✅ This is the one we need
   getMyProfile(): Observable<EmployerProfile> {
     console.log('[EmployerProfileService] Calling /me');

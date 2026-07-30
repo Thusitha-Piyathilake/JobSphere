@@ -37,7 +37,7 @@ export class AdminJobService {
 
   private http = inject(HttpClient);
 
-  private apiUrl = 'http://localhost:8080/api/admin/jobs';
+private apiUrl = 'https://jobsphere-production-34dc.up.railway.app/api/admin/jobs';
 
   getAllJobs(): Observable<AdminJob[]> {
 

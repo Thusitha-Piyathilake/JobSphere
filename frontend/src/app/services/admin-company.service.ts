@@ -31,7 +31,7 @@ export class AdminCompanyService {
 
   private http = inject(HttpClient);
 
-  private apiUrl = 'http://localhost:8080/api/admin/companies';
+private apiUrl = 'https://jobsphere-production-34dc.up.railway.app/api/admin/companies';
 
   getAllCompanies(): Observable<AdminCompany[]> {
 

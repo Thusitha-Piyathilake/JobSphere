@@ -46,8 +46,7 @@ export class AuthService {
   private http = inject(HttpClient);
   private router = inject(Router);
 
-  private apiUrl = 'http://localhost:8080/api/auth';
-
+private apiUrl = 'https://jobsphere-production-34dc.up.railway.app/api/auth';
   // ---------- Existing methods (unchanged) ----------
   login(request: LoginRequest): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.apiUrl}/login`, request);
@@ -107,8 +106,9 @@ export class AuthService {
   }
 
   getUser(id: number): Observable<any> {
-    return this.http.get<any>(`http://localhost:8080/api/users/${id}`);
-  }
+return this.http.get<any>(
+  `https://jobsphere-production-34dc.up.railway.app/api/users/${id}`
+);  }
 
   // ---------- Google Sign-In (temporary placeholder) ----------
   signInWithGoogle(role: 'JOB_SEEKER' | 'EMPLOYER'): void {

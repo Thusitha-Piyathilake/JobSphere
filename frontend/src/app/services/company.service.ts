@@ -12,11 +12,11 @@ export class CompanyService {
 
   private http = inject(HttpClient);
 
-  private companyApi =
-    'http://localhost:8080/api/employer-profile';
-
-  private jobsApi =
-    'http://localhost:8080/api/jobs';
+private companyApi =
+  'https://jobsphere-production-34dc.up.railway.app/api/employer-profile';
+  
+ private jobsApi =
+  'https://jobsphere-production-34dc.up.railway.app/api/jobs';
 
   getCompany(employerId: number): Observable<Company> {
 

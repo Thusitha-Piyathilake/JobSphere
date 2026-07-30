@@ -9,7 +9,7 @@ export class SavedJobService {
 
   private http = inject(HttpClient);
 
-  private apiUrl = 'http://localhost:8080/api/saved-jobs';
+private apiUrl = 'https://jobsphere-production-34dc.up.railway.app/api/saved-jobs';
 
   saveJob(
     jobSeekerId: number,

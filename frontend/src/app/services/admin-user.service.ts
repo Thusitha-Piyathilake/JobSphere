@@ -25,8 +25,7 @@ export class AdminUserService {
 
   private http = inject(HttpClient);
 
-  private apiUrl = 'http://localhost:8080/api/admin/users';
-
+private apiUrl = 'https://jobsphere-production-34dc.up.railway.app/api/admin/users';
   getAllUsers(): Observable<AdminUser[]> {
 
     return this.http.get<AdminUser[]>(this.apiUrl);

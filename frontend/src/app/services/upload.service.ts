@@ -11,8 +11,7 @@ export class UploadService {
 
   private http = inject(HttpClient);
 
-  private apiUrl = 'http://localhost:8080/api/upload';
-
+private apiUrl = 'https://jobsphere-production-34dc.up.railway.app/api/upload';
   // ============================
   // Upload Job Seeker CV
   // ============================

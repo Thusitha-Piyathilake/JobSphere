@@ -45,7 +45,7 @@ export class ApplicationService {
 
   private http = inject(HttpClient);
 
-  private apiUrl = 'http://localhost:8080/api/applications';
+private apiUrl = 'https://jobsphere-production-34dc.up.railway.app/api/applications';
 
   apply(
     request: ApplicationRequest
