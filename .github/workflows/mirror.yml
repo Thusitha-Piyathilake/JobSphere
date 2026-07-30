@@ -13,23 +13,15 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          persist-credentials: false
 
-      - name: Verify Secret
-        run: |
-          if [ -z "${{ secrets.MIRROR_TOKEN }}" ]; then
-            echo "TOKEN IS EMPTY"
-            exit 1
-          else
-            echo "TOKEN EXISTS"
-          fi
-
-      - name: Mirror repository
+      - name: Push to second GitHub
         env:
           MIRROR_TOKEN: ${{ secrets.MIRROR_TOKEN }}
         run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
 
           git remote add mirror https://x-access-token:${MIRROR_TOKEN}@github.com/dilshan-piyathilke/JobSphere.git
 
-          git push --force mirror main
+          git push --force mirror HEAD:main
